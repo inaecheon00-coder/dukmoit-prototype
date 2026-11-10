@@ -146,6 +146,10 @@ input[type=range]{width:100%;accent-color:#fff}
 .camwrap .cam{display:none}.camwrap.sim .cam{display:block}
 .camwrap.sim video,.camwrap.sim img.bg{display:none}
 #arcv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+#glcv{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:none}
+.camwrap.fx .cam{display:none}
+.fxbar{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.pill.fxon{background:#4f46e5}
 .camfb{left:20px;right:20px;top:50%;transform:translateY(-50%);background:rgba(20,20,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border-radius:18px;padding:20px;z-index:9}
 .reticle{position:absolute;left:50%;top:46%;width:230px;height:230px;transform:translate(-50%,-50%);z-index:4;transition:opacity .4s,transform .4s}
 .reticle i{position:absolute;width:34px;height:34px;border:3px solid #fff;animation:rt 1.2s ease-in-out infinite}
@@ -251,8 +255,10 @@ const SPOTS=[
  {id:'kifune',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},match:52},
 ];
 const MOVE_EXP=[
- {id:'charfilter',name:'캐릭터 필터',desc:'카메라에 비친 주변 사람을 작품 등장인물 스타일로 바꿔요',rec:true},
- {id:'tone',name:'작품 색감 필터',desc:'창밖 풍경을 작품 특유의 색 보정으로 보여줘요',rec:true},
+ {id:'anime',name:'애니 화풍 필터',desc:'카메라 화면을 셀 애니메이션처럼 바꿔요 (셀 셰이딩·외곽선)',rec:true},
+ {id:'sky',name:'애니 하늘',desc:'하늘을 작품 속 하늘과 흘러가는 구름으로 바꿔요',rec:true},
+ {id:'tone',name:'작품 색감',desc:'그림자와 하이라이트를 작품 팔레트로 보정해요',rec:true},
+ {id:'charfilter',name:'캐릭터 필터',desc:'주변 사람을 작품 등장인물로 표시해요 (시뮬레이션)'},
  {id:'ost',name:'OST 사운드트랙',desc:'이동 구간마다 작품 속 BGM이 이어서 재생돼요'},
  {id:'narr',name:'장면 내레이션',desc:'지나는 장소에 얽힌 작품 속 에피소드를 들려줘요'},
 ];
@@ -280,7 +286,8 @@ const POSTS=[
 const S={
  screen:'home', stack:[], spot:'kamakura',
  upload:null, scanQuery:'',
- moveExp:{charfilter:true,tone:false,ost:true,narr:false},
+ moveExp:{anime:true,sky:true,tone:true,charfilter:false,ost:true,narr:false},
+ siteFx:{anime:true,tone:true,sky:false},
  siteExp:{overlay:true,pano:true,duo:false,line:false},
  device:'phone', siteMode:'overlay', blend:55, pan:0,
  route:0, from:'서울역', date:'12월 20일(토)',
@@ -494,9 +501,10 @@ const camLayer=(extra='')=>`<div class="camwrap ${S.camMode==='sim'||!S.camMode?
  <video id="camv" playsinline muted autoplay ${S.camMode==='live'?'':'hidden'}></video>
  <img id="camimg" class="bg" alt="" ${S.camMode==='photo'&&S.photo?`src="${S.photo}"`:'hidden'}>
  <div class="cam" id="camsim"><div class="grid"></div>${extra}</div>
+ <canvas id="glcv"></canvas>
  <canvas id="arcv"></canvas>
 </div>`;
-const camFilter=()=>{if(S.screen!=='move')return'none';const f=[];if(S.moveExp.charfilter)f.push('url(#anime)','saturate(1.35)','contrast(1.08)');if(S.moveExp.tone)f.push('sepia(.28)','saturate(1.5)','hue-rotate(-12deg)');return f.join(' ')||'none'};
+const camFilter=()=>{if(FX.ok!==false||!fxActive())return'none';const o=fxOpts();const f=[];if(o.toon)f.push('url(#anime)','saturate(1.35)','contrast(1.08)');if(o.grade)f.push('sepia(.28)','saturate(1.5)','hue-rotate(-12deg)');return f.join(' ')||'none'};
 const camBadge=()=>({live:'● 실시간 카메라',photo:'사진 위 AR',sim:'시뮬레이션'}[S.camMode]||'카메라 연결 중…');
 const fallbackCard=()=>S.camMode==='denied'?`<div class="ov camfb">
  <div style="font-size:17px;font-weight:700;margin-bottom:6px">실시간 카메라를 열 수 없어요</div>
@@ -522,6 +530,117 @@ function stopCam(){if(S.stream){S.stream.getTracks().forEach(t=>t.stop());S.stre
 function syncCamUI(){const w=document.getElementById('camwrap');if(!w)return;w.classList.toggle('sim',!(S.camMode==='live'||S.camMode==='photo'));
  const b=document.getElementById('cambadge');if(b)b.textContent=camBadge();
  const f=camFilter();['camv','camimg'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.filter=f});}
+
+/* ================= 애니 화풍 실시간 셰이더 (WebGL) ================= */
+/* 셀 셰이딩 + 외곽선 + 작품별 팔레트 색보정 + 애니 하늘 교체를 매 프레임 적용 */
+const PAL={ // 작품별 팔레트: 하늘 위, 하늘 아래, 그림자 틴트, 하이라이트, 외곽선
+ natsu:['#ff8a5b','#ffd59e','#4a3478','#fff1d6','#2a1f3d'],
+ nami:['#2f8fff','#bfe6ff','#1f4680','#f2fbff','#10233f'],
+ hoshi:['#1b1446','#c07ac0','#2a2058','#ffe3f1','#120c2a'],
+ neko:['#7fc4ff','#fff0d2','#5e4f78','#fffaf0','#2e2438'],
+ yuki:['#6f86b8','#e3ecf7','#3a4766','#ffffff','#1d2236'],
+};
+const hex3=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
+const FX={ok:null};
+const VS=`attribute vec2 p;varying vec2 v;void main(){v=(p+1.)*.5;gl_Position=vec4(p,0.,1.);}`;
+const FS=`#ifdef GL_FRAGMENT_PRECISION_HIGH
+precision highp float;
+#else
+precision mediump float;
+#endif
+uniform sampler2D uTex;uniform vec2 uRes,uTexRes;uniform float uTime,uToon,uEdge,uSky,uGrade;
+uniform vec3 uSkyTop,uSkyBot,uShadow,uHigh,uInk;varying vec2 v;
+float lu(vec3 c){return dot(c,vec3(.299,.587,.114));}
+float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float nz(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float s=0.,a=.5;for(int i=0;i<5;i++){s+=a*nz(p);p*=2.03;a*=.5;}return s;}
+void main(){
+ float ra=uRes.x/uRes.y,ta=uTexRes.x/uTexRes.y;vec2 sc=vec2(1.);if(ra>ta)sc.y=ta/ra;else sc.x=ra/ta;
+ vec2 uv=(vec2(v.x,1.-v.y)-.5)*sc+.5;
+ vec2 px=sc*1.6/uRes;
+ vec3 c=texture2D(uTex,uv).rgb;float lc=lu(c);
+ /* 결 줄이기: 밝기가 비슷한 이웃만 평균 (간이 양방향 블러) */
+ vec3 sm=c;float ws=1.;
+ for(int k=0;k<8;k++){float an=float(k)*.785398;vec2 o=vec2(cos(an),sin(an))*px*1.8;vec3 n=texture2D(uTex,uv+o).rgb;float w=1.-smoothstep(0.,.12,abs(lu(n)-lc));sm+=n*w;ws+=w;}
+ sm/=ws;
+ /* 외곽선: 소벨 */
+ float tl=lu(texture2D(uTex,uv+px*vec2(-1,-1)).rgb),t=lu(texture2D(uTex,uv+px*vec2(0,-1)).rgb),tr=lu(texture2D(uTex,uv+px*vec2(1,-1)).rgb);
+ float l=lu(texture2D(uTex,uv+px*vec2(-1,0)).rgb),r=lu(texture2D(uTex,uv+px*vec2(1,0)).rgb);
+ float bl=lu(texture2D(uTex,uv+px*vec2(-1,1)).rgb),b=lu(texture2D(uTex,uv+px*vec2(0,1)).rgb),br=lu(texture2D(uTex,uv+px*vec2(1,1)).rgb);
+ float gx=-tl-2.*l-bl+tr+2.*r+br,gy=-tl-2.*t-tr+bl+2.*b+br;
+ float edge=smoothstep(.2,.45,length(vec2(gx,gy)));
+ vec3 col=sm;
+ /* 셀 셰이딩: 밝기를 4단계로, 색상은 유지 */
+ if(uToon>.5){float L=lu(col);float q=floor(L*4.+.35)/4.;q=max(q,.1)+.06;col=col*(q/max(L,.04));col=clamp(mix(vec3(lu(col)),col,1.35),0.,1.);}
+ /* 작품 팔레트 색보정 */
+ if(uGrade>.5){float L=lu(col);vec3 sh=col*uShadow*2.;col=mix(sh,col,smoothstep(.12,.55,L));col=mix(col,uHigh,smoothstep(.72,1.,L)*.45);col=clamp(mix(vec3(lu(col)),col,1.12),0.,1.);}
+ /* 하늘 교체: 화면 위쪽의 밝고 푸르거나 흰 영역 */
+ if(uSky>.5){float yt=1.-v.y;float mx=max(c.r,max(c.g,c.b)),mn=min(c.r,min(c.g,c.b));float sat=(mx-mn)/(mx+.001);
+  float blue=smoothstep(-.02,.12,c.b-c.r);float bright=smoothstep(.45,.72,lc);float grayish=1.-smoothstep(.08,.22,sat);
+  float region=1.-smoothstep(.42,.68,yt);
+  float m=bright*max(blue,grayish*smoothstep(.62,.8,lc))*region*(1.-edge*.9);
+  m=smoothstep(.25,.6,m);
+  vec3 sky=mix(uSkyTop,uSkyBot,clamp(yt/.62,0.,1.));
+  float cl=fbm(vec2(v.x*2.6+uTime*.012,yt*5.5-uTime*.004));
+  float cb=smoothstep(.52,.56,cl),cs=smoothstep(.62,.66,cl);
+  vec3 cloud=mix(mix(uHigh,uSkyBot,.25),uHigh,cs);sky=mix(sky,cloud,cb);
+  col=mix(col,sky,m);}
+ if(uEdge>.5)col=mix(col,uInk,edge*.85);
+ gl_FragColor=vec4(col,1.);
+}`;
+function fxInit(cv){
+ if(FX.ok===false)return false;
+ if(FX.cv===cv&&FX.ok)return true;
+ const gl=cv.getContext('webgl',{preserveDrawingBuffer:true,premultipliedAlpha:false})||cv.getContext('experimental-webgl',{preserveDrawingBuffer:true});
+ if(!gl){FX.ok=false;return false}
+ const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o};
+ try{
+  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);
+  if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error(gl.getProgramInfoLog(pr));
+  gl.useProgram(pr);
+  const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  const tex=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tex);
+  [gl.TEXTURE_WRAP_S,gl.TEXTURE_WRAP_T].forEach(k=>gl.texParameteri(gl.TEXTURE_2D,k,gl.CLAMP_TO_EDGE));
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  const U={};['uTex','uRes','uTexRes','uTime','uToon','uEdge','uSky','uGrade','uSkyTop','uSkyBot','uShadow','uHigh','uInk'].forEach(n=>U[n]=gl.getUniformLocation(pr,n));
+  Object.assign(FX,{ok:true,cv,gl,pr,U,tex});return true;
+ }catch(e){console.warn('FX',e);FX.ok=false;return false}
+}
+/* 시뮬레이션용 거리 사진 (카메라가 없을 때 셰이더 데모용) */
+function simPhoto(){if(FX.sim)return FX.sim;const c=document.createElement('canvas');c.width=720;c.height=1280;const x=c.getContext('2d');
+ const g=x.createLinearGradient(0,0,0,700);g.addColorStop(0,'#7fb2e8');g.addColorStop(1,'#dfeaf5');x.fillStyle=g;x.fillRect(0,0,720,700);
+ x.fillStyle='rgba(255,255,255,.85)';[[160,180,90],[420,120,120],[600,260,70]].forEach(([a,b,r])=>{x.beginPath();x.ellipse(a,b,r,r*.42,0,0,7);x.ellipse(a+r*.6,b-r*.15,r*.6,r*.36,0,0,7);x.fill()});
+ const bs=[[0,420,170,'#8d8a86'],[150,330,140,'#a7a29b'],[280,470,130,'#6f6c69'],[400,380,160,'#b8b2a8'],[550,300,170,'#7c7f86']];
+ bs.forEach(([bx,by,bw,bc])=>{x.fillStyle=bc;x.fillRect(bx,by,bw,900-by);x.fillStyle='rgba(40,50,70,.55)';for(let yy=by+24;yy<860;yy+=46)for(let xx=bx+16;xx<bx+bw-26;xx+=38)x.fillRect(xx,yy,22,28)});
+ x.fillStyle='#4b4b50';x.fillRect(0,880,720,400);x.fillStyle='#e8e2c8';for(let i=0;i<8;i++)x.fillRect(40+i*90,1060,50,14);
+ x.fillStyle='#2f3a2f';x.beginPath();x.arc(80,860,70,0,7);x.arc(650,850,80,0,7);x.fill();
+ [[230,980,'#2b2b33'],[330,1000,'#5b3b3b'],[470,970,'#2e3e5b']].forEach(([px,py,pc])=>{x.fillStyle=pc;x.beginPath();x.roundRect?x.roundRect(px-28,py-120,56,140,24):x.rect(px-28,py-120,56,140);x.fill();x.fillStyle='#e9c7b0';x.beginPath();x.arc(px,py-140,22,0,7);x.fill()});
+ FX.sim=c;return c}
+const fxOpts=()=>S.screen==='move'?{toon:S.moveExp.anime,edge:S.moveExp.anime,grade:S.moveExp.tone,sky:S.moveExp.sky}:{toon:S.siteFx.anime,edge:S.siteFx.anime,grade:S.siteFx.tone,sky:S.siteFx.sky};
+const fxActive=()=>{if(S.fxHold)return false;const o=fxOpts();return !!(o.toon||o.grade||o.sky)};
+function fxSource(){const v=document.getElementById('camv'),img=document.getElementById('camimg');
+ if(S.camMode==='live'&&v&&v.readyState>=2&&v.videoWidth)return[v,v.videoWidth,v.videoHeight];
+ if(S.camMode==='photo'&&img&&img.naturalWidth)return[img,img.naturalWidth,img.naturalHeight];
+ if(S.camMode==='sim'||S.camMode==='denied'||!S.camMode){const s=simPhoto();return[s,s.width,s.height]}
+ return null}
+function fxFrame(){const cv=document.getElementById('glcv');if(!cv)return;const w=document.getElementById('camwrap');
+ const on=!(S.screen==='arrive'&&S.siteMode==='pano');
+ if(!on||!fxInit(cv)){cv.style.display='none';if(w)w.classList.remove('fx');return}
+ const src=fxSource();if(!src){return}
+ const dpr=Math.min(1.5,window.devicePixelRatio||1);const box=(w||cv.parentElement).getBoundingClientRect();const W=Math.round(box.width*dpr),H=Math.round(box.height*dpr);if(!W||!H)return;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+ const {gl,U}=FX;gl.viewport(0,0,W,H);
+ try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,src[0])}catch(e){return}
+ const o=S.fxHold?{}:fxOpts(),p=PAL[spot().work]||PAL.natsu;
+ gl.uniform1i(U.uTex,0);gl.uniform2f(U.uRes,W,H);gl.uniform2f(U.uTexRes,src[1],src[2]);gl.uniform1f(U.uTime,performance.now()/1000);
+ gl.uniform1f(U.uToon,o.toon?1:0);gl.uniform1f(U.uEdge,o.edge?1:0);gl.uniform1f(U.uGrade,o.grade?1:0);gl.uniform1f(U.uSky,o.sky?1:0);
+ ['uSkyTop','uSkyBot','uShadow','uHigh','uInk'].forEach((n,i)=>gl.uniform3fv(U[n],hex3(p[i])));
+ gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+ cv.style.display='block';if(w)w.classList.add('fx');
+}
+const fxBar=()=>{const o=fxOpts();const on=!!(o.toon||o.grade||o.sky);return`<div class="fxbar">
+ <button class="pill small ${on?'fxon':''}" data-act="fxtoggle" style="padding:6px 12px">${on?'애니 화풍 ON':'애니 화풍 OFF'}</button>
+ <button class="pill small" id="fxhold" style="padding:6px 12px;touch-action:none">누르고 있으면 원본</button></div>`};
 
 /* AR 오버레이 그리기 (화면·촬영 공용) */
 const SCENE_FEAT={kamakura:'cross',shichiri:'sea',enoshima:'sea',hida:'bridge',ihwa:'stairs',kifune:'snow'};
@@ -560,13 +679,14 @@ function drawOverlay(c,w,h,t){
   if(S.siteMode==='overlay'){c.save();const sc=1.08-.08*k;c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-w/2,-h/2);drawScene(c,w,h,t,(S.blend/100)*k);c.restore();sparkles(c,w,h,t,14)}
   else if(S.siteMode==='duo'){c.globalAlpha=k;drawChar(c,w,h,t);c.globalAlpha=1;sparkles(c,w,h,t,10)}
   else if(S.siteMode==='line'){c.globalAlpha=k;subtitle(c,w,h,LINES[spot().work],h*.55);c.globalAlpha=1}}}
-function arLoop(){const cv=document.getElementById('arcv');if(!cv)return;const dpr=Math.min(2,window.devicePixelRatio||1);const W=cv.clientWidth*dpr,H=cv.clientHeight*dpr;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+function arLoop(){const cv=document.getElementById('arcv');if(!cv)return;fxFrame();const dpr=Math.min(2,window.devicePixelRatio||1);const W=cv.clientWidth*dpr,H=cv.clientHeight*dpr;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
  const c=cv.getContext('2d');c.clearRect(0,0,W,H);drawOverlay(c,W,H,performance.now());S._raf=requestAnimationFrame(arLoop)}
 
 /* 촬영: 카메라 프레임 + 필터 + AR 오버레이를 한 장으로 합성 */
 function captureAR(ctxName){const v=document.getElementById('camv'),img=document.getElementById('camimg');const W=1080,H=1920;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
- const src=S.camMode==='live'&&v&&v.videoWidth?v:(S.camMode==='photo'&&img&&img.naturalWidth?img:null);
- if(src){const sw=src.videoWidth||src.naturalWidth,sh=src.videoHeight||src.naturalHeight;const s=Math.max(W/sw,H/sh);const dw=sw*s,dh=sh*s;try{c.filter=camFilter()}catch(e){}c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);c.filter='none'}
+ const glc=document.getElementById('glcv');let src=S.camMode==='live'&&v&&v.videoWidth?v:(S.camMode==='photo'&&img&&img.naturalWidth?img:null);
+ if(glc&&glc.style.display==='block'){fxFrame();const s=Math.max(W/glc.width,H/glc.height);const dw=glc.width*s,dh=glc.height*s;c.drawImage(glc,(W-dw)/2,(H-dh)/2,dw,dh)}
+ else if(src){const sw=src.videoWidth||src.naturalWidth,sh=src.videoHeight||src.naturalHeight;const s=Math.max(W/sw,H/sh);const dw=sw*s,dh=sh*s;try{c.filter=camFilter()}catch(e){}c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);c.filter='none'}
  else{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#555a66');g.addColorStop(.48,'#555a66');g.addColorStop(.481,'#2b2d33');g.addColorStop(1,'#1f2025');c.fillStyle=g;c.fillRect(0,0,W,H)}
  const t=performance.now();
  if(S.screen==='arrive'&&S.siteMode==='pano'){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#e76f51');g.addColorStop(1,'#2a2438');c.fillStyle=g;c.fillRect(0,0,W,H)}
@@ -592,6 +712,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
    <div class="small" style="opacity:.7;margin-top:6px">${st[1]}</div>
   </div>
   <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap"><span class="pill small" style="padding:6px 10px" id="cambadge">${camBadge()}</span>${S.moveExp.ost?`<span class="pill row small" style="padding:6px 10px;display:inline-flex;gap:4px">${I.music.replace('<svg','<svg width="13" height="13"')} OST 재생 중</span>`:''}</div>
+  ${fxBar()}
  </div>
  ${fallbackCard()}
  <div class="ov" style="left:0;right:0;bottom:0;padding:0 20px max(var(--sab),24px)">
@@ -615,6 +736,7 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
    <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
    <button class="ib" data-act="sheet-exp" data-ctx="site" style="background:rgba(0,0,0,.35)">${I.sparkle}</button></div>
   <div class="pill" style="margin-top:12px"><div class="small" style="opacity:.7">${work(sp).title} · ${sp.ep} · 장면 포인트 도착</div><b>${sp.name}</b></div>
+  ${pano?'':fxBar()}
  </div>
  ${pano?'':fallbackCard()}
  <div class="ov" style="left:0;right:0;bottom:0;padding:0 20px max(var(--sab),24px);z-index:8">
@@ -729,6 +851,7 @@ function render(){
   const b=app.querySelector('.body');if(b)b.scrollTop=0;
  if(def.after)def.after();
  const up=document.getElementById('upl');if(up)up.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.upload=r.result;S.scanQuery='';go('scanning')};r.readAsDataURL(f)};
+ const fh=document.getElementById('fxhold');if(fh){const on=()=>{S.fxHold=true;syncCamUI()},off=()=>{S.fxHold=false;syncCamUI()};fh.onpointerdown=e=>{e.preventDefault();on()};fh.onpointerup=off;fh.onpointerleave=off;fh.onpointercancel=off;fh.oncontextmenu=e=>e.preventDefault()}
  const cc=document.getElementById('camcap');if(cc)cc.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.photo=r.result;S.camMode='photo';render();toast('사진 위에 AR을 입혔어요')};r.readAsDataURL(f)};
  drawFlow();
  try{const h=S.screen;if(location.hash.slice(1)!==h)history.replaceState(null,'','#'+h)}catch(e){}
@@ -754,6 +877,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'nextstep':{S.locked=false;const n=ROUTES(spot()).length?ROUTES(spot())[Math.min(S.route,ROUTES(spot()).length-1)].steps.length:1;if(S.moveProg>=n-1){replace('arrive');toast('장면 포인트에 도착했어요!')}else{S.moveProg++;render()}break}
   case 'sitemode':S.siteMode=t.dataset.v;render();break;
   case 'capture':{const ctx=t.dataset.ctx;if(ctx==='site'&&S.siteMode!=='pano'&&!S.locked){toast('장면을 인식하는 중이에요. 잠시만요');break}const exp=ctx==='move'?MOVE_EXP.filter(x=>S.moveExp[x.id]).map(x=>x.name):[SITE_EXP.find(x=>x.id===S.siteMode).name];const fl=document.getElementById('flash');if(fl){fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on')}let img=null;try{img=captureAR(ctx)}catch(e){}S.lastCapture={ctx,exp:exp.length?exp:['일반 촬영'],img,src:{live:'실시간 카메라',photo:'사진',sim:'시뮬레이션'}[S.camMode]||''};setTimeout(()=>go('record'),180);break}
+  case 'fxtoggle':{const tgt=S.screen==='move'?S.moveExp:S.siteFx;const keys=['anime','tone','sky'];const on=keys.some(k=>tgt[k]);const key=S.screen==='move'?'_fxm':'_fxs';if(on){S[key]=keys.reduce((a,k)=>(a[k]=tgt[k],a),{});keys.forEach(k=>tgt[k]=false)}else{const prev=S[key]||(S.screen==='move'?{anime:true,tone:true,sky:true}:{anime:true,tone:true,sky:false});keys.forEach(k=>tgt[k]=prev[k])}render();break}
   case 'camretry':S.camMode=null;render();break;
   case 'camsim':S.camMode='sim';render();break;
   case 'camflip':{if(S.camMode!=='live'){toast('실시간 카메라에서만 전환할 수 있어요');break}S.facing=S.facing==='user'?'environment':'user';stopCam();render();break}
