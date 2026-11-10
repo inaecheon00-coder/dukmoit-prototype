@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>덕모잇 프로토타입</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#f2f2f4; --surface:#fff; --line:#e3e3e8; --line2:#cfcfd6;
+  --text:#18181b; --sub:#6b6b75; --mute:#9a9aa3;
+  --accent:#4f46e5; --accent-weak:#eef0ff;
+  --ph:#e9e9ee; --ph2:#dcdce3;
+  --r:12px;
+  --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+html,body{overscroll-behavior:none}
+body{-webkit-tap-highlight-color:transparent;font-family:"Noto Sans KR",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+
+/* ---------- layout: 모바일 웹 전용 ---------- */
+.wrap{min-height:100dvh;display:flex;justify-content:center;align-items:center;background:#e9e9ee}
+.phone{width:100%;height:100dvh;flex:none;background:var(--surface);position:relative;overflow:hidden;overflow:clip}
+.screen{position:absolute;inset:0;padding-top:var(--sat);display:flex;flex-direction:column;background:var(--surface)}
+.screen.dark{background:#0d0d10;color:#fff}
+.body{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.body::-webkit-scrollbar{display:none}
+/* PC에서 열면 모바일 화면 크기로 표시 */
+@media (min-width:600px){
+  .phone{width:390px;height:min(844px,calc(100vh - 40px));border-radius:28px;box-shadow:0 20px 50px -18px rgba(0,0,0,.3)}
+}
+input,textarea{font-size:16px}
+button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
+
+/* ---------- common ---------- */
+.hdr{height:52px;display:flex;align-items:center;gap:8px;padding:0 12px;flex:none}
+.hdr .t{flex:1;font-size:16px;font-weight:700;text-align:center;margin-right:36px}
+.hdr .t.left{text-align:left;margin:0 0 0 6px;font-size:20px}
+.ib{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none}
+.ib:hover{background:rgba(127,127,127,.12)}
+.ib svg{width:22px;height:22px}
+.pad{padding:0 20px}
+.sec{margin-top:24px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;padding:0 20px;margin-bottom:10px}
+.sec-h h3{font-size:16px;font-weight:700}
+.sec-h a{font-size:12px;color:var(--sub);cursor:pointer}
+.chip{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:14px;border:1px solid var(--line2);font-size:12px;white-space:nowrap;background:var(--surface)}
+.chip.on{background:var(--text);border-color:var(--text);color:#fff}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:0 20px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;background:var(--ph);color:var(--sub)}
+.tag.ac{background:var(--accent-weak);color:var(--accent);font-weight:500}
+.btn{height:50px;border-radius:12px;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px;width:100%}
+.btn.pri{background:var(--text);color:#fff}
+.btn.sec2{background:var(--ph);color:var(--text)}
+.btn.out{border:1px solid var(--line2)}
+.btn.sm{height:38px;font-size:13px;border-radius:10px}
+.card{border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.muted{color:var(--sub)}
+.small{font-size:12px}
+.row{display:flex;align-items:center;gap:10px}
+.between{justify-content:space-between}
+.divider{height:8px;background:var(--bg);margin:24px 0 0}
+.cta{flex:none;padding:12px 20px max(var(--sab),16px);border-top:1px solid var(--line);background:var(--surface);display:flex;gap:8px}
+.hscroll{display:flex;gap:12px;overflow-x:auto;padding:0 20px;scrollbar-width:none}
+.hscroll::-webkit-scrollbar{display:none}
+
+/* placeholder image */
+.ph{position:relative;background:var(--ph);border-radius:10px;overflow:hidden;display:flex;align-items:flex-end}
+.ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(0,0,0,.035) 10px 20px)}
+.ph .lb{position:relative;margin:8px;font-size:10px;color:var(--sub);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:4px}
+.ph .x{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;color:var(--mute);text-align:center;padding:8px}
+
+/* tab bar */
+.tabbar{position:absolute;left:0;right:0;bottom:0;z-index:70;height:calc(62px + max(var(--sab),12px));border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:max(var(--sab),12px);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.screen.has-tab .body{padding-bottom:calc(62px + max(var(--sab),12px))}
+.tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:var(--mute)}
+.tabbar button.on{color:var(--text);font-weight:700}
+.tabbar svg{width:22px;height:22px}
+.tabbar .scan{margin-top:-18px}
+.tabbar .scan span.c{width:54px;height:54px;border-radius:50%;background:var(--text);color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+
+/* bottom sheet / toast */
+.dim{position:absolute;inset:0;background:rgba(0,0,0,.4);z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.dim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:41;background:var(--surface);color:var(--text);border-radius:20px 20px 0 0;padding:10px 20px 30px;transform:translateY(100%);transition:transform .25s ease,visibility 0s .25s;visibility:hidden;max-height:82%;overflow-y:auto}
+.sheet.on{transform:none;visibility:visible;transition:transform .25s ease}
+.sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line2);margin:0 auto 14px}
+.toast{position:absolute;left:50%;top:100px;transform:translateX(-50%) translateY(10px);background:#222;color:#fff;font-size:13px;padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;z-index:60;white-space:nowrap;pointer-events:none}
+.toast.on{opacity:1;transform:translateX(-50%)}
+
+/* toggle */
+.tg{width:44px;height:26px;border-radius:13px;background:var(--line2);position:relative;flex:none;transition:.15s}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.tg.on{background:var(--accent)}
+.tg.on::after{left:21px}
+
+/* segmented */
+.seg{display:flex;background:var(--ph);border-radius:10px;padding:3px}
+.seg button{flex:1;height:32px;border-radius:8px;font-size:13px;color:var(--sub)}
+.seg button.on{background:var(--surface);color:var(--text);font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.dark .seg{background:rgba(255,255,255,.12)}
+.dark .seg button{color:rgba(255,255,255,.65)}
+.dark .seg button.on{background:#fff;color:#111}
+
+/* ----- AR camera sim ----- */
+.cam{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#3b3f4a 0%,#555a66 48%,#2b2d33 48.2%,#1f2025 100%)}
+.cam .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.cam .camlb{position:absolute;top:calc(var(--sat) + 150px);left:50%;transform:translateX(-50%);font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.05em}
+.cam.tone{filter:sepia(.35) saturate(1.6) hue-rotate(-15deg) brightness(1.05)}
+.person{position:absolute;bottom:30%;width:46px;border-radius:23px 23px 6px 6px;background:rgba(255,255,255,.18)}
+.person .tagp{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;font-size:10px;white-space:nowrap;padding:3px 7px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);opacity:0;transition:.2s}
+.cam.filter .person{background:rgba(160,170,255,.45);outline:2px dashed rgba(200,205,255,.8);outline-offset:2px}
+.cam.filter .person .tagp{opacity:1}
+.hud{position:absolute;inset:0;pointer-events:none}
+.glass .hud::before{content:"";position:absolute;inset:60px 18px 140px;border:1px solid rgba(255,255,255,.25);border-radius:40px}
+.glass .camlb::after{content:" · AI 글래스 HUD";}
+.ov{position:absolute;z-index:5}
+.pill{background:rgba(20,20,24,.7);backdrop-filter:blur(8px);color:#fff;border-radius:14px;padding:10px 14px}
+.dark .ib:hover{background:rgba(255,255,255,.12)}
+.rb{width:72px;height:72px;border-radius:50%;border:4px solid #fff;display:grid;place-items:center}
+.rb span{width:56px;height:56px;border-radius:50%;background:#fff}
+.cb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,.85)}
+.cb i{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;font-style:normal}
+.cb svg{width:22px;height:22px}
+
+/* overlay blend */
+.scene-layer{position:absolute;inset:0;background:linear-gradient(#f4a261 0%,#e76f51 40%,#5c4d7d 48%,#2a2438 100%);mix-blend-mode:normal}
+.scene-layer .sl{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;color:rgba(255,255,255,.8)}
+.scene-layer .cross{position:absolute;left:0;right:0;top:52%;height:14px;background:repeating-linear-gradient(90deg,#fff 0 18px,#222 18px 36px);opacity:.6}
+.pano{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none}
+.pano-strip{position:absolute;top:0;bottom:0;left:0;display:flex;will-change:transform}
+.pano-strip div{width:390px;flex:none;position:relative;display:grid;place-items:center;color:rgba(255,255,255,.85);font-size:13px;text-align:center}
+.compass{position:absolute;top:calc(var(--sat) + 130px);left:50%;transform:translateX(-50%);font-size:11px;color:#fff;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:10px;z-index:6}
+input[type=range]{width:100%;accent-color:#fff}
+
+
+/* AR camera */
+.camwrap{position:absolute;inset:0;overflow:hidden;background:#000}
+.camwrap video,.camwrap img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.camwrap .cam{display:none}.camwrap.sim .cam{display:block}
+.camwrap.sim video,.camwrap.sim img.bg{display:none}
+#arcv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.camfb{left:20px;right:20px;top:50%;transform:translateY(-50%);background:rgba(20,20,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border-radius:18px;padding:20px;z-index:9}
+.reticle{position:absolute;left:50%;top:46%;width:230px;height:230px;transform:translate(-50%,-50%);z-index:4;transition:opacity .4s,transform .4s}
+.reticle i{position:absolute;width:34px;height:34px;border:3px solid #fff;animation:rt 1.2s ease-in-out infinite}
+.reticle i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.reticle i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.reticle i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.reticle i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+@keyframes rt{50%{transform:scale(.85)}}
+.reticle .rt{position:absolute;top:100%;left:-40px;right:-40px;text-align:center;margin-top:14px;font-size:12px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.reticle.done{opacity:0;transform:translate(-50%,-50%) scale(1.3)}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:80}
+.flash.on{animation:fl .35s ease-out}
+@keyframes fl{0%{opacity:.9}100%{opacity:0}}
+/* scan */
+.drop{border:1.5px dashed var(--line2);border-radius:16px;padding:28px 16px;text-align:center;cursor:pointer;display:block}
+.drop:hover{border-color:var(--text)}
+.scanbox{position:relative;width:240px;height:240px;margin:20px auto;border-radius:16px;overflow:hidden}
+.scanline{position:absolute;left:0;right:0;height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:sl 1.4s ease-in-out infinite}
+@keyframes sl{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
+.match{display:inline-block;font-size:11px;font-weight:700;color:var(--accent)}
+.bar{height:6px;border-radius:3px;background:var(--ph);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+
+/* map */
+.map{position:relative;height:300px;background:#ececf0;overflow:hidden}
+.map::before{content:"";position:absolute;inset:0;background-image:linear-gradient(#dedee4 1px,transparent 1px),linear-gradient(90deg,#dedee4 1px,transparent 1px);background-size:32px 32px}
+.map .land{position:absolute;background:#e0e0e6;border-radius:40% 55% 50% 45%}
+.pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.pin b{background:var(--text);color:#fff;font-size:10px;font-weight:500;padding:3px 7px;border-radius:8px;white-space:nowrap}
+.pin i{width:2px;height:8px;background:var(--text)}
+.pin.on b{background:var(--accent)}
+.pin.on i{background:var(--accent)}
+
+/* timeline */
+.tl{position:relative;padding-left:22px}
+.tl::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .st{position:relative;padding:0 0 16px}
+.tl .st::before{content:"";position:absolute;left:-21px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--line2)}
+.tl .st.done::before{background:var(--text);border-color:var(--text)}
+.tl .st.cur::before{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-weak)}
+
+.stamp{aspect-ratio:1;border-radius:50%;border:1.5px dashed var(--line2);display:grid;place-items:center;text-align:center;font-size:10px;color:var(--mute);padding:6px}
+.stamp.got{border:2px solid var(--text);color:var(--text);font-weight:700}
+.av{width:32px;height:32px;border-radius:50%;background:var(--ph2);flex:none}
+.opt{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.opt:last-child{border-bottom:0}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--line2);flex:none;margin-top:1px}
+.radio.on{border:6px solid var(--text)}
+.field{border:1px solid var(--line2);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12px;resize:none;height:84px}
+.search{display:flex;align-items:center;gap:8px;height:46px;border-radius:12px;background:var(--ph);padding:0 14px;color:var(--mute);cursor:pointer}
+.search input{border:0;background:none;outline:none;flex:1;color:var(--text)}
+.search svg{width:18px;height:18px;flex:none}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="anime" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 .2 .45 .7 .9 1"/><feFuncG type="discrete" tableValues="0 .2 .45 .7 .9 1"/><feFuncB type="discrete" tableValues="0 .25 .5 .75 .95 1"/></feComponentTransfer></filter></svg>
+<div class="wrap">
+  <div class="phone" id="phone">
+    <div id="app"></div>
+    <div class="dim" id="dim"></div>
+    <div class="sheet" id="sheet"></div>
+    <div class="toast" id="toast"></div>
+  </div>
+</div>
+
+<script>
+/* ================= ICONS ================= */
+const I={
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+ close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10l8-6 8 6v10H4z"/><path d="M10 20v-6h4v6"/></svg>',
+ map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>',
+ scan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><circle cx="12" cy="12" r="3.5"/></svg>',
+ people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.5 3-5.5 6-5.5s5.4 2 6 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.6.2 4.4 2 5 5.4"/></svg>',
+ book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>',
+ bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 004 0"/></svg>',
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
+ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6h14v-6"/></svg>',
+ sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>',
+ flip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 0114-5.3L20 9M20 12a8 8 0 01-14 5.3L4 15"/><path d="M20 4v5h-5M4 20v-5h5"/></svg>',
+ pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>',
+ bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>',
+ music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
+ cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+ img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="1.6"/><path d="M20 15l-4.5-4.5L6 20"/></svg>',
+ more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>',
+};
+
+/* ================= DUMMY DATA ================= */
+const WORKS={
+ natsu:{title:'여름의 끝, 플랫폼',genre:'청춘 · 철도',year:2019,eps:12,chars:['나츠키','하루','선배 미오']},
+ nami:{title:'파도 너머의 너',genre:'드라마',year:2021,eps:24,chars:['소라','리쿠']},
+ hoshi:{title:'별빛 정거장',genre:'판타지 · 로맨스',year:2016,eps:1,chars:['미츠','타키']},
+ neko:{title:'골목의 고양이 탐정',genre:'미스터리 · 일상',year:2022,eps:12,chars:['은호','고양이 반장','지수']},
+ yuki:{title:'눈 내리는 신사',genre:'판타지',year:2018,eps:13,chars:['시즈쿠','신령 코하쿠']},
+};
+const SPOTS=[
+ {id:'kamakura',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},match:94},
+ {id:'shichiri',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},match:71},
+ {id:'enoshima',work:'nami',name:'에노시마 벤텐교',region:'일본 가나가와현 후지사와',abroad:true,ep:'3화',time:'18:05',scene:'긴 다리를 자전거로 달리며 섬을 향해 소리치는 장면',dist:'1,158km',visits:9340,tags:['다리','바다','자전거'],tip:'자전거는 다리 입구에서 끌고 가야 해요.',map:{x:72,y:58},match:63},
+ {id:'hida',work:'hoshi',name:'히다후루카와역 육교',region:'일본 기후현 히다',abroad:true,ep:'극장판',time:'48:30',scene:'육교 위에서 지나가는 열차를 내려다보며 이름을 부르는 장면',dist:'1,020km',visits:21500,tags:['육교','역','열차'],tip:'역 관광안내소에서 성지 지도를 받을 수 있어요.',map:{x:48,y:38},match:58},
+ {id:'ihwa',work:'neko',name:'이화동 계단길',region:'서울 종로구 이화동',abroad:false,ep:'2화',time:'09:40',scene:'고양이를 쫓아 좁은 계단길을 뛰어 올라가는 장면',dist:'8.2km',visits:3120,tags:['계단','골목','벽화'],tip:'주거지역이에요. 대화와 촬영은 조용히 해 주세요.',map:{x:22,y:40},match:47},
+ {id:'kifune',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},match:52},
+];
+const MOVE_EXP=[
+ {id:'charfilter',name:'캐릭터 필터',desc:'카메라에 비친 주변 사람을 작품 등장인물 스타일로 바꿔요',rec:true},
+ {id:'tone',name:'작품 색감 필터',desc:'창밖 풍경을 작품 특유의 색 보정으로 보여줘요',rec:true},
+ {id:'ost',name:'OST 사운드트랙',desc:'이동 구간마다 작품 속 BGM이 이어서 재생돼요'},
+ {id:'narr',name:'장면 내레이션',desc:'지나는 장소에 얽힌 작품 속 에피소드를 들려줘요'},
+];
+const SITE_EXP=[
+ {id:'overlay',name:'장면 오버레이',desc:'원작 장면을 실제 풍경 위에 겹쳐 같은 구도를 찾아요',rec:true},
+ {id:'pano',name:'360° 장면 재현',desc:'원작에선 볼 수 없던 뒤쪽까지 장면 속을 둘러봐요',rec:true},
+ {id:'duo',name:'캐릭터 투샷',desc:'등장인물이 옆에 선 사진을 남겨요'},
+ {id:'line',name:'명대사 재생',desc:'그 자리에서 장면 속 대사와 효과음을 들어요'},
+];
+const GOODS={
+ natsu:[{n:'건널목 아크릴 스탠드',p:'18,000원',s:'현지 한정'},{n:'에노덴 1일권 콜라보 케이스',p:'12,000원',s:'역 매점'},{n:'OST 바이닐',p:'45,000원',s:'온라인'}],
+ nami:[{n:'벤텐교 엽서 세트',p:'8,000원',s:'현지 한정'},{n:'소라 자전거 키링',p:'9,500원',s:'온라인'}],
+ hoshi:[{n:'역명판 키홀더',p:'7,000원',s:'관광안내소'},{n:'극장판 아트북',p:'32,000원',s:'온라인'}],
+ neko:[{n:'고양이 반장 뱃지',p:'6,000원',s:'팝업스토어'},{n:'골목 지도 손수건',p:'14,000원',s:'온라인'}],
+ yuki:[{n:'등롱 무드등',p:'39,000원',s:'온라인'},{n:'신사 오마모리 콜라보',p:'11,000원',s:'현지 한정'}],
+};
+const POSTS=[
+ {u:'건널목지기',spot:'kamakura',t:'2시간 전',txt:'5시 12분, 원작이랑 노을 각도 완전히 똑같았어요. 오버레이 투명도 60%가 제일 좋아요',like:328,c:41,exp:'장면 오버레이'},
+ {u:'별빛순례자',spot:'hida',t:'어제',txt:'육교 360° 재현 켜고 뒤돌아보면 원작에 없던 마을 쪽 풍경까지 나와서 소름…',like:512,c:77,exp:'360° 장면 재현'},
+ {u:'반장집사',spot:'ihwa',t:'3일 전',txt:'이동 중 캐릭터 필터로 지하철 승객이 전부 고양이 탐정단 됨 ㅋㅋ 이동 시간이 제일 재밌었음',like:190,c:23,exp:'캐릭터 필터'},
+ {u:'눈꽃신령',spot:'kifune',t:'1주 전',txt:'첫눈 오는 날 다녀왔어요. 명대사 재생은 이어폰 필수!',like:441,c:36,exp:'명대사 재생'},
+];
+
+/* ================= STATE ================= */
+const S={
+ screen:'home', stack:[], spot:'kamakura',
+ upload:null, scanQuery:'',
+ moveExp:{charfilter:true,tone:false,ost:true,narr:false},
+ siteExp:{overlay:true,pano:true,duo:false,line:false},
+ device:'phone', siteMode:'overlay', blend:55, pan:0,
+ route:0, from:'서울역', date:'12월 20일(토)',
+ exploreWork:'all', exploreSel:'kamakura',
+ commTab:'feed', archTab:'timeline',
+ liked:{}, moveProg:0,
+ lastCapture:null,
+ archive:[
+  {spot:'ihwa',date:'2026.10.03',exp:['캐릭터 필터','장면 오버레이'],memo:'반장이 앉아 있던 그 계단. 실제 고양이도 있었다!'},
+  {spot:'hida',date:'2026.08.15',exp:['360° 장면 재현','명대사 재생'],memo:'열차 지나갈 때 대사 재생 타이밍 맞추느라 세 번 기다림'},
+ ],
+ trips:[{spot:'kamakura',date:'12월 20일(토)',status:'예정'}],
+};
+const spot=id=>SPOTS.find(s=>s.id===(id||S.spot));
+const work=sp=>WORKS[sp.work];
+
+/* ================= HELPERS ================= */
+const ph=(label,h=160,extra='',center='')=>`<div class="ph" style="height:${h}px;${extra}">${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`;
+const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${back?`<button class="ib" data-act="back" aria-label="뒤로">${I.back}</button>`:''}<div class="t ${left?'left':''}">${title}</div>${right}</div>`;
+const fmt=n=>n.toLocaleString('ko-KR');
+const tabbar=on=>`<nav class="tabbar">
+ <button data-tab="home" class="${on==='home'?'on':''}">${I.home}홈</button>
+ <button data-tab="explore" class="${on==='explore'?'on':''}">${I.map}탐색</button>
+ <button data-tab="scan" class="scan"><span class="c">${I.scan}</span>장면 검색</button>
+ <button data-tab="community" class="${on==='community'?'on':''}">${I.people}커뮤니티</button>
+ <button data-tab="archive" class="${on==='archive'?'on':''}">${I.book}기록</button>
+</nav>`;
+const spotCard=(sp,w=220)=>`<div style="width:${w}px;flex:none;cursor:pointer" data-go="spot" data-id="${sp.id}">
+ ${ph('애니 장면 · '+work(sp).title,w*0.62)}
+ <div style="margin-top:8px;font-weight:700">${sp.name}</div>
+ <div class="small muted">${sp.region} · 순례 ${fmt(sp.visits)}회</div></div>`;
+
+/* ================= SCREENS ================= */
+const SCREENS={};
+
+SCREENS.home=()=>({tab:'home',html:`
+ ${hdr('덕모잇',{back:false,left:true,right:`<button class="ib" data-toast="알림 3개 (더미)">${I.bell}</button>`})}
+ <div class="body">
+  <div class="pad">
+   <div class="card" style="padding:18px;cursor:pointer" data-go="scan">
+    <div class="small muted">기억나는 그 장면, 어디였을까?</div>
+    <div style="font-size:19px;font-weight:700;margin:4px 0 14px;letter-spacing:-.02em">캡처 한 장으로<br>장면 속 장소 찾기</div>
+    <div class="row" style="gap:8px">
+     <span class="chip">${I.img.replace('<svg','<svg width="14" height="14"')} 캡처 올리기</span>
+     <span class="chip">${I.cam.replace('<svg','<svg width="14" height="14"')} 만화책 촬영</span>
+     <span class="chip">말로 설명하기</span>
+    </div>
+   </div>
+  </div>
+
+  <div class="sec">
+   <div class="sec-h"><h3>다가오는 여정</h3><a data-go="plan" data-id="kamakura">계획 보기</a></div>
+   <div class="pad"><div class="card row" style="padding:12px;cursor:pointer" data-go="plan" data-id="kamakura">
+    ${ph('',64,'width:64px;flex:none')}
+    <div style="flex:1"><div class="small muted">D-40 · ${S.trips[0].date}</div><div style="font-weight:700">${spot('kamakura').name}</div><div class="small muted">${WORKS.natsu.title} 1화</div></div>
+    <button class="btn pri sm" style="width:auto;padding:0 12px" data-go="move" data-id="kamakura">출발</button>
+   </div></div>
+  </div>
+
+  <div class="sec">
+   <div class="sec-h"><h3>이번 주 인기 장면</h3><a data-tab="explore">전체</a></div>
+   <div class="hscroll">${SPOTS.slice().sort((a,b)=>b.visits-a.visits).map(s=>spotCard(s)).join('')}</div>
+  </div>
+
+  <div class="sec">
+   <div class="sec-h"><h3>지금 가까운 성지</h3></div>
+   <div class="pad">${[spot('ihwa')].map(s=>`<div class="row" style="cursor:pointer" data-go="spot" data-id="${s.id}">
+     ${ph('',72,'width:96px;flex:none')}
+     <div style="flex:1"><span class="tag ac">${s.dist}</span><div style="font-weight:700;margin-top:4px">${s.name}</div><div class="small muted">${work(s).title} · ${s.ep}</div></div></div>`).join('')}</div>
+  </div>
+
+  <div class="sec" style="padding-bottom:24px">
+   <div class="sec-h"><h3>순례자들의 AR 기록</h3><a data-tab="community">더보기</a></div>
+   <div class="hscroll">${POSTS.map(p=>`<div style="width:140px;flex:none;cursor:pointer" data-tab="community">${ph(p.exp,180)}<div class="small" style="margin-top:6px">@${p.u}</div></div>`).join('')}</div>
+  </div>
+ </div>`});
+
+SCREENS.scan=()=>({html:`
+ ${hdr('장면 검색')}
+ <div class="body"><div class="pad">
+  <p style="font-size:20px;font-weight:700;letter-spacing:-.02em;margin:8px 0 4px">어떤 장면이 기억나나요?</p>
+  <p class="muted small" style="margin-bottom:18px">지명을 몰라도 괜찮아요. 장면 캡처나 만화책 한 컷이면 충분해요.</p>
+  <label class="drop">
+   <input type="file" accept="image/*" id="upl" hidden>
+   <div style="color:var(--sub);display:flex;justify-content:center;margin-bottom:8px">${I.img.replace('<svg','<svg width="32" height="32"')}</div>
+   <div style="font-weight:700">캡처 이미지 올리기</div>
+   <div class="small muted">애니 캡처 · 만화책 사진 · 굿즈 사진</div>
+  </label>
+  <div class="row" style="margin-top:10px">
+   <button class="btn out sm" data-toast="카메라는 실제 앱에서 열려요 (프로토타입에선 샘플 사용)">${I.cam.replace('<svg','<svg width="16" height="16"')} 만화책 촬영</button>
+   <button class="btn sec2 sm" data-act="sample">샘플 캡처로 체험</button>
+  </div>
+
+  <div style="margin-top:28px;font-weight:700">말로 설명하기</div>
+  <p class="small muted" style="margin:2px 0 10px">기억나는 대로 적으면 AI가 장면을 찾아요</p>
+  <div class="search"><input id="q" placeholder="예) 노을 지는 건널목, 전차가 지나가는 장면" value="${S.scanQuery}">
+   <button data-act="qsearch" style="color:var(--text)">${I.search}</button></div>
+  <div class="chips" style="padding:10px 0 0">${['노을 건널목','눈 오는 신사 계단','바다 위 긴 다리','고양이 골목'].map(k=>`<button class="chip" data-act="qchip" data-q="${k}">${k}</button>`).join('')}</div>
+
+  <div style="margin-top:28px;font-weight:700;margin-bottom:10px">최근 검색한 장면</div>
+  <div class="hscroll" style="padding:0;margin-bottom:24px">${['hida','ihwa','kifune'].map(id=>`<div style="width:110px;flex:none;cursor:pointer" data-go="spot" data-id="${id}">${ph('',80)}<div class="small" style="margin-top:4px">${work(spot(id)).title}</div></div>`).join('')}</div>
+ </div></div>`});
+
+SCREENS.scanning=()=>({html:`
+ ${hdr('',{right:''})}
+ <div class="body" style="text-align:center"><div class="pad">
+  <div class="scanbox">${S.upload?`<img src="${S.upload}" style="width:100%;height:100%;object-fit:cover">`:ph('',240,'border-radius:16px','샘플 캡처<br>(노을 · 건널목)')}<div class="scanline"></div></div>
+  <div style="font-size:18px;font-weight:700">장면을 알아보는 중이에요</div>
+  <div class="muted small" id="scanstep" style="margin-top:6px">구도와 색감을 분석하고 있어요…</div>
+  <div class="bar" style="margin:22px 40px 0"><i id="scanbar" style="width:5%;transition:width 1.6s ease"></i></div>
+ </div></div>`, after(){
+   requestAnimationFrame(()=>{const b=document.getElementById('scanbar');if(b)b.style.width='100%'});
+   const steps=['구도와 색감을 분석하고 있어요…','작품 데이터베이스와 비교하는 중…','실제 장소와 매칭하는 중…'];let i=0;
+   S._t=setInterval(()=>{i++;const el=document.getElementById('scanstep');if(el&&steps[i])el.textContent=steps[i]},550);
+   S._t2=setTimeout(()=>{clearInterval(S._t);replace('scanresult')},1700);
+ }});
+
+SCREENS.scanresult=()=>{const top=spot('kamakura');const others=SPOTS.filter(s=>s.id!=='kamakura').sort((a,b)=>b.match-a.match).slice(0,4);return{html:`
+ ${hdr('검색 결과')}
+ <div class="body">
+  <div class="pad">
+   <div class="row" style="gap:12px;margin:4px 0 16px">
+    ${S.upload?`<img src="${S.upload}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">`:ph('',56,'width:56px;flex:none')}
+    <div><div class="small muted">${S.scanQuery?`"${S.scanQuery}"`:'올린 캡처'}와 가장 닮은 장면</div><div style="font-weight:700">5개 장소를 찾았어요</div></div>
+   </div>
+   <div class="card" style="overflow:hidden;cursor:pointer" data-go="spot" data-id="${top.id}">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">${ph('애니 장면',150,'border-radius:0')}${ph('실제 장소',150,'border-radius:0')}</div>
+    <div style="padding:14px">
+     <div class="row between"><span class="match">일치도 ${top.match}%</span><span class="small muted">${work(top).title} · ${top.ep} ${top.time}</span></div>
+     <div style="font-size:17px;font-weight:700;margin:4px 0 2px">${top.name}</div>
+     <div class="small muted">${top.scene}</div>
+     <div class="bar" style="margin-top:10px"><i style="width:${top.match}%"></i></div>
+    </div>
+   </div>
+   <div style="font-weight:700;margin:22px 0 4px">비슷한 장면</div>
+   ${others.map(s=>`<div class="opt" style="cursor:pointer" data-go="spot" data-id="${s.id}">
+     ${ph('',60,'width:80px;flex:none')}
+     <div style="flex:1"><div class="row between"><b>${s.name}</b><span class="match">${s.match}%</span></div>
+     <div class="small muted">${work(s).title} · ${s.ep}</div></div></div>`).join('')}
+   <p class="small muted" style="text-align:center;margin:18px 0 28px">찾는 장면이 없나요? <a style="text-decoration:underline;cursor:pointer" data-toast="제보 접수 화면 (추후)">장면 제보하기</a></p>
+  </div>
+ </div>`}};
+
+SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
+ ${hdr('',{right:`<button class="ib" data-toast="저장했어요">${I.heart}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
+ <div class="body">
+  <div style="position:relative">
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">${ph('애니 장면 '+sp.ep+' '+sp.time,220,'border-radius:0')}${ph('실제 장소',220,'border-radius:0')}</div>
+   <span class="tag" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#fff">장면 ↔ 현실 비교</span>
+  </div>
+  <div class="pad" style="margin-top:16px">
+   <div class="small muted">${w.title} · ${w.genre}</div>
+   <div style="font-size:21px;font-weight:700;letter-spacing:-.02em;margin:2px 0 6px">${sp.name}</div>
+   <div class="row small muted" style="gap:4px">${I.pin.replace('<svg','<svg width="14" height="14"')} ${sp.region} · 여기서 ${sp.dist}</div>
+   <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${sp.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
+  </div>
+  <div class="pad sec">
+   <div class="card" style="padding:14px">
+    <div class="small muted">이 장소의 장면</div>
+    <div style="font-weight:700;margin:2px 0 4px">${sp.ep} · ${sp.time}</div>
+    <div class="small">${sp.scene}</div>
+    <div class="row small muted" style="margin-top:10px;gap:14px"><span>순례 ${fmt(sp.visits)}회</span><span>AR 기록 ${fmt(Math.round(sp.visits*.31))}개</span></div>
+   </div>
+  </div>
+  <div class="sec">
+   <div class="sec-h"><h3>여기서 할 수 있는 AR 경험</h3></div>
+   <div class="hscroll">${SITE_EXP.map(e=>`<div class="card" style="width:150px;flex:none;padding:12px">${ph('',70)}<div style="font-weight:700;margin-top:8px;font-size:13px">${e.name}</div><div class="small muted" style="font-size:11px">${e.desc}</div></div>`).join('')}</div>
+  </div>
+  <div class="pad sec"><div class="card" style="padding:14px;background:var(--bg);border:0"><b class="small">순례 팁</b><div class="small muted" style="margin-top:4px">${sp.tip}</div></div></div>
+  ${near.length?`<div class="sec"><div class="sec-h"><h3>같은 작품의 다른 장면</h3></div><div class="hscroll">${near.map(s=>spotCard(s,160)).join('')}</div></div>`:''}
+  <div class="sec"><div class="sec-h"><h3>이 장소의 굿즈</h3><a data-go="community" data-sub="goods">더보기</a></div>
+   <div class="hscroll">${(GOODS[sp.work]||[]).map(g=>`<div style="width:120px;flex:none">${ph('',120)}<div class="small" style="margin-top:6px;font-weight:500">${g.n}</div><div class="small muted">${g.p} · ${g.s}</div></div>`).join('')}</div></div>
+  <div class="sec" style="padding-bottom:20px"><div class="sec-h"><h3>방문 후기</h3><a data-tab="community">전체</a></div>
+   <div class="pad">${POSTS.filter(p=>p.spot===sp.id).concat(POSTS[0]).slice(0,1).map(p=>`<div class="row" style="align-items:flex-start"><div class="av"></div><div><b class="small">@${p.u}</b><div class="small">${p.txt}</div></div></div>`).join('')}</div></div>
+ </div>
+ <div class="cta"><button class="btn out" style="width:56px;flex:none" data-act="sheet-exp" data-ctx="site">${I.sparkle}</button><button class="btn pri" data-go="plan">방문 계획하기</button></div>`}};
+
+const ROUTES=sp=>sp.abroad?[
+ {name:'항공 + 전철',time:'약 5시간 10분',cost:'약 34만원~',steps:[['서울역 → 김포공항','공항철도 · 25분'],['김포 → 하네다','항공 · 2시간 20분'],['하네다 → 후지사와','전철 · 1시간 5분'],['후지사와 → '+sp.name.split(' ')[0],'로컬선 · 20분']]},
+ {name:'항공 + 렌터카',time:'약 4시간 40분',cost:'약 41만원~',steps:[['서울역 → 김포공항','공항철도 · 25분'],['김포 → 하네다','항공 · 2시간 20분'],['하네다 → 현지','렌터카 · 1시간 15분']]},
+ {name:'성지순례 패키지 (제휴)',time:'2박 3일',cost:'약 79만원~',steps:[['항공·숙소·전철패스 포함','여행 플랫폼 연동'],['현지 성지 3곳 동선 포함','가이드 앱 연동']]},
+]:[
+ {name:'지하철',time:'약 32분',cost:'1,550원',steps:[['서울역 → 동대문역','1호선 · 12분'],['동대문역 → 혜화역','4호선 · 6분'],['혜화역 → '+sp.name,'도보 · 14분']]},
+ {name:'버스',time:'약 38분',cost:'1,500원',steps:[['서울역 → 이화장','간선 · 30분'],['이화장 → '+sp.name,'도보 · 8분']]},
+];
+SCREENS.plan=()=>{const sp=spot();const rs=ROUTES(sp);const r=rs[Math.min(S.route,rs.length-1)];return{html:`
+ ${hdr('방문 계획')}
+ <div class="body"><div class="pad">
+  <div class="row" style="gap:12px;margin:4px 0 18px">${ph('',56,'width:56px;flex:none')}<div><div class="small muted">${work(sp).title} · ${sp.ep}</div><b>${sp.name}</b></div></div>
+  <div style="display:grid;gap:8px">
+   <div class="field"><span class="small muted">출발</span><b>${S.from}</b></div>
+   <div class="field"><span class="small muted">날짜</span><b>${S.date}</b></div>
+   <div class="field"><span class="small muted">장면 시간대 맞추기</span><span class="tag ac">노을 17:00 도착 추천</span></div>
+  </div>
+  <div style="font-weight:700;margin:24px 0 4px">이동 방법</div>
+  ${rs.map((x,i)=>`<div class="opt" style="cursor:pointer" data-act="route" data-i="${i}"><span class="radio ${i===S.route?'on':''}"></span><div style="flex:1"><div class="row between"><b>${x.name}</b><span class="small">${x.cost}</span></div><div class="small muted">${x.time}</div></div></div>`).join('')}
+  <div style="font-weight:700;margin:22px 0 12px">경로 · ${r.name}</div>
+  <div class="tl">${r.steps.map((s,i)=>`<div class="st ${i===0?'cur':''}"><b class="small">${s[0]}</b><div class="small muted">${s[1]}</div></div>`).join('')}
+   <div class="st"><b class="small">도착 · 장면 포인트</b><div class="small muted">현장 AR 경험 시작</div></div></div>
+  ${sp.abroad?`<div class="card" style="padding:14px;margin:10px 0 0"><b class="small">여행 플랫폼에서 예약하기</b><div class="row" style="margin-top:10px">${['항공','숙소','현지 패스'].map(t=>`<button class="btn out sm" data-toast="${t} 예약 → 제휴 여행 플랫폼 연결 (확장 기능)">${t}</button>`).join('')}</div></div>`:''}
+  <div class="card" style="padding:14px;margin:10px 0 24px;cursor:pointer" data-act="sheet-exp" data-ctx="move">
+   <div class="row between"><b class="small">이동 중 AR 경험</b><span class="small muted">변경 ›</span></div>
+   <div class="small muted" style="margin-top:4px">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>e.name).join(' · ')||'선택 안 함'}</div>
+  </div>
+ </div></div>
+ <div class="cta"><button class="btn sec2" style="flex:1" data-act="savetrip">여정 저장</button><button class="btn pri" style="flex:1.4" data-go="move">여정 시작</button></div>`}};
+
+/* ================= AR 카메라 (이동 · 현장) ================= */
+/* 카메라 레이어: 실시간(getUserMedia) → 사진(capture) → 시뮬레이션 순으로 대체 */
+const camLayer=(extra='')=>`<div class="camwrap ${S.camMode==='sim'||!S.camMode?'sim':''}" id="camwrap">
+ <video id="camv" playsinline muted autoplay ${S.camMode==='live'?'':'hidden'}></video>
+ <img id="camimg" class="bg" alt="" ${S.camMode==='photo'&&S.photo?`src="${S.photo}"`:'hidden'}>
+ <div class="cam" id="camsim"><div class="grid"></div>${extra}</div>
+ <canvas id="arcv"></canvas>
+</div>`;
+const camFilter=()=>{if(S.screen!=='move')return'none';const f=[];if(S.moveExp.charfilter)f.push('url(#anime)','saturate(1.35)','contrast(1.08)');if(S.moveExp.tone)f.push('sepia(.28)','saturate(1.5)','hue-rotate(-12deg)');return f.join(' ')||'none'};
+const camBadge=()=>({live:'● 실시간 카메라',photo:'사진 위 AR',sim:'시뮬레이션'}[S.camMode]||'카메라 연결 중…');
+const fallbackCard=()=>S.camMode==='denied'?`<div class="ov camfb">
+ <div style="font-size:17px;font-weight:700;margin-bottom:6px">실시간 카메라를 열 수 없어요</div>
+ <div class="small" style="opacity:.75;margin-bottom:16px">브라우저 보안 설정이나 권한 때문에 카메라 화면을 가져오지 못했어요. 사진을 찍으면 그 위에 AR을 입혀 볼 수 있어요.</div>
+ <label class="btn pri" style="background:#fff;color:#111;cursor:pointer"><input type="file" accept="image/*" capture="environment" id="camcap" hidden>${I.cam.replace('<svg','<svg width="18" height="18"')} 카메라로 찍기</label>
+ <div class="row" style="margin-top:8px"><button class="btn sm" style="background:rgba(255,255,255,.14);color:#fff" data-act="camretry">다시 연결</button><button class="btn sm" style="background:rgba(255,255,255,.14);color:#fff" data-act="camsim">시뮬레이션으로 보기</button></div>
+</div>`:'';
+
+async function startCam(){
+ const v=document.getElementById('camv');if(!v)return;
+ if(S.stream&&S.stream.active){v.srcObject=S.stream;v.hidden=false;S.camMode='live';syncCamUI();try{await v.play()}catch(e){}return}
+ if(S.camMode==='photo'||S.camMode==='sim'||S.camMode==='denied'){syncCamUI();return}
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){S.camMode='denied';render();return}
+ try{
+  const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:S.facing||'environment'},width:{ideal:1280},height:{ideal:1920}},audio:false});
+  S.stream=st;S.camMode='live';
+  const v2=document.getElementById('camv');if(!v2){stopCam();return}
+  v2.srcObject=st;v2.hidden=false;try{await v2.play()}catch(e){}
+  syncCamUI();
+ }catch(e){S.camErr=e&&e.name;S.camMode='denied';if(['move','arrive'].includes(S.screen))render()}
+}
+function stopCam(){if(S.stream){S.stream.getTracks().forEach(t=>t.stop());S.stream=null}if(S.camMode==='live')S.camMode=null}
+function syncCamUI(){const w=document.getElementById('camwrap');if(!w)return;w.classList.toggle('sim',!(S.camMode==='live'||S.camMode==='photo'));
+ const b=document.getElementById('cambadge');if(b)b.textContent=camBadge();
+ const f=camFilter();['camv','camimg'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.filter=f});}
+
+/* AR 오버레이 그리기 (화면·촬영 공용) */
+const SCENE_FEAT={kamakura:'cross',shichiri:'sea',enoshima:'sea',hida:'bridge',ihwa:'stairs',kifune:'snow'};
+const LINES={natsu:'「이 건널목을 건너면, 그 여름이 시작돼」',nami:'「저 섬까지, 멈추지 말고 달려!」',hoshi:'「너의 이름을 부를게. 몇 번이고」',neko:'「반장님, 이쪽 계단이에요!」',yuki:'「눈이 그치기 전에, 다시 와 줘」'};
+function star4(c,x,y,r,a){c.save();c.globalAlpha=a;c.fillStyle='#fff';c.beginPath();c.moveTo(x,y-r);c.quadraticCurveTo(x,y,x+r,y);c.quadraticCurveTo(x,y,x,y+r);c.quadraticCurveTo(x,y,x-r,y);c.quadraticCurveTo(x,y,x,y-r);c.fill();c.restore()}
+function sparkles(c,w,h,t,n=22){for(let i=0;i<n;i++){const sp=(i%4+1)*.012;const x=((i*137.5)%w+t*sp*0.6)%w;const y=h-((i*91.7)%h+t*sp)%h;const r=(i%3+2)*w/220;star4(c,x,y,r,.35+.45*Math.abs(Math.sin(t/600+i)))}}
+function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 ${fs}px "Noto Sans KR",sans-serif`;const tw=c.measureText(text).width;const pw=tw+fs*1.4,ph=fs*2.1,x=(w-pw)/2;c.fillStyle='rgba(0,0,0,.55)';rr(c,x,y,pw,ph,ph/2);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(text,w/2,y+ph/2+1);c.restore()}
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function drawScene(c,w,h,t,alpha){const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
+ const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
+ if(snow){g.addColorStop(0,'#2b3a67');g.addColorStop(1,'#a9b7d8')}else{g.addColorStop(0,'#ff9a5a');g.addColorStop(.5,'#ff6f61');g.addColorStop(1,'#6a4c93')}
+ c.fillStyle=g;c.fillRect(0,0,w,h*.62);
+ if(!snow){const sx=w*.7,sy=h*.4,sr=w*.13;const rg=c.createRadialGradient(sx,sy,0,sx,sy,sr*3);rg.addColorStop(0,'rgba(255,240,200,.95)');rg.addColorStop(.3,'rgba(255,200,150,.5)');rg.addColorStop(1,'rgba(255,160,120,0)');c.fillStyle=rg;c.fillRect(0,0,w,h*.62);c.fillStyle='#fff3d6';c.beginPath();c.arc(sx,sy,sr,0,7);c.fill()}
+ c.fillStyle=snow?'rgba(255,255,255,.85)':'rgba(255,214,190,.9)';[[.15,.16,.18],[.55,.1,.22],[.85,.22,.14]].forEach(([x,y,s],i)=>{const ox=((t*.01*(i+1))%(w*1.4))-w*.2;c.beginPath();c.ellipse((x*w+ox)%(w*1.2),y*h,s*w,s*w*.32,0,0,7);c.ellipse((x*w+ox)%(w*1.2)+s*w*.5,y*h-s*w*.12,s*w*.55,s*w*.3,0,0,7);c.fill()});
+ const gy=h*.62;
+ if(f==='sea'){const sg=c.createLinearGradient(0,gy,0,h);sg.addColorStop(0,'#5b6fb5');sg.addColorStop(1,'#1d2346');c.fillStyle=sg;c.fillRect(0,gy,w,h-gy);c.strokeStyle='rgba(255,230,200,.6)';c.lineWidth=w/150;for(let i=0;i<6;i++){c.beginPath();const y=gy+12+i*h*.05;c.moveTo(w*.45+Math.sin(t/500+i)*10,y);c.lineTo(w*.95,y);c.stroke()}}
+ else{c.fillStyle=snow?'#e8eef8':'#2a2340';c.fillRect(0,gy,w,h-gy)}
+ if(f==='cross'){c.fillStyle='#1b1630';const tx=((t*.18)%(w*2.2))-w*.9;rr(c,tx,gy-h*.1,w*.9,h*.09,8);c.fill();c.fillStyle='rgba(255,230,160,.85)';for(let i=0;i<6;i++){c.fillRect(tx+w*.06+i*w*.13,gy-h*.085,w*.08,h*.03)}
+  [[.12,1],[.88,-1]].forEach(([x])=>{const px=x*w;c.fillStyle='#111';c.fillRect(px-3,gy-h*.2,6,h*.24);c.save();c.translate(px,gy-h*.19);c.rotate(.6);c.fillStyle='#ffd23f';c.fillRect(-w*.06,-5,w*.12,10);c.rotate(-1.2);c.fillRect(-w*.06,-5,w*.12,10);c.restore();const on=Math.floor(t/450)%2;c.fillStyle=on?'#ff3b30':'#5a1a1a';c.beginPath();c.arc(px-9,gy-h*.15,6,0,7);c.fill();c.fillStyle=on?'#5a1a1a':'#ff3b30';c.beginPath();c.arc(px+9,gy-h*.15,6,0,7);c.fill()});
+  c.fillStyle='#ffd23f';for(let i=0;i<10;i++){c.fillRect(i*w*.1,gy+h*.04,w*.05,h*.012)}}
+ if(f==='bridge'){c.strokeStyle='#1b1630';c.lineWidth=w/40;c.beginPath();c.moveTo(0,gy-h*.12);c.lineTo(w,gy-h*.12);c.stroke();c.lineWidth=w/90;for(let i=0;i<9;i++){c.beginPath();c.moveTo(i*w/8,gy-h*.12);c.lineTo(i*w/8,gy);c.stroke()}}
+ if(f==='stairs'){c.fillStyle='#3a3355';for(let i=0;i<8;i++){c.fillRect(w*.3+i*w*.03,gy-i*h*.03,w*.4-i*w*.06,h*.03)}}
+ if(f==='snow'){c.fillStyle='#c0392b';for(let i=0;i<5;i++){const x=w*.2+i*w*.15,y=gy-h*.05-i*h*.035;c.fillRect(x-3,y,6,h*.08);c.fillStyle='#ffcf6b';c.beginPath();c.arc(x,y,w*.025,0,7);c.fill();c.fillStyle='#c0392b'}
+  c.fillStyle='#fff';for(let i=0;i<60;i++){const x=(i*73.3+Math.sin(t/900+i)*20)%w,y=((i*41.9)+t*.05*(i%3+1))%h;c.globalAlpha=alpha*.8;c.beginPath();c.arc(x,y,(i%3+1)*1.4,0,7);c.fill()}c.globalAlpha=alpha}
+ c.restore()}
+function drawChar(c,w,h,t){const cx=w*.7,base=h*.86,H=h*.46,bob=Math.sin(t/500)*4;c.save();
+ c.shadowColor='rgba(120,140,255,.9)';c.shadowBlur=24;
+ c.fillStyle='#2a2f55';rr(c,cx-H*.17,base-H*.68+bob,H*.34,H*.68,H*.12);c.fill();
+ c.fillStyle='#f6d7c3';c.beginPath();c.arc(cx,base-H*.8+bob,H*.13,0,7);c.fill();
+ c.fillStyle='#3b2a4a';c.beginPath();c.arc(cx,base-H*.84+bob,H*.145,Math.PI,0);c.fill();c.fillRect(cx-H*.145,base-H*.85+bob,H*.05,H*.14);c.fillRect(cx+H*.095,base-H*.85+bob,H*.05,H*.14);
+ c.shadowBlur=0;c.fillStyle='#fff';c.beginPath();c.arc(cx-H*.045,base-H*.79+bob,H*.018,0,7);c.arc(cx+H*.045,base-H*.79+bob,H*.018,0,7);c.fill();
+ c.restore();const name=work(spot()).chars[0];c.save();const fs=Math.round(w/26);c.font=`700 ${fs}px "Noto Sans KR",sans-serif`;const tw=c.measureText(name).width+fs;c.fillStyle='#4f46e5';rr(c,cx-tw/2,base-H*1.05+bob,tw,fs*1.7,fs*.85);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(name,cx,base-H*1.05+bob+fs*.88);c.restore()}
+function drawOverlay(c,w,h,t){
+ if(S.screen==='move'){sparkles(c,w,h,t,S.moveExp.charfilter?26:12);if(S.moveExp.narr)subtitle(c,w,h,'“지금 지나는 이 길, '+work(spot()).chars[0]+'도 걸었던 길이야”',h*.6)}
+ else if(S.screen==='arrive'){if(!S.locked)return;const k=Math.min(1,(t-S.lockAt)/700);
+  if(S.siteMode==='overlay'){c.save();const sc=1.08-.08*k;c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-w/2,-h/2);drawScene(c,w,h,t,(S.blend/100)*k);c.restore();sparkles(c,w,h,t,14)}
+  else if(S.siteMode==='duo'){c.globalAlpha=k;drawChar(c,w,h,t);c.globalAlpha=1;sparkles(c,w,h,t,10)}
+  else if(S.siteMode==='line'){c.globalAlpha=k;subtitle(c,w,h,LINES[spot().work],h*.55);c.globalAlpha=1}}}
+function arLoop(){const cv=document.getElementById('arcv');if(!cv)return;const dpr=Math.min(2,window.devicePixelRatio||1);const W=cv.clientWidth*dpr,H=cv.clientHeight*dpr;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+ const c=cv.getContext('2d');c.clearRect(0,0,W,H);drawOverlay(c,W,H,performance.now());S._raf=requestAnimationFrame(arLoop)}
+
+/* 촬영: 카메라 프레임 + 필터 + AR 오버레이를 한 장으로 합성 */
+function captureAR(ctxName){const v=document.getElementById('camv'),img=document.getElementById('camimg');const W=1080,H=1920;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ const src=S.camMode==='live'&&v&&v.videoWidth?v:(S.camMode==='photo'&&img&&img.naturalWidth?img:null);
+ if(src){const sw=src.videoWidth||src.naturalWidth,sh=src.videoHeight||src.naturalHeight;const s=Math.max(W/sw,H/sh);const dw=sw*s,dh=sh*s;try{c.filter=camFilter()}catch(e){}c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);c.filter='none'}
+ else{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#555a66');g.addColorStop(.48,'#555a66');g.addColorStop(.481,'#2b2d33');g.addColorStop(1,'#1f2025');c.fillStyle=g;c.fillRect(0,0,W,H)}
+ const t=performance.now();
+ if(S.screen==='arrive'&&S.siteMode==='pano'){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#e76f51');g.addColorStop(1,'#2a2438');c.fillStyle=g;c.fillRect(0,0,W,H)}
+ drawOverlay(c,W,H,t);
+ const sp=spot();c.save();c.font='700 34px "Noto Sans KR",sans-serif';c.fillStyle='rgba(0,0,0,.45)';rr(c,40,H-130,W-80,90,45);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText('덕모잇 · '+work(sp).title+' · '+sp.name,80,H-85);c.restore();
+ return cv.toDataURL('image/jpeg',.86)}
+
+SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
+ const ch=work(sp).chars;
+ return{dark:true,ar:true,html:`
+ <div class="${S.moveExp.charfilter?'filter':''} ${S.moveExp.tone?'tone':''} ${S.device==='glass'?'glass':''}" style="position:absolute;inset:0">
+ ${camLayer(`<div class="camlb">카메라 시뮬레이션</div>${[[18,120],[40,150],[63,110],[80,135]].map((p,i)=>`<div class="person" style="left:${p[0]}%;height:${p[1]}px"><span class="tagp">${ch[i%ch.length]}</span></div>`).join('')}`)}
+ <div class="hud"></div></div>
+ <div class="ov" style="top:calc(var(--sat) + 12px);left:12px;right:12px">
+  <div class="row between">
+   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)">${I.close}</button>
+   <div class="seg" style="width:190px"><button class="${S.device==='phone'?'on':''}" data-act="device" data-v="phone">스마트폰</button><button class="${S.device==='glass'?'on':''}" data-act="device" data-v="glass">AI 글래스</button></div>
+  </div>
+  <div class="pill" style="margin-top:12px">
+   <div class="row between"><span class="small" style="opacity:.7">이동 중 · ${work(sp).title}</span><span class="small" style="opacity:.7">${pct}%</span></div>
+   <div style="font-weight:700;margin:2px 0 8px">${st[0]}</div>
+   <div class="bar" style="background:rgba(255,255,255,.2)"><i style="width:${pct}%;background:#fff"></i></div>
+   <div class="small" style="opacity:.7;margin-top:6px">${st[1]}</div>
+  </div>
+  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap"><span class="pill small" style="padding:6px 10px" id="cambadge">${camBadge()}</span>${S.moveExp.ost?`<span class="pill row small" style="padding:6px 10px;display:inline-flex;gap:4px">${I.music.replace('<svg','<svg width="13" height="13"')} OST 재생 중</span>`:''}</div>
+ </div>
+ ${fallbackCard()}
+ <div class="ov" style="left:0;right:0;bottom:0;padding:0 20px max(var(--sab),24px)">
+  <div class="chips" style="padding:0 0 14px;justify-content:center">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>`<span class="chip" style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff">${e.name}</span>`).join('')||'<span class="small" style="opacity:.6">AR 경험 꺼짐</span>'}</div>
+  <div class="row between">
+   <button class="cb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i>경험 선택</button>
+   <button class="rb" data-act="capture" data-ctx="move" aria-label="촬영"><span></span></button>
+   <button class="cb" data-act="nextstep"><i>${I.map}</i>${S.moveProg>=r.steps.length-1?'도착':'다음 구간'}</button>
+  </div>
+ </div><div class="flash" id="flash"></div>`,after(){startCam();arLoop()}}};
+
+SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.id]);if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
+ const pano=S.siteMode==='pano';
+ let view='';
+ if(pano){const hues=[['#e76f51','#2a2438','정면 · 원작 장면'],['#6d597a','#1d1a2a','오른쪽 · 원작에 없던 선로 끝'],['#355070','#151a26','뒤쪽 · 바다 방향'],['#b56576','#2a1c24','왼쪽 · 역 플랫폼']];
+   view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div style="background:linear-gradient(${h[0]},${h[1]})">${h[2]}</div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
+ else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
+ return{dark:true,ar:true,html:`${view}
+ <div class="ov" style="top:calc(var(--sat) + 12px);left:12px;right:12px">
+  <div class="row between"><button class="ib" data-act="back" style="background:rgba(0,0,0,.35)">${I.close}</button>
+   <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
+   <button class="ib" data-act="sheet-exp" data-ctx="site" style="background:rgba(0,0,0,.35)">${I.sparkle}</button></div>
+  <div class="pill" style="margin-top:12px"><div class="small" style="opacity:.7">${work(sp).title} · ${sp.ep} · 장면 포인트 도착</div><b>${sp.name}</b></div>
+ </div>
+ ${pano?'':fallbackCard()}
+ <div class="ov" style="left:0;right:0;bottom:0;padding:0 20px max(var(--sab),24px);z-index:8">
+  ${S.siteMode==='overlay'?`<div class="pill" style="margin-bottom:12px;padding:10px 14px"><div class="row between small" style="opacity:.8"><span>카메라</span><span>장면 투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
+  <div class="seg" style="margin-bottom:16px">${modes.map(m=>`<button class="${m.id===S.siteMode?'on':''}" data-act="sitemode" data-v="${m.id}">${m.name.replace('장면 ','').replace(' 재현','')}</button>`).join('')}</div>
+  <div class="row between">
+   <button class="cb" data-act="sheet-exp" data-ctx="site"><i>${I.sparkle}</i>경험 추가</button>
+   <button class="rb" data-act="capture" data-ctx="site" aria-label="촬영"><span></span></button>
+   <button class="cb" data-act="camflip"><i>${I.flip}</i>전환</button>
+  </div>
+ </div><div class="flash" id="flash"></div>`,after(){
+   const b=document.getElementById('blend');if(b)b.oninput=e=>{S.blend=+e.target.value;document.getElementById('blendv').textContent=S.blend};
+   if(!pano){startCam();arLoop();if(!S.locked){clearTimeout(S._lock);S._lock=setTimeout(()=>{S.locked=true;S.lockAt=performance.now();const r=document.getElementById('reticle');if(r){r.classList.add('done');setTimeout(()=>r.remove(),500)}toast('장면 인식 완료 · 일치도 92%')},2600)}}
+   else{stopCam();const p=document.getElementById('pano');const strip=document.getElementById('strip');let sx=0,start=0,drag=false;const W=strip.firstElementChild.offsetWidth*4;
+    const apply=()=>{let v=((S.pan%W)-W)%W;strip.style.transform=`translateX(${v}px)`;document.getElementById('compass').textContent=Math.round(((-S.pan%W)+W)%W/W*360)+'° · 드래그해서 둘러보기'};apply();
+    p.onpointerdown=e=>{drag=true;sx=e.clientX;start=S.pan;p.setPointerCapture(e.pointerId)};p.onpointermove=e=>{if(!drag)return;S.pan=start+(e.clientX-sx);apply()};p.onpointerup=()=>{drag=false}}
+ }}};
+
+SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버레이'],ctx:'site'};return{html:`
+ ${hdr('기록 남기기')}
+ <div class="body"><div class="pad">
+  ${c.img?`<img src="${c.img}" alt="AR 촬영 결과" style="width:100%;border-radius:14px;display:block;aspect-ratio:9/16;object-fit:cover;background:#111">`:ph(c.exp.join(' + ')+' 촬영본',360,'border-radius:14px','AR 촬영 결과')}
+  <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${c.exp.map(e=>`<span class="tag ac">${e}</span>`).join('')}<span class="tag">${work(sp).title}</span><span class="tag">${sp.ep}</span>${c.src?`<span class="tag">${c.src}</span>`:''}</div>
+  <div style="font-weight:700;margin:20px 0 8px">오늘의 덕질 메모</div>
+  <textarea id="memo" placeholder="이 장면 앞에서 어떤 기분이었나요?"></textarea>
+  <div style="font-weight:700;margin:20px 0 10px">공유하기</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center" class="small">
+   ${['인스타그램','X','커뮤니티','링크 복사'].map(n=>`<button data-toast="${n==='커뮤니티'?'커뮤니티에 게시했어요 (더미)':n==='링크 복사'?'링크를 복사했어요':n+'로 공유 (더미)'}"><div class="av" style="width:48px;height:48px;margin:0 auto 6px"></div>${n}</button>`).join('')}
+  </div>
+  <div class="card row" style="padding:12px;margin:22px 0 24px"><div class="stamp got" style="width:52px;flex:none">${sp.name.slice(0,4)}</div><div class="small"><b>순례 스탬프 획득!</b><div class="muted">${work(sp).title} 성지 1/${SPOTS.filter(s=>s.work===sp.work).length}곳 완료</div></div></div>
+ </div></div>
+ <div class="cta"><button class="btn sec2" style="width:auto;padding:0 18px" data-act="back">다시 찍기</button><button class="btn pri" data-act="savearchive">덕질 아카이브에 저장</button></div>`}};
+
+
+SCREENS.explore=()=>{const list=SPOTS.filter(s=>S.exploreWork==='all'||s.work===S.exploreWork);if(!list.find(s=>s.id===S.exploreSel))S.exploreSel=list[0]?.id;const sel=spot(S.exploreSel);return{tab:'explore',html:`
+ ${hdr('성지 탐색',{back:false,left:true})}
+ <div class="pad" style="margin-bottom:10px"><div class="search" data-go="scan">${I.search}<span>작품, 장면, 장소 검색</span></div></div>
+ <div class="chips" style="margin-bottom:10px"><button class="chip ${S.exploreWork==='all'?'on':''}" data-act="ework" data-v="all">전체</button>${Object.entries(WORKS).map(([k,w])=>`<button class="chip ${S.exploreWork===k?'on':''}" data-act="ework" data-v="${k}">${w.title}</button>`).join('')}</div>
+ <div class="body">
+  <div class="map">
+   <div class="land" style="left:8%;top:18%;width:30%;height:55%"></div><div class="land" style="left:38%;top:20%;width:48%;height:62%;border-radius:30% 60% 40% 70%"></div>
+   <span class="small muted" style="position:absolute;left:14%;top:76%">한국</span><span class="small muted" style="position:absolute;left:60%;top:82%">일본</span>
+   ${list.map(s=>`<div class="pin ${s.id===S.exploreSel?'on':''}" style="left:${s.map.x}%;top:${s.map.y}%" data-act="esel" data-v="${s.id}"><b>${s.name.split(' ')[0]}</b><i></i></div>`).join('')}
+  </div>
+  ${sel?`<div class="pad" style="margin-top:-28px;position:relative"><div class="card row" style="padding:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer" data-go="spot" data-id="${sel.id}">${ph('',72,'width:72px;flex:none')}<div style="flex:1"><div class="small muted">${work(sel).title} · ${sel.ep}</div><b>${sel.name}</b><div class="small muted">${sel.region}</div></div><span class="muted">›</span></div></div>`:''}
+  <div class="sec-h" style="margin-top:22px"><h3>목록 ${list.length}곳</h3><a>순례 많은 순</a></div>
+  <div class="pad" style="padding-bottom:20px">${list.map(s=>`<div class="opt" style="cursor:pointer" data-go="spot" data-id="${s.id}">${ph('',64,'width:88px;flex:none')}<div style="flex:1"><b>${s.name}</b><div class="small muted">${work(s).title} · ${s.ep} · ${s.region}</div><div class="small muted">순례 ${fmt(s.visits)}회</div></div></div>`).join('')}</div>
+ </div>`}};
+
+SCREENS.community=()=>({tab:'community',html:`
+ ${hdr('커뮤니티',{back:S.stack.length>0&&S.screen==='community'&&S._fromSpot,left:true})}
+ <div class="pad" style="margin-bottom:10px"><div class="seg"><button class="${S.commTab==='feed'?'on':''}" data-act="ctab" data-v="feed">AR 기록 피드</button><button class="${S.commTab==='goods'?'on':''}" data-act="ctab" data-v="goods">굿즈 추천</button></div></div>
+ <div class="body">${S.commTab==='feed'?POSTS.map((p,i)=>{const sp=spot(p.spot);return`<div style="padding:14px 20px;border-bottom:8px solid var(--bg)">
+   <div class="row"><div class="av"></div><div style="flex:1"><b class="small">@${p.u}</b><div class="small muted">${sp.name} · ${p.t}</div></div><button class="ib">${I.more}</button></div>
+   <div style="margin:10px 0">${ph(p.exp+' 기록',300,'border-radius:12px')}</div>
+   <div class="small">${p.txt}</div>
+   <div class="row" style="margin-top:10px;gap:16px"><button class="row small" style="gap:4px;${S.liked[i]?'color:var(--accent)':''}" data-act="like" data-i="${i}">${I.heart.replace('<svg','<svg width="18" height="18"')} ${fmt(p.like+(S.liked[i]?1:0))}</button><span class="small muted">댓글 ${p.c}</span><span style="flex:1"></span><button class="tag ac" data-go="spot" data-id="${p.spot}">이 장소 가기 ›</button></div>
+  </div>`}).join(''):`<div class="pad">${Object.entries(GOODS).map(([k,gs])=>`<div class="sec" style="margin-top:14px"><div class="row between" style="margin-bottom:10px"><b>${WORKS[k].title}</b><span class="small muted">성지 연계</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">${gs.map(g=>`<div>${ph(g.s,130)}<div class="small" style="margin-top:6px;font-weight:500">${g.n}</div><div class="small muted">${g.p}</div></div>`).join('')}</div></div>`).join('')}<div style="height:24px"></div></div>`}
+ </div>`});
+
+SCREENS.archive=()=>{const got=new Set(S.archive.map(a=>a.spot));return{tab:'archive',html:`
+ ${hdr('나의 덕질 기록',{back:false,left:true})}
+ <div class="body">
+  <div class="pad"><div class="card" style="padding:16px;display:grid;grid-template-columns:repeat(3,1fr);text-align:center">
+   <div><div style="font-size:22px;font-weight:700">${got.size}</div><div class="small muted">방문 성지</div></div>
+   <div><div style="font-size:22px;font-weight:700">${new Set(S.archive.map(a=>spot(a.spot).work)).size}</div><div class="small muted">작품</div></div>
+   <div><div style="font-size:22px;font-weight:700">${S.archive.reduce((n,a)=>n+a.exp.length,0)}</div><div class="small muted">AR 기록</div></div>
+  </div></div>
+  <div class="pad" style="margin-top:16px"><div class="seg"><button class="${S.archTab==='timeline'?'on':''}" data-act="atab" data-v="timeline">타임라인</button><button class="${S.archTab==='stamp'?'on':''}" data-act="atab" data-v="stamp">스탬프</button><button class="${S.archTab==='trip'?'on':''}" data-act="atab" data-v="trip">여정</button></div></div>
+  <div class="pad" style="margin-top:18px;padding-bottom:24px">
+  ${S.archTab==='timeline'?`<div class="tl">${S.archive.map(a=>{const sp=spot(a.spot);return`<div class="st done"><div class="small muted">${a.date}</div><div class="card" style="padding:12px;margin-top:6px;cursor:pointer" data-go="spot" data-id="${sp.id}"><div class="row" style="align-items:flex-start">${a.img?`<img src="${a.img}" style="width:70px;height:96px;object-fit:cover;border-radius:10px;flex:none">`:ph('',70,'width:70px;flex:none')}<div style="flex:1"><b class="small">${sp.name}</b><div class="small muted">${work(sp).title} · ${sp.ep}</div><div class="row" style="gap:4px;margin-top:6px;flex-wrap:wrap">${a.exp.map(e=>`<span class="tag ac">${e}</span>`).join('')}</div></div></div>${a.memo?`<div class="small" style="margin-top:8px">${a.memo}</div>`:''}</div></div>`}).join('')}</div>`:
+   S.archTab==='stamp'?Object.entries(WORKS).map(([k,w])=>{const ss=SPOTS.filter(s=>s.work===k);return`<div style="margin-bottom:20px"><div class="row between" style="margin-bottom:10px"><b class="small">${w.title}</b><span class="small muted">${ss.filter(s=>got.has(s.id)).length}/${ss.length}</span></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">${ss.map(s=>`<div class="stamp ${got.has(s.id)?'got':''}">${s.name.split(' ')[0]}</div>`).join('')}</div></div>`}).join(''):
+   S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${ph('',56,'width:56px;flex:none')}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><span class="muted">›</span></div>`}).join('')}
+  </div>
+ </div>`}};
+
+/* ================= SHEET: 경험 선택 ================= */
+function openExpSheet(ctx){
+ const list=ctx==='move'?MOVE_EXP:SITE_EXP;const st=ctx==='move'?S.moveExp:S.siteExp;
+ const el=document.getElementById('sheet');
+ const draw=()=>{el.innerHTML=`<div class="grab"></div>
+  <div style="font-size:18px;font-weight:700">${ctx==='move'?'이동 중 AR 경험':'현장 AR 경험'}</div>
+  <div class="small muted" style="margin:2px 0 8px">${ctx==='move'?'이동 시간도 덕질이 되도록, 원하는 경험을 골라보세요':'이 장면 앞에서 즐길 경험을 골라보세요'}</div>
+  <div class="row" style="gap:6px;margin-bottom:6px"><button class="chip" data-sx="rec">추천 조합 적용</button><button class="chip" data-sx="all">전부 켜기</button></div>
+  ${list.map(e=>`<div class="opt" style="cursor:pointer" data-sx="t" data-id="${e.id}">${ph('',56,'width:56px;flex:none')}<div style="flex:1"><div class="row" style="gap:6px"><b>${e.name}</b>${e.rec?'<span class="tag ac">추천</span>':''}</div><div class="small muted">${e.desc}</div></div><span class="tg ${st[e.id]?'on':''}"></span></div>`).join('')}
+  <button class="btn pri" style="margin-top:14px" data-sx="done">적용하기</button>`;};
+ draw();
+ el.onclick=e=>{const t=e.target.closest('[data-sx]');if(!t)return;const a=t.dataset.sx;
+  if(a==='t'){st[t.dataset.id]=!st[t.dataset.id];draw();}
+  else if(a==='rec'){list.forEach(x=>st[x.id]=!!x.rec);draw();}
+  else if(a==='all'){list.forEach(x=>st[x.id]=true);draw();}
+  else if(a==='done'){if(ctx==='site'&&!Object.values(st).some(Boolean)){st.overlay=true;}closeSheet();render();toast('AR 경험을 적용했어요');}};
+ document.getElementById('dim').classList.add('on');el.classList.add('on');
+}
+function closeSheet(){document.getElementById('dim').classList.remove('on');document.getElementById('sheet').classList.remove('on')}
+document.getElementById('dim').onclick=closeSheet;
+
+/* ================= ROUTER ================= */
+const TOP=['home','explore','community','archive'];
+function go(name,push=true){clearTimers();if(name==='arrive'&&S.screen!=='arrive')S.locked=false;if(push&&S.screen!==name)S.stack.push(S.screen);S.screen=name;render();}
+function replace(name){clearTimers();if(name==='arrive'&&S.screen!=='arrive')S.locked=false;S.screen=name;render();}
+function back(){clearTimers();S.screen=S.stack.pop()||'home';render();}
+function clearTimers(){clearInterval(S._t);clearTimeout(S._t2);clearTimeout(S._lock);cancelAnimationFrame(S._raf)}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
+
+function render(){
+ closeSheet();cancelAnimationFrame(S._raf);
+ if(!['move','arrive'].includes(S.screen))stopCam();
+ const def=SCREENS[S.screen]();
+ const app=document.getElementById('app');
+ app.innerHTML=`<div class="screen ${def.dark?'dark':''} ${def.tab?'has-tab':''}">${def.html}${def.tab?tabbar(def.tab):''}</div>`;
+  const b=app.querySelector('.body');if(b)b.scrollTop=0;
+ if(def.after)def.after();
+ const up=document.getElementById('upl');if(up)up.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.upload=r.result;S.scanQuery='';go('scanning')};r.readAsDataURL(f)};
+ const cc=document.getElementById('camcap');if(cc)cc.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.photo=r.result;S.camMode='photo';render();toast('사진 위에 AR을 입혔어요')};r.readAsDataURL(f)};
+ drawFlow();
+ try{const h=S.screen;if(location.hash.slice(1)!==h)history.replaceState(null,'','#'+h)}catch(e){}
+}
+
+document.getElementById('app').addEventListener('click',e=>{
+ const t=e.target.closest('[data-go],[data-act],[data-tab],[data-toast]');if(!t)return;
+ if(t.dataset.toast){toast(t.dataset.toast);return}
+ if(t.dataset.tab){const n=t.dataset.tab;if(n==='scan'){go('scan');return}S.stack=[];S.screen=n;clearTimers();render();return}
+ if(t.dataset.go){if(t.dataset.id){S.spot=t.dataset.id;}if(t.dataset.sub)S.commTab=t.dataset.sub;if(t.dataset.go==='move')S.moveProg=0;
+   if(TOP.includes(t.dataset.go)){S.stack=[];S.screen=t.dataset.go;render();return}
+   go(t.dataset.go);return}
+ const a=t.dataset.act;
+ switch(a){
+  case 'back':back();break;
+  case 'sample':S.upload=null;S.scanQuery='';go('scanning');break;
+  case 'qchip':document.getElementById('q').value=t.dataset.q;S.scanQuery=t.dataset.q;S.upload=null;go('scanning');break;
+  case 'qsearch':{const v=document.getElementById('q').value.trim();if(!v){toast('기억나는 장면을 적어주세요');break}S.scanQuery=v;S.upload=null;go('scanning');break}
+  case 'route':S.route=+t.dataset.i;render();break;
+  case 'savetrip':if(!S.trips.find(x=>x.spot===S.spot))S.trips.unshift({spot:S.spot,date:S.date,status:'예정'});toast('여정을 저장했어요 · 기록 > 여정');break;
+  case 'sheet-exp':openExpSheet(t.dataset.ctx);break;
+  case 'device':S.device=t.dataset.v;render();toast(S.device==='glass'?'AI 글래스에 연결됨 (시뮬레이션)':'스마트폰 카메라 모드');break;
+  case 'nextstep':{S.locked=false;const n=ROUTES(spot()).length?ROUTES(spot())[Math.min(S.route,ROUTES(spot()).length-1)].steps.length:1;if(S.moveProg>=n-1){replace('arrive');toast('장면 포인트에 도착했어요!')}else{S.moveProg++;render()}break}
+  case 'sitemode':S.siteMode=t.dataset.v;render();break;
+  case 'capture':{const ctx=t.dataset.ctx;if(ctx==='site'&&S.siteMode!=='pano'&&!S.locked){toast('장면을 인식하는 중이에요. 잠시만요');break}const exp=ctx==='move'?MOVE_EXP.filter(x=>S.moveExp[x.id]).map(x=>x.name):[SITE_EXP.find(x=>x.id===S.siteMode).name];const fl=document.getElementById('flash');if(fl){fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on')}let img=null;try{img=captureAR(ctx)}catch(e){}S.lastCapture={ctx,exp:exp.length?exp:['일반 촬영'],img,src:{live:'실시간 카메라',photo:'사진',sim:'시뮬레이션'}[S.camMode]||''};setTimeout(()=>go('record'),180);break}
+  case 'camretry':S.camMode=null;render();break;
+  case 'camsim':S.camMode='sim';render();break;
+  case 'camflip':{if(S.camMode!=='live'){toast('실시간 카메라에서만 전환할 수 있어요');break}S.facing=S.facing==='user'?'environment':'user';stopCam();render();break}
+  case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';S.stack=[];S.archTab='timeline';S.screen='archive';render();toast('아카이브에 저장했어요');break}
+  case 'ework':S.exploreWork=t.dataset.v;render();break;
+  case 'esel':S.exploreSel=t.dataset.v;render();break;
+  case 'ctab':S.commTab=t.dataset.v;render();break;
+  case 'atab':S.archTab=t.dataset.v;render();break;
+  case 'like':S.liked[t.dataset.i]=!S.liked[t.dataset.i];render();break;
+ }
+});
+
+/* ================= SIDE FLOW NAV ================= */
+const FLOW=[
+ ['1. 장면 발견',[['scan','장면 검색 (캡처·설명)'],['scanresult','검색 결과 · 장면 매칭']]],
+ ['2. 장소 탐색',[['explore','성지 지도 탐색'],['spot','장소 상세 · 장면 비교']]],
+ ['3. 방문 계획',[['plan','경로 · 이동수단 · 예약']]],
+ ['4. 이동 경험',[['move','이동 AR · 캐릭터 필터']]],
+ ['5. 현장 경험',[['arrive','현장 AR · 오버레이 · 360°']]],
+ ['6. 기록 · 공유',[['record','촬영 결과 · 공유'],['archive','덕질 아카이브']]],
+ ['서브',[['home','홈'],['community','커뮤니티 · 굿즈']]],
+];
+function drawFlow(){
+ const el=document.getElementById('flow');if(!el)return;let n=0;
+ el.innerHTML=FLOW.map(([g,items])=>`<div><div class="grp-t">${g}</div>${items.map(([id,l])=>`<button data-jump="${id}" class="${S.screen===id||(S.screen==='scanning'&&id==='scan')?'on':''}"><span class="n">${++n}</span>${l}</button>`).join('')}</div>`).join('');
+}
+document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(!b)return;clearTimers();const id=b.dataset.jump;
+ if(['spot','plan','move','arrive','record','scanresult'].includes(id)){S.spot=S.spot||'kamakura'}
+ if(id==='move')S.moveProg=0;
+ S.stack=TOP.includes(id)?[]:['home'];S.screen=id;render();});
+
+/* ================= INIT ================= */
+(function(){let h='';try{h=location.hash.slice(1)}catch(e){}if(h&&SCREENS[h]&&h!=='scanning'){S.screen=h;if(!TOP.includes(h))S.stack=['home']}render();
+ window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h&&SCREENS[h]&&h!==S.screen&&h!=='scanning'){S.screen=h;render()}});})();
+</script>
+</body>
+</html>
