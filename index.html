@@ -255,9 +255,9 @@ const SPOTS=[
  {id:'kifune',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},match:52},
 ];
 const MOVE_EXP=[
- {id:'anime',name:'애니 화풍 필터',desc:'카메라 화면을 셀 애니메이션처럼 바꿔요 (셀 셰이딩·외곽선)',rec:true},
- {id:'sky',name:'애니 하늘',desc:'하늘을 작품 속 하늘과 흘러가는 구름으로 바꿔요',rec:true},
- {id:'tone',name:'작품 색감',desc:'그림자와 하이라이트를 작품 팔레트로 보정해요',rec:true},
+ {id:'anime',name:'애니 배경 화풍',desc:'카메라 화면을 애니 배경 미술처럼 — 회화적 채색·부드러운 명암·얇은 윤곽',rec:true},
+ {id:'sky',name:'애니 하늘',desc:'하늘을 짙은 파랑 그라데이션과 입체 뭉게구름으로 바꿔요',rec:true},
+ {id:'tone',name:'빛과 색감',desc:'차가운 청록 그림자, 따뜻한 크림빛 하이라이트, 빛 번짐',rec:true},
  {id:'charfilter',name:'캐릭터 필터',desc:'주변 사람을 작품 등장인물로 표시해요 (시뮬레이션)'},
  {id:'ost',name:'OST 사운드트랙',desc:'이동 구간마다 작품 속 BGM이 이어서 재생돼요'},
  {id:'narr',name:'장면 내레이션',desc:'지나는 장소에 얽힌 작품 속 에피소드를 들려줘요'},
@@ -533,13 +533,8 @@ function syncCamUI(){const w=document.getElementById('camwrap');if(!w)return;w.c
 
 /* ================= 애니 화풍 실시간 셰이더 (WebGL) ================= */
 /* 셀 셰이딩 + 외곽선 + 작품별 팔레트 색보정 + 애니 하늘 교체를 매 프레임 적용 */
-const PAL={ // 작품별 팔레트: 하늘 위, 하늘 아래, 그림자 틴트, 하이라이트, 외곽선
- natsu:['#ff8a5b','#ffd59e','#4a3478','#fff1d6','#2a1f3d'],
- nami:['#2f8fff','#bfe6ff','#1f4680','#f2fbff','#10233f'],
- hoshi:['#1b1446','#c07ac0','#2a2058','#ffe3f1','#120c2a'],
- neko:['#7fc4ff','#fff0d2','#5e4f78','#fffaf0','#2e2438'],
- yuki:['#6f86b8','#e3ecf7','#3a4766','#ffffff','#1d2236'],
-};
+const PAL_BG=['#2f74c0','#a6d8f0','#2e5a6b','#fff3df','#2b2a25']; // 레퍼런스(애니 배경 미술) 분석 팔레트: 하늘 위, 하늘 아래, 그림자 틴트, 하이라이트, 선
+const PAL={natsu:PAL_BG,nami:PAL_BG,hoshi:PAL_BG,neko:PAL_BG,yuki:PAL_BG};
 const hex3=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255);
 const FX={ok:null};
 const VS=`attribute vec2 p;varying vec2 v;void main(){v=(p+1.)*.5;gl_Position=vec4(p,0.,1.);}`;
@@ -554,38 +549,53 @@ float lu(vec3 c){return dot(c,vec3(.299,.587,.114));}
 float h21(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float nz(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h21(i),h21(i+vec2(1,0)),f.x),mix(h21(i+vec2(0,1)),h21(i+vec2(1,1)),f.x),f.y);}
 float fbm(vec2 p){float s=0.,a=.5;for(int i=0;i<5;i++){s+=a*nz(p);p*=2.03;a*=.5;}return s;}
+float skyLike(vec3 c){float mx=max(c.r,max(c.g,c.b)),mn=min(c.r,min(c.g,c.b));float sat=(mx-mn)/(mx+.001);
+ return smoothstep(.05,.12,c.b-c.r)*smoothstep(-.06,0.,c.b-c.g)*smoothstep(.38,.55,lu(c))*smoothstep(.1,.2,sat);}
 void main(){
  float ra=uRes.x/uRes.y,ta=uTexRes.x/uTexRes.y;vec2 sc=vec2(1.);if(ra>ta)sc.y=ta/ra;else sc.x=ra/ta;
  vec2 uv=(vec2(v.x,1.-v.y)-.5)*sc+.5;
  vec2 px=sc*1.6/uRes;
  vec3 c=texture2D(uTex,uv).rgb;float lc=lu(c);
- /* 결 줄이기: 밝기가 비슷한 이웃만 평균 (간이 양방향 블러) */
+ /* 회화적 평면 채색: 두 겹 링에서 밝기가 비슷한 이웃만 평균 (붓으로 칠한 면처럼 결을 지움) */
  vec3 sm=c;float ws=1.;
- for(int k=0;k<8;k++){float an=float(k)*.785398;vec2 o=vec2(cos(an),sin(an))*px*1.8;vec3 n=texture2D(uTex,uv+o).rgb;float w=1.-smoothstep(0.,.12,abs(lu(n)-lc));sm+=n*w;ws+=w;}
+ for(int k=0;k<8;k++){float an=float(k)*.785398;vec2 d=vec2(cos(an),sin(an));
+  vec3 n1=texture2D(uTex,uv+d*px*2.).rgb;float w1=1.-smoothstep(0.,.1,abs(lu(n1)-lc));sm+=n1*w1;ws+=w1;
+  vec3 n2=texture2D(uTex,uv+d*px*4.5).rgb;float w2=(1.-smoothstep(0.,.08,abs(lu(n2)-lc)))*.7;sm+=n2*w2;ws+=w2;}
  sm/=ws;
- /* 외곽선: 소벨 */
+ /* 윤곽: 강한 경계만, 얇고 연한 색선 */
  float tl=lu(texture2D(uTex,uv+px*vec2(-1,-1)).rgb),t=lu(texture2D(uTex,uv+px*vec2(0,-1)).rgb),tr=lu(texture2D(uTex,uv+px*vec2(1,-1)).rgb);
  float l=lu(texture2D(uTex,uv+px*vec2(-1,0)).rgb),r=lu(texture2D(uTex,uv+px*vec2(1,0)).rgb);
  float bl=lu(texture2D(uTex,uv+px*vec2(-1,1)).rgb),b=lu(texture2D(uTex,uv+px*vec2(0,1)).rgb),br=lu(texture2D(uTex,uv+px*vec2(1,1)).rgb);
  float gx=-tl-2.*l-bl+tr+2.*r+br,gy=-tl-2.*t-tr+bl+2.*b+br;
- float edge=smoothstep(.2,.45,length(vec2(gx,gy)));
+ float edge=smoothstep(.32,.6,length(vec2(gx,gy)));
  vec3 col=sm;
- /* 셀 셰이딩: 밝기를 4단계로, 색상은 유지 */
- if(uToon>.5){float L=lu(col);float q=floor(L*4.+.35)/4.;q=max(q,.1)+.06;col=col*(q/max(L,.04));col=clamp(mix(vec3(lu(col)),col,1.35),0.,1.);}
- /* 작품 팔레트 색보정 */
- if(uGrade>.5){float L=lu(col);vec3 sh=col*uShadow*2.;col=mix(sh,col,smoothstep(.12,.55,L));col=mix(col,uHigh,smoothstep(.72,1.,L)*.45);col=clamp(mix(vec3(lu(col)),col,1.12),0.,1.);}
- /* 하늘 교체: 화면 위쪽의 밝고 푸르거나 흰 영역 */
- if(uSky>.5){float yt=1.-v.y;float mx=max(c.r,max(c.g,c.b)),mn=min(c.r,min(c.g,c.b));float sat=(mx-mn)/(mx+.001);
-  float blue=smoothstep(-.02,.12,c.b-c.r);float bright=smoothstep(.45,.72,lc);float grayish=1.-smoothstep(.08,.22,sat);
-  float region=1.-smoothstep(.42,.68,yt);
-  float m=bright*max(blue,grayish*smoothstep(.62,.8,lc))*region*(1.-edge*.9);
-  m=smoothstep(.25,.6,m);
-  vec3 sky=mix(uSkyTop,uSkyBot,clamp(yt/.62,0.,1.));
-  float cl=fbm(vec2(v.x*2.6+uTime*.012,yt*5.5-uTime*.004));
-  float cb=smoothstep(.52,.56,cl),cs=smoothstep(.62,.66,cl);
-  vec3 cloud=mix(mix(uHigh,uSkyBot,.25),uHigh,cs);sky=mix(sky,cloud,cb);
+ /* 부드러운 셀 명암: 5단계, 경계는 살짝 풀어서 */
+ if(uToon>.5){float L=lu(col);float f=L*5.;float q=(floor(f)+smoothstep(.3,.7,fract(f)))/5.;q=max(q,.06);col=col*(q/max(L,.03));col=clamp(col,0.,1.);}
+ /* 배경 미술 색보정: 차가운 청록 그림자 + 따뜻한 크림 하이라이트 + S커브 + 채도 */
+ if(uGrade>.5){float L=lu(col);
+  col=mix(col,col*uShadow*2.6+uShadow*.08,(1.-smoothstep(0.,.5,L))*.5);
+  col=mix(col,col*uHigh*1.04+.02,smoothstep(.5,1.,L)*.55);
+  col=mix(col,col*col*(3.-2.*col),.45);
+  col=clamp(mix(vec3(lu(col)),col,1.28),0.,1.);
+  /* 빛 번짐 */
+  float g=0.;for(int k=0;k<8;k++){float an=float(k)*.785398+.39;vec3 n=texture2D(uTex,uv+vec2(cos(an),sin(an))*px*7.).rgb;g+=smoothstep(.72,.95,lu(n));}
+  col+=uHigh*(g/8.)*.22;}
+ /* 하늘 교체: 짙은 파랑→밝은 하늘색 그라데이션 + 입체 뭉게구름 */
+ if(uSky>.5){float yt=1.-v.y;
+  /* 하늘 판정: 뚜렷하게 푸르고 밝고 매끈한 픽셀 + 화면 위쪽 끝까지 같은 열이 계속 하늘이어야 함 */
+  float m=skyLike(c)*(1.-edge)*(1.-smoothstep(.45,.7,yt));
+  for(int k=1;k<5;k++){float f=float(k)/5.;vec2 up=vec2(uv.x,mix(uv.y,(.5-.5*sc.y)+.002,f));m*=mix(.15,1.,skyLike(texture2D(uTex,up).rgb));}
+  m=smoothstep(.3,.7,m);
+  vec3 sky=mix(uSkyTop,uSkyBot,pow(clamp(yt/.62,0.,1.),.8));
+  vec2 cp=vec2(v.x*1.7+uTime*.008,yt*3.2);
+  float dn=fbm(cp)+(.35-yt)*.25;float dn2=fbm(cp+vec2(.02,-.07))+(.35-yt+.07*.3)*.25;
+  float cm=smoothstep(.5,.535,dn);
+  float lit=clamp((dn-dn2)*7.+.55,0.,1.);
+  vec3 cloud=mix(vec3(.64,.73,.84),vec3(1.,.995,.98),lit);
+  cloud=mix(cloud,uSkyBot,smoothstep(.535,.5,dn)*.3);
+  sky=mix(sky,cloud,cm);
   col=mix(col,sky,m);}
- if(uEdge>.5)col=mix(col,uInk,edge*.85);
+ if(uEdge>.5)col=mix(col,uInk,edge*.38);
  gl_FragColor=vec4(col,1.);
 }`;
 function fxInit(cv){
