@@ -3,23 +3,32 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#0078e9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>덕모잇 프로토타입</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
+/* 산돌프레스: 라이선스 폰트라 CDN이 없어요. fonts/ 폴더에 파일을 넣으면 자동 적용, 없으면 기기에 설치된 폰트 → Pretendard Black 순으로 대체 */
+@font-face{font-family:"Sandoll Press";font-weight:400 900;font-display:swap;
+  src:local("Sandoll Press"),local("SandollPress"),local("산돌프레스"),local("Sandoll Press 05"),
+      url("fonts/SandollPress.woff2") format("woff2"),url("fonts/SandollPress.woff") format("woff"),url("fonts/SandollPress.otf") format("opentype")}
 :root{
-  --bg:#f2f2f4; --surface:#fff; --line:#e3e3e8; --line2:#cfcfd6;
-  --text:#18181b; --sub:#6b6b75; --mute:#9a9aa3;
-  --accent:#4f46e5; --accent-weak:#eef0ff;
-  --ph:#e9e9ee; --ph2:#dcdce3;
-  --r:12px;
+  /* Figma 덕모잇 디자인 토큰 */
+  --b:#0078e9; --b-deep:#005fc0; --b-light:#a3cdff; --b-weak:#eaf3fd; --b-ink:#06f;
+  --bg:#f7f9fb; --surface:#fff; --line:rgba(226,232,240,.8); --line2:#d5dee8;
+  --text:#191c1e; --sub:#414753; --sub2:#696969; --mute:#94a3b8; --navy:#0f172a; --slate:#64748b;
+  --accent:var(--b); --accent-weak:var(--b-weak);
+  --ph:#e6eef7; --ph2:#d6e3f1;
+  --bubble:radial-gradient(ellipse 95% 100% at 49% 50%,#6baeff 0%,#50a1fa 25%,#3693f4 50%,#1b86ef 75%,#0078e9 100%);
+  --f-body:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --f-press:"Sandoll Press","SandollPress","산돌프레스",var(--f-body);
+  --r:16px;
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 html,body{overscroll-behavior:none}
-body{-webkit-tap-highlight-color:transparent;font-family:"Noto Sans KR",system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{-webkit-tap-highlight-color:transparent;font-family:var(--f-body);letter-spacing:-.01em;background:var(--bg);color:var(--text);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 input,textarea,select{font:inherit;color:inherit}
 
@@ -201,12 +210,162 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .search{display:flex;align-items:center;gap:8px;height:46px;border-radius:12px;background:var(--ph);padding:0 14px;color:var(--mute);cursor:pointer}
 .search input{border:0;background:none;outline:none;flex:1;color:var(--text)}
 .search svg{width:18px;height:18px;flex:none}
+
+/* =====================================================================
+   덕모잇 테마 — Figma 디자인 적용 (색상 · 폰트 · 컴포넌트)
+   ===================================================================== */
+.press{font-family:var(--f-press);font-weight:900;letter-spacing:-.02em}
+.wrap{background:#dfe8f2}
+.screen,.screen .body{background:var(--bg)}
+.screen.dark,.screen.dark .body{background:#0d0d10}
+
+/* 아이폰 14 프레임 (390×844) + 상태바 — PC에서 열 때 */
+.sbar{display:none}
+@media (min-width:600px){
+  .phone{width:390px;height:844px;max-height:calc(100vh - 32px);border-radius:47px;box-shadow:0 0 0 10px #111,0 0 0 12px #2b2b2e,0 30px 60px -20px rgba(0,40,90,.45)}
+  .phone{--sat:47px;--sab:22px}
+  .sbar{display:flex;position:absolute;top:0;left:0;right:0;height:47px;z-index:90;align-items:center;justify-content:space-between;padding:4px 30px 0 44px;pointer-events:none;color:#000;font:600 17px/1 -apple-system,"SF Pro Text",var(--f-body);letter-spacing:-.02em}
+  .sbar .ic{display:flex;gap:6px;align-items:center}
+  .sbar::after{content:"";position:absolute;left:50%;top:11px;width:122px;height:34px;margin-left:-61px;border-radius:20px;background:#000}
+  .phone.dk .sbar,.phone.splash-on .sbar{color:#fff}
+  .phone::after{content:"";position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:rgba(0,0,0,.85);z-index:95;pointer-events:none}
+  .phone.dk::after,.phone.splash-on::after{background:rgba(255,255,255,.85)}
+}
+
+/* header */
+.hdr{height:56px;padding:0 12px}
+.hdr .t{font-size:17px;font-weight:700;color:var(--navy)}
+.hdr .t.left{font-family:var(--f-press);font-weight:900;font-size:26px;color:var(--b);letter-spacing:-.02em;margin-left:8px}
+.ib{color:var(--b)}
+.dark .ib{color:#fff}
+.ib:hover{background:var(--b-weak)}
+
+/* 홈 헤더: 로고 + 검색 pill (Figma: 전체 ▾ | 떠나고 싶은 애니 속으로 🔍) */
+.topbar{flex:none;padding:10px 18px 6px;display:flex;flex-direction:column;gap:12px}
+.topbar .r1{display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--f-press);font-weight:900;font-size:34px;line-height:1;color:var(--b);letter-spacing:-.03em;transform:skewX(-8deg);display:inline-block}
+.qpill{display:flex;align-items:center;gap:12px;height:45px;padding:0 14px;border:1px solid var(--b-light);border-radius:30px;background:#fff;color:var(--b);font-size:17px;font-weight:500;cursor:pointer;flex:1;min-width:0}
+.qpill .cat{display:flex;align-items:center;gap:10px;flex:none}
+.qpill .cat svg{width:15px;height:15px}
+.qpill .bar1{width:1px;height:18px;background:var(--b);border-radius:5px;flex:none}
+.qpill .ph-t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qpill>svg{width:20px;height:20px;flex:none;stroke-width:2.6}
+.me{width:34px;height:34px;flex:none;color:var(--b);display:grid;place-items:center}
+.me svg{width:30px;height:30px}
+
+/* section */
+.sec{margin-top:28px}
+.sec-h{align-items:center;padding:0 24px;margin-bottom:12px}
+.sec-h h3{font-size:20px;font-weight:700;color:var(--b);letter-spacing:.01em}
+.sec-h a{font-size:15px;color:var(--sub2)}
+
+/* card · button · chip · tag */
+.card{border:1px solid var(--line);border-radius:16px;background:#fff}
+.card.lg{border-radius:20px;border-color:rgba(0,120,233,.05)}
+.btn{height:50px;border-radius:14px;font-size:16px;font-weight:600}
+.btn.pri{background:var(--b);color:#fff;box-shadow:0 6px 16px -8px rgba(0,120,233,.7)}
+.btn.pri:active{background:var(--b-deep)}
+.btn>svg{width:22px;height:22px;flex:none}
+.btn.sm>svg{width:16px;height:16px}
+.btn.pri .go{display:inline-flex;margin-left:10px}
+.btn.pri .go svg{width:16px;height:16px;transform:rotate(180deg)}
+.btn.sec2{background:var(--b-weak);color:var(--b)}
+.btn.out{border:1px solid var(--b-light);color:var(--b);background:#fff}
+.btn.sm{height:38px;font-size:14px;border-radius:12px}
+.chip{height:32px;padding:0 14px;border-radius:16px;border-color:var(--b-light);color:var(--b);font-size:13px;font-weight:500}
+.chip.on{background:var(--b);border-color:var(--b);color:#fff}
+.tag{font-size:12px;padding:4px 8px;border-radius:6px;background:var(--b-weak);color:var(--b);font-weight:500}
+.tag.ac{background:var(--b);color:#fff}
+.muted{color:var(--slate)}
+.divider{background:var(--bg)}
+.cta{background:#fff;border-top:1px solid var(--line)}
+.field{border-color:var(--line2);border-radius:12px;background:#fff}
+textarea{border-color:var(--line2);border-radius:12px;background:#fff}
+.search{background:#fff;border:1px solid var(--b-light);border-radius:30px;color:var(--b);height:45px}
+.search input::placeholder{color:var(--mute)}
+.search svg{stroke-width:2.6}
+.drop{border-color:var(--b-light);background:#fff;border-radius:20px}
+.drop:hover{border-color:var(--b)}
+.av{background:linear-gradient(135deg,#0b3a6b,#0f2a4a)}
+
+/* placeholder 이미지 (블루 톤) */
+.ph{background:linear-gradient(160deg,#eaf3fd,#d8e7f7);border-radius:12px}
+.ph::before{background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(0,120,233,.05) 10px 20px)}
+.ph .lb{color:var(--b);background:rgba(255,255,255,.9);font-weight:500}
+.ph .x{color:#7aa6d6}
+
+/* 말풍선 (Figma: 블루 래디얼 그라데이션 + 집중선) */
+.bubble{position:relative;background:var(--bubble);color:#f7f9fb;border-radius:15px;padding:14px 18px;font-weight:500;overflow:hidden;isolation:isolate}
+.bubble::before{content:"";position:absolute;inset:-40%;z-index:-1;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.22) 0 .8deg,transparent .8deg 7deg);-webkit-mask:radial-gradient(closest-side,transparent 55%,#000 100%);mask:radial-gradient(closest-side,transparent 55%,#000 100%)}
+.bubble.tail::after{content:"";position:absolute;left:26px;bottom:-12px;width:22px;height:16px;background:#1b86ef;clip-path:polygon(0 0,100% 0,10% 100%)}
+
+/* tab bar */
+.tabbar{background:rgba(255,255,255,.94);border-top:1px solid var(--line)}
+.tabbar button{color:var(--mute);font-size:11px}
+.tabbar button.on{color:var(--b);font-weight:700}
+.tabbar .scan{color:var(--b);font-weight:600}
+.tabbar .scan span.c{background:var(--bubble);box-shadow:0 8px 18px -6px rgba(0,120,233,.65)}
+
+/* toggle · seg · misc */
+.tg.on{background:var(--b)}
+.seg{background:var(--b-weak);border-radius:12px}
+.seg button{color:var(--slate);border-radius:9px}
+.seg button.on{color:var(--b);box-shadow:0 1px 3px rgba(0,60,120,.12)}
+.radio.on{border-color:var(--b)}
+.match{color:var(--b)}
+.bar{background:#e6eef7;height:8px;border-radius:4px}
+.bar i{background:var(--b);border-radius:4px}
+.scanline{background:var(--b);box-shadow:0 0 12px var(--b)}
+.pill.fxon{background:var(--b)}
+.map{background:#eaf1f8}
+.map::before{background-image:linear-gradient(#dbe6f2 1px,transparent 1px),linear-gradient(90deg,#dbe6f2 1px,transparent 1px)}
+.map .land{background:#d6e4f3}
+.pin b{background:var(--navy)}
+.pin i{background:var(--navy)}
+.pin.on b,.pin.on i{background:var(--b)}
+.tl .st.done::before{background:var(--b);border-color:var(--b)}
+.tl .st.cur::before{border-color:var(--b)}
+.stamp.got{border-color:var(--b);color:var(--b);background:var(--b-weak)}
+.toast{background:var(--navy);border-radius:12px}
+.sheet{border-radius:24px 24px 0 0}
+.opt{border-bottom-color:var(--line)}
+
+/* 실시간 인기 검색어 (Figma 검색 화면) */
+.rank{padding:17px 17px 12px}
+.rank .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.rank .hd b{font-size:20px;color:var(--b);font-weight:700}
+.rank .hd span{font-size:15px;color:var(--sub2)}
+.rank ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(5,auto);column-gap:16px;row-gap:4px}
+.rank li{display:flex;gap:8px;align-items:center;height:24px;font-size:16px;color:var(--text);cursor:pointer}
+.rank li i{font-style:normal;width:14px;color:var(--b)}
+.rank li:nth-child(n+6) i{color:var(--sub)}
+.rank li.hot{font-weight:600}
+
+/* 명소 카드 (Figma: 지금 뜨는 명소) */
+.spotrow{display:flex;gap:12px;align-items:center;padding:13px;background:#fff;border:1px solid var(--line);border-radius:16px;cursor:pointer}
+.spotrow+.spotrow{margin-top:8px}
+.spotrow .ph{width:96px;height:96px;flex:none}
+.spotrow .w{font-size:14px;color:var(--b-ink);line-height:16.5px}
+.spotrow .n{font-size:17px;font-weight:700;color:var(--navy);margin-top:8px;line-height:20px}
+.spotrow .j{font-size:16px;font-weight:500;color:var(--slate);line-height:20px}
+.spotrow .s{font-size:14px;color:var(--mute);margin-top:6px}
+
+/* 스플래시 (Figma: 블루 + 집중선 + 로고) */
+.splash{position:absolute;inset:0;z-index:100;background:#0078e9;display:grid;place-items:center;overflow:hidden;transition:opacity .45s ease,visibility 0s .45s}
+.splash::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 50%,rgba(255,255,255,.28) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side,transparent 34%,#000 80%);mask:radial-gradient(closest-side,transparent 34%,#000 80%);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.splash .c{position:relative;text-align:center;color:#fff}
+.splash .logo{color:#fff;font-size:64px;text-shadow:0 3px 0 rgba(0,60,140,.35)}
+.splash .sub{margin-top:10px;font-size:16px;font-weight:500;letter-spacing:.02em}
+.splash.off{opacity:0;visibility:hidden}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="anime" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncR type="discrete" tableValues="0 .2 .45 .7 .9 1"/><feFuncG type="discrete" tableValues="0 .2 .45 .7 .9 1"/><feFuncB type="discrete" tableValues="0 .25 .5 .75 .95 1"/></feComponentTransfer></filter></svg>
 <div class="wrap">
-  <div class="phone" id="phone">
+  <div class="phone splash-on" id="phone">
+    <div class="sbar" aria-hidden="true"><span>9:41</span><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.2A10.2 10.2 0 008 .5 10.2 10.2 0 00.8 3.4L2 4.6a8.5 8.5 0 016-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.2A6.8 6.8 0 008 3.9a6.8 6.8 0 00-4.8 1.9l1.2 1.2c1-.9 2.2-1.4 3.6-1.4zM8 9l2.3-2.3a3.3 3.3 0 00-4.6 0z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4a2 2 0 000-4z" fill="currentColor" opacity=".5"/></svg></span></div>
+    <div class="splash" id="splash"><div class="c"><div class="logo">덕모잇</div><div class="sub">덕후들 모여잇</div></div></div>
     <div id="app"></div>
     <div class="dim" id="dim"></div>
     <div class="sheet" id="sheet"></div>
@@ -235,6 +394,8 @@ const I={
  music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
  cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
  img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="1.6"/><path d="M20 15l-4.5-4.5L6 20"/></svg>',
+ face:'<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="15" cy="15" r="12.5"/><path d="M5 12c3-5 17-5 20 0" fill="currentColor" stroke="none"/><circle cx="11" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><path d="M10.5 20c2.5 2.2 6.5 2.2 9 0"/></svg>',
+ chev:'<svg viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5L8 8l6.5-6.5"/></svg>',
  more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>',
 };
 
@@ -247,12 +408,12 @@ const WORKS={
  yuki:{title:'눈 내리는 신사',genre:'판타지',year:2018,eps:13,chars:['시즈쿠','신령 코하쿠']},
 };
 const SPOTS=[
- {id:'kamakura',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},match:94},
- {id:'shichiri',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},match:71},
- {id:'enoshima',work:'nami',name:'에노시마 벤텐교',region:'일본 가나가와현 후지사와',abroad:true,ep:'3화',time:'18:05',scene:'긴 다리를 자전거로 달리며 섬을 향해 소리치는 장면',dist:'1,158km',visits:9340,tags:['다리','바다','자전거'],tip:'자전거는 다리 입구에서 끌고 가야 해요.',map:{x:72,y:58},match:63},
- {id:'hida',work:'hoshi',name:'히다후루카와역 육교',region:'일본 기후현 히다',abroad:true,ep:'극장판',time:'48:30',scene:'육교 위에서 지나가는 열차를 내려다보며 이름을 부르는 장면',dist:'1,020km',visits:21500,tags:['육교','역','열차'],tip:'역 관광안내소에서 성지 지도를 받을 수 있어요.',map:{x:48,y:38},match:58},
- {id:'ihwa',work:'neko',name:'이화동 계단길',region:'서울 종로구 이화동',abroad:false,ep:'2화',time:'09:40',scene:'고양이를 쫓아 좁은 계단길을 뛰어 올라가는 장면',dist:'8.2km',visits:3120,tags:['계단','골목','벽화'],tip:'주거지역이에요. 대화와 촬영은 조용히 해 주세요.',map:{x:22,y:40},match:47},
- {id:'kifune',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},match:52},
+ {id:'kamakura',jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},match:94},
+ {id:'shichiri',jp:'七里ヶ浜海岸',st:'시치리가하마역 5분',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},match:71},
+ {id:'enoshima',jp:'江の島弁天橋',st:'에노시마역 12분',work:'nami',name:'에노시마 벤텐교',region:'일본 가나가와현 후지사와',abroad:true,ep:'3화',time:'18:05',scene:'긴 다리를 자전거로 달리며 섬을 향해 소리치는 장면',dist:'1,158km',visits:9340,tags:['다리','바다','자전거'],tip:'자전거는 다리 입구에서 끌고 가야 해요.',map:{x:72,y:58},match:63},
+ {id:'hida',jp:'飛騨古川駅跨線橋',st:'히다후루카와역 2분',work:'hoshi',name:'히다후루카와역 육교',region:'일본 기후현 히다',abroad:true,ep:'극장판',time:'48:30',scene:'육교 위에서 지나가는 열차를 내려다보며 이름을 부르는 장면',dist:'1,020km',visits:21500,tags:['육교','역','열차'],tip:'역 관광안내소에서 성지 지도를 받을 수 있어요.',map:{x:48,y:38},match:58},
+ {id:'ihwa',jp:'梨花洞の階段道',st:'혜화역 14분',work:'neko',name:'이화동 계단길',region:'서울 종로구 이화동',abroad:false,ep:'2화',time:'09:40',scene:'고양이를 쫓아 좁은 계단길을 뛰어 올라가는 장면',dist:'8.2km',visits:3120,tags:['계단','골목','벽화'],tip:'주거지역이에요. 대화와 촬영은 조용히 해 주세요.',map:{x:22,y:40},match:47},
+ {id:'kifune',jp:'貴船神社参道',st:'기부네구치역 30분',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},match:52},
 ];
 const MOVE_EXP=[
  {id:'anime',name:'애니 배경 화풍',desc:'카메라 화면을 애니 배경 미술처럼 — 회화적 채색·부드러운 명암·얇은 윤곽',rec:true},
@@ -307,6 +468,9 @@ const work=sp=>WORKS[sp.work];
 /* ================= HELPERS ================= */
 const ph=(label,h=160,extra='',center='')=>`<div class="ph" style="height:${h}px;${extra}">${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`;
 const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${back?`<button class="ib" data-act="back" aria-label="뒤로">${I.back}</button>`:''}<div class="t ${left?'left':''}">${title}</div>${right}</div>`;
+const topbar=()=>`<div class="topbar"><div class="r1"><span class="logo">덕모잇</span><button class="ib" data-toast="알림 3개 (더미)">${I.bell}</button></div>
+ <div class="row" style="gap:12px"><div class="qpill" data-go="scan"><span class="cat">전체 ${I.chev}</span><span class="bar1"></span><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div></div>`;
+const spotRow=s=>`<div class="spotrow" data-go="spot" data-id="${s.id}">${ph('',96)}<div style="flex:1;min-width:0"><div class="w">${work(s).title}</div><div class="n">${s.name}</div><div class="j">${s.jp}</div><div class="s">${s.st}</div></div></div>`;
 const fmt=n=>n.toLocaleString('ko-KR');
 const tabbar=on=>`<nav class="tabbar">
  <button data-tab="home" class="${on==='home'?'on':''}">${I.home}홈</button>
@@ -324,16 +488,16 @@ const spotCard=(sp,w=220)=>`<div style="width:${w}px;flex:none;cursor:pointer" d
 const SCREENS={};
 
 SCREENS.home=()=>({tab:'home',html:`
- ${hdr('덕모잇',{back:false,left:true,right:`<button class="ib" data-toast="알림 3개 (더미)">${I.bell}</button>`})}
+ ${topbar()}
  <div class="body">
   <div class="pad">
-   <div class="card" style="padding:18px;cursor:pointer" data-go="scan">
-    <div class="small muted">기억나는 그 장면, 어디였을까?</div>
-    <div style="font-size:19px;font-weight:700;margin:4px 0 14px;letter-spacing:-.02em">캡처 한 장으로<br>장면 속 장소 찾기</div>
-    <div class="row" style="gap:8px">
-     <span class="chip">${I.img.replace('<svg','<svg width="14" height="14"')} 캡처 올리기</span>
-     <span class="chip">${I.cam.replace('<svg','<svg width="14" height="14"')} 만화책 촬영</span>
-     <span class="chip">말로 설명하기</span>
+   <div class="bubble tail" style="padding:20px;cursor:pointer;margin-top:6px" data-go="scan">
+    <div style="font-size:14px;opacity:.9">기억나는 그 장면, 어디였을까?</div>
+    <div class="press" style="font-size:24px;line-height:1.25;margin:6px 0 16px">캡처 한 장으로<br>장면 속 장소 찾기</div>
+    <div class="row" style="gap:8px;flex-wrap:wrap">
+     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.img.replace('<svg','<svg width="14" height="14"')} 캡처 올리기</span>
+     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.cam.replace('<svg','<svg width="14" height="14"')} 만화책 촬영</span>
+     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">말로 설명하기</span>
     </div>
    </div>
   </div>
@@ -353,10 +517,8 @@ SCREENS.home=()=>({tab:'home',html:`
   </div>
 
   <div class="sec">
-   <div class="sec-h"><h3>지금 가까운 성지</h3></div>
-   <div class="pad">${[spot('ihwa')].map(s=>`<div class="row" style="cursor:pointer" data-go="spot" data-id="${s.id}">
-     ${ph('',72,'width:96px;flex:none')}
-     <div style="flex:1"><span class="tag ac">${s.dist}</span><div style="font-weight:700;margin-top:4px">${s.name}</div><div class="small muted">${work(s).title} · ${s.ep}</div></div></div>`).join('')}</div>
+   <div class="sec-h"><h3>지금 뜨는 명소</h3><a>11월 기준</a></div>
+   <div style="padding:0 8px">${['ihwa','kifune'].map(id=>spotRow(spot(id))).join('')}</div>
   </div>
 
   <div class="sec" style="padding-bottom:24px">
@@ -368,7 +530,7 @@ SCREENS.home=()=>({tab:'home',html:`
 SCREENS.scan=()=>({html:`
  ${hdr('장면 검색')}
  <div class="body"><div class="pad">
-  <p style="font-size:20px;font-weight:700;letter-spacing:-.02em;margin:8px 0 4px">어떤 장면이 기억나나요?</p>
+  <p class="press" style="font-size:26px;color:var(--b);margin:8px 0 6px">어떤 장면이 기억나나요?</p>
   <p class="muted small" style="margin-bottom:18px">지명을 몰라도 괜찮아요. 장면 캡처나 만화책 한 컷이면 충분해요.</p>
   <label class="drop">
    <input type="file" accept="image/*" id="upl" hidden>
@@ -381,13 +543,15 @@ SCREENS.scan=()=>({html:`
    <button class="btn sec2 sm" data-act="sample">샘플 캡처로 체험</button>
   </div>
 
-  <div style="margin-top:28px;font-weight:700">말로 설명하기</div>
+  <div style="margin-top:28px;font-weight:700;color:var(--b);font-size:18px">말로 설명하기</div>
   <p class="small muted" style="margin:2px 0 10px">기억나는 대로 적으면 AI가 장면을 찾아요</p>
   <div class="search"><input id="q" placeholder="예) 노을 지는 건널목, 전차가 지나가는 장면" value="${S.scanQuery}">
-   <button data-act="qsearch" style="color:var(--text)">${I.search}</button></div>
+   <button data-act="qsearch" style="color:var(--b)">${I.search}</button></div>
   <div class="chips" style="padding:10px 0 0">${['노을 건널목','눈 오는 신사 계단','바다 위 긴 다리','고양이 골목'].map(k=>`<button class="chip" data-act="qchip" data-q="${k}">${k}</button>`).join('')}</div>
 
-  <div style="margin-top:28px;font-weight:700;margin-bottom:10px">최근 검색한 장면</div>
+  <div class="card lg rank" style="margin-top:28px"><div class="hd"><b>실시간 인기 검색어</b><span>11월 15일 기준</span></div>
+   <ol>${['슬램덩크','너의 이름은','주술회전','귀멸의 칼날','하이큐','스즈메의 문단속','봇치 더 락','최애의 아이','케이온','체인소맨'].map((k,i)=>`<li class="${i<3?'hot':''}" data-act="qchip" data-q="${k}"><i>${i+1}</i>${k}</li>`).join('')}</ol></div>
+  <div style="margin-top:28px;font-weight:700;margin-bottom:10px;color:var(--b);font-size:18px">최근 검색한 장면</div>
   <div class="hscroll" style="padding:0;margin-bottom:24px">${['hida','ihwa','kifune'].map(id=>`<div style="width:110px;flex:none;cursor:pointer" data-go="spot" data-id="${id}">${ph('',80)}<div class="small" style="margin-top:4px">${work(spot(id)).title}</div></div>`).join('')}</div>
  </div></div>`});
 
@@ -439,8 +603,8 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
    <span class="tag" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#fff">장면 ↔ 현실 비교</span>
   </div>
   <div class="pad" style="margin-top:16px">
-   <div class="small muted">${w.title} · ${w.genre}</div>
-   <div style="font-size:21px;font-weight:700;letter-spacing:-.02em;margin:2px 0 6px">${sp.name}</div>
+   <div style="font-size:14px;color:var(--b-ink)">${w.title} · ${w.genre}</div>
+   <div style="font-size:22px;font-weight:700;color:var(--navy);margin:4px 0 0">${sp.name}</div><div style="font-size:16px;font-weight:500;color:var(--slate);margin-bottom:8px">${sp.jp}</div>
    <div class="row small muted" style="gap:4px">${I.pin.replace('<svg','<svg width="14" height="14"')} ${sp.region} · 여기서 ${sp.dist}</div>
    <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${sp.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
   </div>
@@ -793,7 +957,7 @@ SCREENS.explore=()=>{const list=SPOTS.filter(s=>S.exploreWork==='all'||s.work===
   </div>
   ${sel?`<div class="pad" style="margin-top:-28px;position:relative"><div class="card row" style="padding:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer" data-go="spot" data-id="${sel.id}">${ph('',72,'width:72px;flex:none')}<div style="flex:1"><div class="small muted">${work(sel).title} · ${sel.ep}</div><b>${sel.name}</b><div class="small muted">${sel.region}</div></div><span class="muted">›</span></div></div>`:''}
   <div class="sec-h" style="margin-top:22px"><h3>목록 ${list.length}곳</h3><a>순례 많은 순</a></div>
-  <div class="pad" style="padding-bottom:20px">${list.map(s=>`<div class="opt" style="cursor:pointer" data-go="spot" data-id="${s.id}">${ph('',64,'width:88px;flex:none')}<div style="flex:1"><b>${s.name}</b><div class="small muted">${work(s).title} · ${s.ep} · ${s.region}</div><div class="small muted">순례 ${fmt(s.visits)}회</div></div></div>`).join('')}</div>
+  <div style="padding:0 8px 20px">${list.map(spotRow).join('')}</div>
  </div>`}};
 
 SCREENS.community=()=>({tab:'community',html:`
@@ -857,6 +1021,7 @@ function render(){
  if(!['move','arrive'].includes(S.screen))stopCam();
  const def=SCREENS[S.screen]();
  const app=document.getElementById('app');
+ document.getElementById('phone').classList.toggle('dk',!!def.dark);
  app.innerHTML=`<div class="screen ${def.dark?'dark':''} ${def.tab?'has-tab':''}">${def.html}${def.tab?tabbar(def.tab):''}</div>`;
   const b=app.querySelector('.body');if(b)b.scrollTop=0;
  if(def.after)def.after();
@@ -918,6 +1083,11 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
  if(['spot','plan','move','arrive','record','scanresult'].includes(id)){S.spot=S.spot||'kamakura'}
  if(id==='move')S.moveProg=0;
  S.stack=TOP.includes(id)?[]:['home'];S.screen=id;render();});
+
+/* ================= SPLASH ================= */
+(function(){const sp=document.getElementById('splash'),ph=document.getElementById('phone');
+ const hide=()=>{sp.classList.add('off');ph.classList.remove('splash-on')};
+ sp.onclick=hide;setTimeout(hide,1800);})();
 
 /* ================= INIT ================= */
 (function(){let h='';try{h=location.hash.slice(1)}catch(e){}if(h&&SCREENS[h]&&h!=='scanning'){S.screen=h;if(!TOP.includes(h))S.stack=['home']}render();
