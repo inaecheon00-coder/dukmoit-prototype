@@ -442,6 +442,33 @@ input,textarea{font-size:17px}
 .tabbar .scan span.c svg{width:30px;height:30px;stroke-width:2.2}
 .screen.has-tab .body{padding-bottom:calc(64px + max(var(--sab),12px) + 20px)}
 
+/* ===== 홈 히어로: Figma '방문록 レビュー' 구성 ===== */
+.hero{position:relative;display:grid;grid-template-columns:176px 1fr;height:176px;margin-top:8px}
+.hero-pic{position:relative;cursor:pointer}
+.hero-pic .cart{height:100%!important}
+.hero-ret{position:absolute;inset:34px;z-index:4;pointer-events:none}
+.hero-ret i{position:absolute;width:20px;height:20px;border:3px solid #fff;border-radius:3px;filter:drop-shadow(0 1px 2px rgba(0,30,70,.4));animation:rt 1.4s ease-in-out infinite}
+.hero-ret i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.hero-ret i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
+.hero-ret i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.hero-ret i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
+.hero-tag{position:absolute;right:8px;top:8px;z-index:4;display:flex;align-items:center;gap:4px;font-size:15px;font-weight:700;color:#fff;background:rgba(0,40,90,.35);backdrop-filter:blur(4px);padding:3px 8px;border-radius:8px;letter-spacing:.02em}
+.hero-tag svg{width:16px;height:16px}
+.hero-t{padding:16px 0 0 20px;display:flex;flex-direction:column;line-height:1.05}
+.hero-t b{font-family:var(--f-press);font-weight:900;font-size:30px;color:#0b2a4a;letter-spacing:-.02em;transform:skewX(-6deg);transform-origin:left}
+.hero-t span{font-family:var(--f-press);font-weight:800;font-size:27px;color:#0b2a4a;letter-spacing:.12em;margin-top:6px}
+.hero-b{position:absolute;right:0;bottom:0;width:calc(100% - 186px);height:84px;display:grid;place-items:center;text-align:center;font-size:17px;line-height:1.35;cursor:pointer;overflow:visible!important}
+.hero-b::before{inset:0;border-radius:15px;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.26) 0 .9deg,transparent .9deg 7deg);-webkit-mask:radial-gradient(farthest-side,transparent 60%,#000 100%);mask:radial-gradient(farthest-side,transparent 60%,#000 100%)}
+.hero-b::after{content:"";position:absolute;left:-16px;bottom:16px;width:26px;height:20px;background:#1b86ef;clip-path:polygon(100% 0,0 75%,100% 100%)}
+.hero-cta{margin-top:14px;height:54px;font-size:17px;gap:8px}
+.hero-cta svg{width:22px;height:22px}
+.hero-cta .jp{font-weight:500;opacity:.85}
+.hero-cta .go{display:inline-flex;margin-left:auto;padding-left:6px}
+.hero-cta .go svg{width:18px;height:18px;transform:rotate(180deg)}
+.hero-cta{justify-content:center;padding:0 18px;white-space:nowrap;position:relative}
+.hero-cta .go{position:absolute;right:18px}
+.hero-pic .kj{display:none}
+.hero-ret{inset:38px 30px 30px}
+.hero+.btn+.row .btn svg{width:18px;height:18px}
+
 /* 스플래시 (Figma: 블루 + 집중선 + 로고) */
 .splash{position:absolute;inset:0;z-index:100;background:#0078e9;display:grid;place-items:center;overflow:hidden;transition:opacity .45s ease,visibility 0s .45s}
 .splash::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 50%,rgba(255,255,255,.28) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side,transparent 34%,#000 80%);mask:radial-gradient(closest-side,transparent 34%,#000 80%);animation:spin 40s linear infinite}
@@ -599,14 +626,15 @@ SCREENS.home=()=>({tab:'home',html:`
  ${topbar()}
  <div class="body">
   <div class="pad">
-   <div class="bubble tail" style="padding:20px;cursor:pointer;margin-top:6px" data-go="scan">
-    <div style="font-size:15px;opacity:.9">기억나는 그 장면, 어디였을까?</div>
-    <div style="font-size:22px;font-weight:700;line-height:1.35;letter-spacing:-.02em;margin:6px 0 16px">캡처 한 장으로<br>장면 속 장소 찾기</div>
-    <div class="row" style="gap:8px;flex-wrap:wrap">
-     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.img.replace('<svg','<svg width="16" height="16"')} 캡처 올리기</span>
-     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.cam.replace('<svg','<svg width="16" height="16"')} 만화책 촬영</span>
-     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">말로 설명하기</span>
-    </div>
+   <div class="hero">
+    <div class="hero-pic" data-go="scan">${art(spot('kamakura'),176,{cap:false,bk:false})}<div class="hero-ret"><i></i><i></i><i></i><i></i></div><span class="hero-tag">${I.img} CAPTURE</span></div>
+    <div class="hero-t"><b>장면 찾기</b><span>シーン探し</span></div>
+    <div class="bubble hero-b" data-go="scan">캡처 한 장이면<br>성지가 보여!</div>
+   </div>
+   <button class="btn pri hero-cta" data-go="scan">캡처로 장소 찾기<span class="jp">| シーン検索</span><span class="go">${I.back}</span></button>
+   <div class="row" style="gap:8px;margin-top:8px">
+    <button class="btn out sm" data-go="scan">${I.cam}만화책 촬영</button>
+    <button class="btn out sm" data-go="scan">${I.search}말로 설명하기</button>
    </div>
   </div>
 
