@@ -20,7 +20,7 @@
   --accent:var(--b); --accent-weak:var(--b-weak);
   --ph:#e6eef7; --ph2:#d6e3f1;
   --bubble:radial-gradient(ellipse 95% 100% at 49% 50%,#6baeff 0%,#50a1fa 25%,#3693f4 50%,#1b86ef 75%,#0078e9 100%);
-  --f-body:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  --f-body:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Pretendard Variable",Pretendard,sans-serif;
   --f-press:"Sandoll Press","SandollPress","산돌프레스",var(--f-body);
   --r:16px;
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
@@ -28,7 +28,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 html,body{overscroll-behavior:none}
-body{-webkit-tap-highlight-color:transparent;font-family:var(--f-body);letter-spacing:-.01em;background:var(--bg);color:var(--text);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{-webkit-tap-highlight-color:transparent;font-family:var(--f-body);letter-spacing:-.01em;background:var(--bg);color:var(--text);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 input,textarea,select{font:inherit;color:inherit}
 
@@ -43,12 +43,12 @@ input,textarea,select{font:inherit;color:inherit}
 @media (min-width:600px){
   .phone{width:390px;height:min(844px,calc(100vh - 40px));border-radius:28px;box-shadow:0 20px 50px -18px rgba(0,0,0,.3)}
 }
-input,textarea{font-size:16px}
+input,textarea{font-size:17px}
 button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 
 /* ---------- common ---------- */
 .hdr{height:52px;display:flex;align-items:center;gap:8px;padding:0 12px;flex:none}
-.hdr .t{flex:1;font-size:16px;font-weight:700;text-align:center;margin-right:36px}
+.hdr .t{flex:1;font-size:17px;font-weight:700;text-align:center;margin-right:36px}
 .hdr .t.left{text-align:left;margin:0 0 0 6px;font-size:20px}
 .ib{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none}
 .ib:hover{background:rgba(127,127,127,.12)}
@@ -56,22 +56,22 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .pad{padding:0 20px}
 .sec{margin-top:24px}
 .sec-h{display:flex;justify-content:space-between;align-items:baseline;padding:0 20px;margin-bottom:10px}
-.sec-h h3{font-size:16px;font-weight:700}
-.sec-h a{font-size:12px;color:var(--sub);cursor:pointer}
-.chip{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:14px;border:1px solid var(--line2);font-size:12px;white-space:nowrap;background:var(--surface)}
+.sec-h h3{font-size:17px;font-weight:700}
+.sec-h a{font-size:15px;color:var(--sub);cursor:pointer}
+.chip{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 12px;border-radius:14px;border:1px solid var(--line2);font-size:15px;white-space:nowrap;background:var(--surface)}
 .chip.on{background:var(--text);border-color:var(--text);color:#fff}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:0 20px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;background:var(--ph);color:var(--sub)}
+.tag{display:inline-block;font-size:15px;padding:2px 8px;border-radius:6px;background:var(--ph);color:var(--sub)}
 .tag.ac{background:var(--accent-weak);color:var(--accent);font-weight:500}
 .btn{height:50px;border-radius:12px;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:6px;width:100%}
 .btn.pri{background:var(--text);color:#fff}
 .btn.sec2{background:var(--ph);color:var(--text)}
 .btn.out{border:1px solid var(--line2)}
-.btn.sm{height:38px;font-size:13px;border-radius:10px}
+.btn.sm{height:38px;font-size:15px;border-radius:10px}
 .card{border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
 .muted{color:var(--sub)}
-.small{font-size:12px}
+.small{font-size:15px}
 .row{display:flex;align-items:center;gap:10px}
 .between{justify-content:space-between}
 .divider{height:8px;background:var(--bg);margin:24px 0 0}
@@ -82,13 +82,13 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 /* placeholder image */
 .ph{position:relative;background:var(--ph);border-radius:10px;overflow:hidden;display:flex;align-items:flex-end}
 .ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(0,0,0,.035) 10px 20px)}
-.ph .lb{position:relative;margin:8px;font-size:10px;color:var(--sub);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:4px}
-.ph .x{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;color:var(--mute);text-align:center;padding:8px}
+.ph .lb{position:relative;margin:8px;font-size:15px;color:var(--sub);background:rgba(255,255,255,.85);padding:2px 6px;border-radius:4px}
+.ph .x{position:absolute;inset:0;display:grid;place-items:center;font-size:15px;color:var(--mute);text-align:center;padding:8px}
 
 /* tab bar */
 .tabbar{position:absolute;left:0;right:0;bottom:0;z-index:70;height:calc(62px + max(var(--sab),12px));border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:max(var(--sab),12px);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .screen.has-tab .body{padding-bottom:calc(62px + max(var(--sab),12px))}
-.tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;color:var(--mute)}
+.tabbar button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:15px;color:var(--mute)}
 .tabbar button.on{color:var(--text);font-weight:700}
 .tabbar svg{width:22px;height:22px}
 .tabbar .scan{margin-top:-18px}
@@ -100,7 +100,7 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .sheet{position:absolute;left:0;right:0;bottom:0;z-index:41;background:var(--surface);color:var(--text);border-radius:20px 20px 0 0;padding:10px 20px 30px;transform:translateY(100%);transition:transform .25s ease,visibility 0s .25s;visibility:hidden;max-height:82%;overflow-y:auto}
 .sheet.on{transform:none;visibility:visible;transition:transform .25s ease}
 .sheet .grab{width:40px;height:4px;border-radius:2px;background:var(--line2);margin:0 auto 14px}
-.toast{position:absolute;left:50%;top:100px;transform:translateX(-50%) translateY(10px);background:#222;color:#fff;font-size:13px;padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;z-index:60;white-space:nowrap;pointer-events:none}
+.toast{position:absolute;left:50%;top:100px;transform:translateX(-50%) translateY(10px);background:#222;color:#fff;font-size:15px;padding:10px 16px;border-radius:10px;opacity:0;transition:.2s;z-index:60;white-space:nowrap;pointer-events:none}
 .toast.on{opacity:1;transform:translateX(-50%)}
 
 /* toggle */
@@ -111,7 +111,7 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 
 /* segmented */
 .seg{display:flex;background:var(--ph);border-radius:10px;padding:3px}
-.seg button{flex:1;height:32px;border-radius:8px;font-size:13px;color:var(--sub)}
+.seg button{flex:1;height:32px;border-radius:8px;font-size:15px;color:var(--sub)}
 .seg button.on{background:var(--surface);color:var(--text);font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .dark .seg{background:rgba(255,255,255,.12)}
 .dark .seg button{color:rgba(255,255,255,.65)}
@@ -120,10 +120,10 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 /* ----- AR camera sim ----- */
 .cam{position:absolute;inset:0;overflow:hidden;background:linear-gradient(#3b3f4a 0%,#555a66 48%,#2b2d33 48.2%,#1f2025 100%)}
 .cam .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px}
-.cam .camlb{position:absolute;top:calc(var(--sat) + 150px);left:50%;transform:translateX(-50%);font-size:11px;color:rgba(255,255,255,.45);letter-spacing:.05em}
+.cam .camlb{position:absolute;top:calc(var(--sat) + 150px);left:50%;transform:translateX(-50%);font-size:15px;color:rgba(255,255,255,.45);letter-spacing:.05em}
 .cam.tone{filter:sepia(.35) saturate(1.6) hue-rotate(-15deg) brightness(1.05)}
 .person{position:absolute;bottom:30%;width:46px;border-radius:23px 23px 6px 6px;background:rgba(255,255,255,.18)}
-.person .tagp{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;font-size:10px;white-space:nowrap;padding:3px 7px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);opacity:0;transition:.2s}
+.person .tagp{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:6px;font-size:15px;white-space:nowrap;padding:3px 7px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);opacity:0;transition:.2s}
 .cam.filter .person{background:rgba(160,170,255,.45);outline:2px dashed rgba(200,205,255,.8);outline-offset:2px}
 .cam.filter .person .tagp{opacity:1}
 .hud{position:absolute;inset:0;pointer-events:none}
@@ -134,18 +134,18 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .dark .ib:hover{background:rgba(255,255,255,.12)}
 .rb{width:72px;height:72px;border-radius:50%;border:4px solid #fff;display:grid;place-items:center}
 .rb span{width:56px;height:56px;border-radius:50%;background:#fff}
-.cb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:rgba(255,255,255,.85)}
+.cb{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:15px;color:rgba(255,255,255,.85)}
 .cb i{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;font-style:normal}
 .cb svg{width:22px;height:22px}
 
 /* overlay blend */
 .scene-layer{position:absolute;inset:0;background:linear-gradient(#f4a261 0%,#e76f51 40%,#5c4d7d 48%,#2a2438 100%);mix-blend-mode:normal}
-.scene-layer .sl{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;color:rgba(255,255,255,.8)}
+.scene-layer .sl{position:absolute;inset:0;display:grid;place-items:center;font-size:15px;color:rgba(255,255,255,.8)}
 .scene-layer .cross{position:absolute;left:0;right:0;top:52%;height:14px;background:repeating-linear-gradient(90deg,#fff 0 18px,#222 18px 36px);opacity:.6}
 .pano{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none}
 .pano-strip{position:absolute;top:0;bottom:0;left:0;display:flex;will-change:transform}
-.pano-strip div{width:390px;flex:none;position:relative;display:grid;place-items:center;color:rgba(255,255,255,.85);font-size:13px;text-align:center}
-.compass{position:absolute;top:calc(var(--sat) + 130px);left:50%;transform:translateX(-50%);font-size:11px;color:#fff;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:10px;z-index:6}
+.pano-strip div{width:390px;flex:none;position:relative;display:grid;place-items:center;color:rgba(255,255,255,.85);font-size:15px;text-align:center}
+.compass{position:absolute;top:calc(var(--sat) + 130px);left:50%;transform:translateX(-50%);font-size:15px;color:#fff;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:10px;z-index:6}
 input[type=range]{width:100%;accent-color:#fff}
 
 
@@ -159,13 +159,13 @@ input[type=range]{width:100%;accent-color:#fff}
 .camwrap.fx .cam{display:none}
 .fxbar{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .pill.fxon{background:#4f46e5}
-.camfb{left:20px;right:20px;top:50%;transform:translateY(-50%);background:rgba(20,20,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border-radius:18px;padding:20px;z-index:9}
+.camfb{left:16px;right:16px;top:50%;transform:translateY(-50%);background:rgba(20,20,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;border-radius:18px;padding:20px;z-index:9}
 .reticle{position:absolute;left:50%;top:46%;width:230px;height:230px;transform:translate(-50%,-50%);z-index:4;transition:opacity .4s,transform .4s}
 .reticle i{position:absolute;width:34px;height:34px;border:3px solid #fff;animation:rt 1.2s ease-in-out infinite}
 .reticle i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0}.reticle i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0}
 .reticle i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0}.reticle i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0}
 @keyframes rt{50%{transform:scale(.85)}}
-.reticle .rt{position:absolute;top:100%;left:-40px;right:-40px;text-align:center;margin-top:14px;font-size:12px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.reticle .rt{position:absolute;top:100%;left:-40px;right:-40px;text-align:center;margin-top:14px;font-size:15px;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.6)}
 .reticle.done{opacity:0;transform:translate(-50%,-50%) scale(1.3)}
 .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:80}
 .flash.on{animation:fl .35s ease-out}
@@ -176,7 +176,7 @@ input[type=range]{width:100%;accent-color:#fff}
 .scanbox{position:relative;width:240px;height:240px;margin:20px auto;border-radius:16px;overflow:hidden}
 .scanline{position:absolute;left:0;right:0;height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:sl 1.4s ease-in-out infinite}
 @keyframes sl{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
-.match{display:inline-block;font-size:11px;font-weight:700;color:var(--accent)}
+.match{display:inline-block;font-size:15px;font-weight:700;color:var(--accent)}
 .bar{height:6px;border-radius:3px;background:var(--ph);overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent)}
 
@@ -185,7 +185,7 @@ input[type=range]{width:100%;accent-color:#fff}
 .map::before{content:"";position:absolute;inset:0;background-image:linear-gradient(#dedee4 1px,transparent 1px),linear-gradient(90deg,#dedee4 1px,transparent 1px);background-size:32px 32px}
 .map .land{position:absolute;background:#e0e0e6;border-radius:40% 55% 50% 45%}
 .pin{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;cursor:pointer}
-.pin b{background:var(--text);color:#fff;font-size:10px;font-weight:500;padding:3px 7px;border-radius:8px;white-space:nowrap}
+.pin b{background:var(--text);color:#fff;font-size:15px;font-weight:500;padding:3px 7px;border-radius:8px;white-space:nowrap}
 .pin i{width:2px;height:8px;background:var(--text)}
 .pin.on b{background:var(--accent)}
 .pin.on i{background:var(--accent)}
@@ -198,7 +198,7 @@ input[type=range]{width:100%;accent-color:#fff}
 .tl .st.done::before{background:var(--text);border-color:var(--text)}
 .tl .st.cur::before{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-weak)}
 
-.stamp{aspect-ratio:1;border-radius:50%;border:1.5px dashed var(--line2);display:grid;place-items:center;text-align:center;font-size:10px;color:var(--mute);padding:6px}
+.stamp{aspect-ratio:1;border-radius:50%;border:1.5px dashed var(--line2);display:grid;place-items:center;text-align:center;font-size:15px;color:var(--mute);padding:6px}
 .stamp.got{border:2px solid var(--text);color:var(--text);font-weight:700}
 .av{width:32px;height:32px;border-radius:50%;background:var(--ph2);flex:none}
 .opt{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
@@ -244,8 +244,8 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .topbar{flex:none;padding:10px 18px 6px;display:flex;flex-direction:column;gap:12px}
 .topbar .r1{display:flex;align-items:center;justify-content:space-between}
 .topbar .logo-img{height:38px;width:auto;display:block}
-.qpill{display:flex;align-items:center;gap:12px;height:45px;padding:0 14px;border:1px solid var(--b-light);border-radius:30px;background:#fff;color:var(--b);font-size:17px;font-weight:500;cursor:pointer;flex:1;min-width:0}
-.qpill .cat{display:flex;align-items:center;gap:10px;flex:none}
+.qpill{display:flex;align-items:center;gap:8px;height:45px;padding:0 12px 0 14px;border:1px solid var(--b-light);border-radius:30px;background:#fff;color:var(--b);font-size:17px;font-weight:500;cursor:pointer;flex:1;min-width:0}
+.qpill .cat{display:flex;align-items:center;gap:4px;flex:none}
 .qpill .cat svg{width:15px;height:15px}
 .qpill .bar1{width:1px;height:18px;background:var(--b);border-radius:5px;flex:none}
 .qpill .ph-t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -262,7 +262,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 /* card · button · chip · tag */
 .card{border:1px solid var(--line);border-radius:16px;background:#fff}
 .card.lg{border-radius:20px;border-color:rgba(0,120,233,.05)}
-.btn{height:50px;border-radius:14px;font-size:16px;font-weight:600}
+.btn{height:50px;border-radius:14px;font-size:17px;font-weight:600}
 .btn.pri{background:var(--b);color:#fff;box-shadow:0 6px 16px -8px rgba(0,120,233,.7)}
 .btn.pri:active{background:var(--b-deep)}
 .btn>svg{width:22px;height:22px;flex:none}
@@ -271,10 +271,10 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .btn.pri .go svg{width:16px;height:16px;transform:rotate(180deg)}
 .btn.sec2{background:var(--b-weak);color:var(--b)}
 .btn.out{border:1px solid var(--b-light);color:var(--b);background:#fff}
-.btn.sm{height:38px;font-size:14px;border-radius:12px}
-.chip{height:32px;padding:0 14px;border-radius:16px;border-color:var(--b-light);color:var(--b);font-size:13px;font-weight:500}
+.btn.sm{height:38px;font-size:15px;border-radius:12px}
+.chip{height:32px;padding:0 14px;border-radius:16px;border-color:var(--b-light);color:var(--b);font-size:15px;font-weight:500}
 .chip.on{background:var(--b);border-color:var(--b);color:#fff}
-.tag{font-size:12px;padding:4px 8px;border-radius:6px;background:var(--b-weak);color:var(--b);font-weight:500}
+.tag{font-size:15px;padding:4px 8px;border-radius:6px;background:var(--b-weak);color:var(--b);font-weight:500}
 .tag.ac{background:var(--b);color:#fff}
 .muted{color:var(--slate)}
 .divider{background:var(--bg)}
@@ -301,7 +301,7 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 
 /* tab bar */
 .tabbar{background:rgba(255,255,255,.94);border-top:1px solid var(--line)}
-.tabbar button{color:var(--mute);font-size:11px}
+.tabbar button{color:var(--mute);font-size:15px}
 .tabbar button.on{color:var(--b);font-weight:700}
 .tabbar .scan{color:var(--b);font-weight:600}
 .tabbar .scan span.c{background:var(--bubble);box-shadow:0 8px 18px -6px rgba(0,120,233,.65)}
@@ -336,7 +336,7 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 .rank .hd b{font-size:20px;color:var(--b);font-weight:700}
 .rank .hd span{font-size:15px;color:var(--sub2)}
 .rank ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(5,auto);column-gap:16px;row-gap:4px}
-.rank li{display:flex;gap:8px;align-items:center;height:24px;font-size:16px;color:var(--text);cursor:pointer}
+.rank li{display:flex;gap:8px;align-items:center;height:24px;font-size:17px;color:var(--text);cursor:pointer}
 .rank li i{font-style:normal;width:14px;color:var(--b)}
 .rank li:nth-child(n+6) i{color:var(--sub)}
 .rank li.hot{font-weight:600}
@@ -345,10 +345,10 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 .spotrow{display:flex;gap:12px;align-items:center;padding:13px;background:#fff;border:1px solid var(--line);border-radius:16px;cursor:pointer}
 .spotrow+.spotrow{margin-top:8px}
 .spotrow .ph{width:96px;height:96px;flex:none}
-.spotrow .w{font-size:14px;color:var(--b-ink);line-height:16.5px}
+.spotrow .w{font-size:15px;color:var(--b-ink);line-height:16.5px}
 .spotrow .n{font-size:17px;font-weight:700;color:var(--navy);margin-top:8px;line-height:20px}
-.spotrow .j{font-size:16px;font-weight:500;color:var(--slate);line-height:20px}
-.spotrow .s{font-size:14px;color:var(--mute);margin-top:6px}
+.spotrow .j{font-size:17px;font-weight:500;color:var(--slate);line-height:20px}
+.spotrow .s{font-size:15px;color:var(--mute);margin-top:6px}
 
 /* ===== 만화책 느낌 (Figma 홈: 포스터 콜라주 + 집중선 말풍선 + 스크린톤) ===== */
 .cart{position:relative;border-radius:15px;overflow:hidden;isolation:isolate;background:linear-gradient(170deg,var(--c1) 0%,var(--c2) 55%,var(--c3) 100%);color:#fff}
@@ -358,18 +358,18 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 .cart .kj{position:absolute;left:12px;top:14px;z-index:2;writing-mode:vertical-rl;font-family:var(--f-press);font-weight:900;font-size:21px;line-height:1.05;letter-spacing:.04em;color:#fff;text-shadow:2px 2px 0 rgba(0,40,100,.45),-1px -1px 0 rgba(0,40,100,.25)}
 .cart .sh{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.45),rgba(255,255,255,0) 45%)}
 .cart .cap{position:absolute;left:12px;right:12px;bottom:11px;z-index:3}
-.cart .cap .w{font-size:12px;opacity:.9}
+.cart .cap .w{font-size:15px;opacity:.9}
 .cart .cap .n{font-size:15px;font-weight:700;line-height:1.25;margin-top:1px}
 .cart .bk{position:absolute;right:10px;top:10px;z-index:3;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.88);display:grid;place-items:center;color:var(--b)}
 .cart .bk svg{width:20px;height:20px}
 .cart .bk.on{background:var(--b);color:#fff}
-.cart.sm .kj{font-size:13px;left:7px;top:8px}
+.cart.sm .kj{font-size:15px;left:7px;top:8px}
 .mason{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 8px}
 .mason .col{display:flex;flex-direction:column;gap:6px;min-width:0}
 .mason .cart{cursor:pointer}
 .qb{position:relative;min-height:85px;margin:2px 0 8px;display:grid;place-items:center;text-align:center;font-size:18px;line-height:1.3;font-weight:600;padding:12px 14px;overflow:visible}
 .qb .in{position:relative;z-index:1}
-.qb .qs{display:block;font-size:11px;font-weight:500;opacity:.85;margin-top:4px}
+.qb .qs{display:block;font-size:15px;font-weight:500;opacity:.85;margin-top:4px}
 .qb.tl::after,.qb.tr::after{content:"";position:absolute;bottom:-11px;width:24px;height:16px;background:#2a8cf1}
 .qb.tl::after{left:20px;clip-path:polygon(0 0,100% 0,0 100%)}
 .qb.tr::after{right:20px;clip-path:polygon(0 0,100% 0,100% 100%)}
@@ -378,10 +378,46 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 .qb.bubble::before{inset:0;border-radius:15px;overflow:hidden;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.24) 0 .9deg,transparent .9deg 7deg);-webkit-mask:radial-gradient(farthest-side,transparent 62%,#000 100%);mask:radial-gradient(farthest-side,transparent 62%,#000 100%)}
 .burst-h{display:flex;align-items:center;gap:8px;padding:0 16px;margin:26px 0 12px}
 .burst-h h3{font-family:var(--f-press);font-weight:900;font-size:22px;color:var(--b);letter-spacing:-.01em}
-.burst-h .fx{font-family:var(--f-press);font-weight:900;color:#fff;background:var(--b);font-size:12px;padding:3px 8px;border-radius:6px;transform:rotate(-6deg)}
+.burst-h .fx{font-family:var(--f-press);font-weight:900;color:#fff;background:var(--b);font-size:15px;padding:3px 8px;border-radius:6px;transform:rotate(-6deg)}
 .burst-h a{margin-left:auto;font-size:15px;color:var(--sub2);cursor:pointer}
 .ph::before{background:radial-gradient(circle,rgba(0,120,233,.13) 1.1px,transparent 1.5px) 0 0/6px 6px}
 .toast{background:var(--bubble)!important;font-weight:600}
+
+/* ===== v3: 라운드 아이콘 · 여백 16px 통일 · 폰트 17/15 ===== */
+body{font-size:17px;line-height:1.5}
+.small{font-size:15px}
+input,textarea{font-size:17px}
+.pad{padding:0 16px}
+.sec-h,.burst-h{padding:0 16px}
+.chips,.hscroll{padding-left:16px;padding-right:16px}
+.topbar{padding:8px 16px 8px}
+.mason{padding:0 16px;gap:8px}.mason .col{gap:8px}
+.cta{padding:12px 16px max(var(--sab),16px)}
+.sheet{padding:10px 16px 30px}
+.hdr{padding:0 8px}
+.qpill .cat svg{width:18px;height:18px}
+.qpill>svg{width:22px;height:22px}
+.me svg{width:34px;height:34px}
+.ib svg{width:24px;height:24px}
+.tabbar svg{width:26px;height:26px}
+.tabbar .scan span.c svg{width:28px;height:28px}
+.tabbar button{gap:2px}
+.tag{padding:4px 10px;border-radius:8px}
+.chip{height:36px;padding:0 14px;border-radius:18px}
+.btn.sm{height:42px}
+.pin b{font-size:15px;padding:4px 9px;border-radius:10px}
+.stamp{font-size:15px;line-height:1.2;word-break:keep-all}
+.cart .cap .w{font-size:15px}.cart .cap .n{font-size:17px}
+.qb{font-size:19px}.qb .qs{font-size:15px}
+.spotrow .w,.spotrow .s{font-size:15px}
+.rank .hd b{font-size:20px}
+.ph.cart{display:block}
+.ph.cart::before{background:radial-gradient(circle,rgba(255,255,255,.34) 1.15px,transparent 1.6px) 0 0/6px 6px}
+.ph.cart .lb{position:absolute;left:8px;bottom:8px;margin:0;z-index:3}
+.ph.cart .x{z-index:3;color:#fff;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.3)}
+.cart .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.cart.has-img::before,.cart.has-img::after,.cart.has-img .gr,.cart.has-img .kj{display:none}
+.seg button{height:38px}
 
 /* 스플래시 (Figma: 블루 + 집중선 + 로고) */
 .splash{position:absolute;inset:0;z-index:100;background:#0078e9;display:grid;place-items:center;overflow:hidden;transition:opacity .45s ease,visibility 0s .45s}
@@ -389,7 +425,7 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 @keyframes spin{to{transform:rotate(360deg)}}
 .splash .c{position:relative;text-align:center;color:#fff}
 .splash .logo-img{width:240px;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 4px 0 rgba(0,50,120,.3))}
-.splash .sub{margin-top:10px;font-size:16px;font-weight:500;letter-spacing:.02em}
+.splash .sub{margin-top:10px;font-size:17px;font-weight:500;letter-spacing:.02em}
 .splash.off{opacity:0;visibility:hidden}
 </style>
 </head>
@@ -409,28 +445,31 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 <script>
 /* ================= ICONS ================= */
 const I={
- back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
- close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
- home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 10l8-6 8 6v10H4z"/><path d="M10 20v-6h4v6"/></svg>',
- map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg>',
- scan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><circle cx="12" cy="12" r="3.5"/></svg>',
- people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.6-3.5 3-5.5 6-5.5s5.4 2 6 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.6c2.6.2 4.4 2 5 5.4"/></svg>',
- book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M5 17a3 3 0 013-3h11"/></svg>',
- bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20a2 2 0 004 0"/></svg>',
- heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z"/></svg>',
- share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 15V4M8 8l4-4 4 4"/><path d="M5 13v6h14v-6"/></svg>',
- sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>',
- flip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 0114-5.3L20 9M20 12a8 8 0 01-14 5.3L4 15"/><path d="M20 4v5h-5M4 20v-5h5"/></svg>',
- pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0113 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
- search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4-4"/></svg>',
- bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 016 0v2"/></svg>',
- music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></svg>',
- cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
- img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><circle cx="9" cy="9" r="1.6"/><path d="M20 15l-4.5-4.5L6 20"/></svg>',
- star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.8 6.8 19.6l1-5.8L3.5 9.7l5.9-.8z"/></svg>',
- face:'<svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="15" cy="15" r="12.5"/><path d="M5 12c3-5 17-5 20 0" fill="currentColor" stroke="none"/><circle cx="11" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><path d="M10.5 20c2.5 2.2 6.5 2.2 9 0"/></svg>',
- chev:'<svg viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 1.5L8 8l6.5-6.5"/></svg>',
- more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg>',
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg>',
+ close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10.7c0-.6.3-1.2.8-1.6l5.4-4.3a2.1 2.1 0 012.6 0l5.4 4.3c.5.4.8 1 .8 1.6v7.3a2.5 2.5 0 01-2.5 2.5h-10A2.5 2.5 0 014.5 18z"/><path d="M10 20.5v-3.3a2 2 0 014 0v3.3"/></svg>',
+ map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.2L5 7.6a1.5 1.5 0 00-1 1.4v9.6a1 1 0 001.3.9L9 18.2l6 2 4-1.4a1.5 1.5 0 001-1.4V9.8"/><path d="M9 6.2v12M15 13.5v6.7"/><path d="M16.5 11.8s-3-2.6-3-5.3a3 3 0 016 0c0 2.7-3 5.3-3 5.3z"/><circle cx="16.5" cy="6.5" r=".9" fill="currentColor"/></svg>',
+ scan:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5V6.5A2.5 2.5 0 016.5 4h2M15.5 4h2A2.5 2.5 0 0120 6.5v2M20 15.5v2a2.5 2.5 0 01-2.5 2.5h-2M8.5 20h-2A2.5 2.5 0 014 17.5v-2"/><circle cx="12" cy="12" r="3.6"/><path d="M10.6 11.1a1.6 1.6 0 011.6-.8"/></svg>',
+ people:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.3" r="3.3"/><path d="M3.3 19.5c.6-3.4 2.9-5.3 5.7-5.3s5.1 1.9 5.7 5.3"/><circle cx="17" cy="9.3" r="2.5"/><path d="M16.3 14.4c2.4.1 4.1 1.8 4.6 4.6"/><path d="M7.6 7.3a1.5 1.5 0 011.5-.7"/></svg>',
+ book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6.5A2.5 2.5 0 017.5 4H18a1 1 0 011 1v12.5"/><path d="M5 6.5v11A2.5 2.5 0 007.5 20H19v-5.5H7.5A2.5 2.5 0 005 17"/><path d="M9 8h6"/></svg>',
+ bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.2 15.8v-4.6a5.8 5.8 0 0111.6 0v4.6l1.4 1.9a.6.6 0 01-.5 1H5.3a.6.6 0 01-.5-1z"/><path d="M10 20.5a2.2 2.2 0 004 0"/><path d="M9.3 9.6a2.9 2.9 0 012-2"/></svg>',
+ heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.3c-1.4-.7-8.3-4.6-8.3-10.2A4.4 4.4 0 0112 7.7a4.4 4.4 0 018.3 2.4c0 5.6-6.9 9.5-8.3 10.2z"/><path d="M6.6 10.6a1.8 1.8 0 012.5-1.7"/></svg>',
+ share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 3.6L3.9 12a.5.5 0 000 .9l4.9 3 11.8-12.3-7.2 14.4a.5.5 0 00.9.1z"/><path d="M8.8 15.9v4.1l2.6-2.2"/></svg>',
+ sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.5c.4 3 2 4.6 5 5-3 .4-4.6 2-5 5-.4-3-2-4.6-5-5 3-.4 4.6-2 5-5z"/><path d="M18 14.5c.2 1.4.9 2.1 2.3 2.3-1.4.2-2.1.9-2.3 2.3-.2-1.4-.9-2.1-2.3-2.3 1.4-.2 2.1-.9 2.3-2.3z"/></svg>',
+ flip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11a7.5 7.5 0 0113.2-4.4L19.5 8.5"/><path d="M19.5 4.5v4h-4M19.5 13a7.5 7.5 0 01-13.2 4.4L4.5 15.5"/><path d="M4.5 19.5v-4h4"/></svg>',
+ pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8c-1.7 0-5.8-4.7-5.8-9.3a5.8 5.8 0 0111.6 0c0 4.6-4.1 9.3-5.8 9.3z"/><circle cx="12" cy="11" r="2.3"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.6 15.6l4 4M8 9.4a2.9 2.9 0 012-1.9"/></svg>',
+ bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.6 8.5h12.8l-.9 10.2a2 2 0 01-2 1.8H8.5a2 2 0 01-2-1.8z"/><path d="M9 8.5V7a3 3 0 016 0v1.5"/></svg>',
+ music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5V6.3a1 1 0 01.8-1l9-1.8a1 1 0 011.2 1v10.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/></svg>',
+ cam:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9a2 2 0 012-2h1.6l1.5-2h5.8l1.5 2H18a2 2 0 012 2v8.5a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><circle cx="12" cy="13" r="3.4"/></svg>',
+ img:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9.2" cy="9.2" r="1.5"/><path d="M20 15.5l-4-4-7.8 8"/></svg>',
+ more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5.5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18.5" cy="12" r="1.8"/></svg>',
+ star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 4.4a1.5 1.5 0 012.8 0l1.4 3.3 3.6.4a1.5 1.5 0 01.9 2.6l-2.7 2.4.8 3.6a1.5 1.5 0 01-2.2 1.6L12 16.4l-3.2 1.9a1.5 1.5 0 01-2.2-1.6l.8-3.6-2.7-2.4a1.5 1.5 0 01.9-2.6l3.6-.4z"/><path d="M9.7 12.2c.4.5.5 1.2.2 1.8"/></svg>',
+ face:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M5.2 9c1.6.9 4.8.9 6.3-.4 1.5 1.3 4.8 1.3 6.4.4" /><circle cx="9.4" cy="12.4" r=".5" fill="currentColor"/><circle cx="14.6" cy="12.4" r=".5" fill="currentColor"/><path d="M9 15.2a3.6 3.6 0 006 0"/></svg>',
+ chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5l6 6 6-6"/></svg>',
+ p360:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 13.5c0 1.3 3.4 2.3 7.5 2.3s7.5-1 7.5-2.3"/><path d="M4.5 13.5v4.3c0 1.2 3.4 2.2 7.5 2.2s7.5-1 7.5-2.2v-4.3"/><path d="M6.5 19.4l2.8-3.5 1.6 1.4 2.2-3 3.1 4.9"/><path d="M7 4.8h1.6a.9.9 0 010 1.8H8m.6 0a.9.9 0 010 1.8H7M12.8 4.6a1.6 1.6 0 00-1.6 1.6v1.4a.8.8 0 001.6 0v-.3a.8.8 0 00-1.6 0M15.8 4.6a1.1 1.1 0 00-1.1 1.1v1.8a1.1 1.1 0 002.2 0V5.7a1.1 1.1 0 00-1.1-1.1z"/></svg>',
+ hand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.3 13.5V5.2a1.3 1.3 0 012.6 0v6.3"/><path d="M11.9 10.2a1.3 1.3 0 012.6 0v1.3M14.5 10.8a1.3 1.3 0 012.6 0v1M17.1 11.2a1.3 1.3 0 012.4.7v3a5.8 5.8 0 01-11.6.3l-.1-2a1.4 1.4 0 01.9-1.4"/></svg>',
+ copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7.5" width="10.5" height="12.5" rx="2"/><path d="M8.5 7.5V5.5a1.5 1.5 0 011.5-1.5h8a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5h-3.5"/></svg>'
 };
 
 /* ================= DUMMY DATA ================= */
@@ -507,11 +546,13 @@ const spot=id=>SPOTS.find(s=>s.id===(id||S.spot));
 const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
-const ph=(label,h=160,extra='',center='')=>`<div class="ph" style="height:${h}px;${extra}">${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`;
+/* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
+const poster=sp=>`<img class="poster" alt="" src="assets/posters/${sp.id}.jpg" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
+const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
+const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
 const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${back?`<button class="ib" data-act="back" aria-label="뒤로">${I.back}</button>`:''}<div class="t ${left?'left':''}">${title}</div>${right}</div>`;
-const topbar=()=>`<div class="topbar"><div class="r1"><img class="logo-img" src="assets/logo.png" alt="덕모잇" height="38"><button class="ib" data-toast="알림 3개 (더미)">${I.bell}</button></div>
- <div class="row" style="gap:12px"><div class="qpill" data-go="scan"><span class="cat">전체 ${I.chev}</span><span class="bar1"></span><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div></div>`;
-const art=(sp,h,{cap=true,bk=true,cls='',st=''}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">
+const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="scan"><span class="cat">전체 ${I.chev}</span><span class="bar1"></span><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div></div>`;
+const art=(sp,h,{cap=true,bk=true,cls='',st=''}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${poster(sp)}
  <div class="gr"></div><div class="kj">${sp.jp.slice(0,cls.includes('sm')?Math.max(2,Math.floor((h-14)/14)):Math.max(2,Math.min(8,Math.floor(((typeof h==='number'?h:220)-(cap?95:30))/22))))}</div>${cap?`<div class="sh"></div><div class="cap"><div class="w">${work(sp).title}</div><div class="n">${sp.name}</div></div>`:''}${bk?`<button class="bk ${S.saved&&S.saved[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="저장">${I.star}</button>`:''}</div>`};
 const qb=(q,side)=>`<div class="bubble qb ${side}" data-tab="scan"><div class="in">${q.jp.replace(/\n/g,'<br>')}<span class="qs">${q.ko}</span></div></div>`;
 const spotRow=s=>`<div class="spotrow" data-go="spot" data-id="${s.id}">${art(s,96,{cap:false,bk:false,cls:'sm',st:'width:96px;flex:none;border-radius:12px;'})}<div style="flex:1;min-width:0"><div class="w">${work(s).title}</div><div class="n">${s.name}</div><div class="j">${s.jp}</div><div class="s">${s.st}</div></div></div>`;
@@ -536,11 +577,11 @@ SCREENS.home=()=>({tab:'home',html:`
  <div class="body">
   <div class="pad">
    <div class="bubble tail" style="padding:20px;cursor:pointer;margin-top:6px" data-go="scan">
-    <div style="font-size:14px;opacity:.9">기억나는 그 장면, 어디였을까?</div>
+    <div style="font-size:15px;opacity:.9">기억나는 그 장면, 어디였을까?</div>
     <div class="press" style="font-size:24px;line-height:1.25;margin:6px 0 16px">캡처 한 장으로<br>장면 속 장소 찾기</div>
     <div class="row" style="gap:8px;flex-wrap:wrap">
-     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.img.replace('<svg','<svg width="14" height="14"')} 캡처 올리기</span>
-     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.cam.replace('<svg','<svg width="14" height="14"')} 만화책 촬영</span>
+     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.img.replace('<svg','<svg width="16" height="16"')} 캡처 올리기</span>
+     <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">${I.cam.replace('<svg','<svg width="16" height="16"')} 만화책 촬영</span>
      <span class="chip" style="border-color:rgba(255,255,255,.6);color:#fff;background:rgba(255,255,255,.12)">말로 설명하기</span>
     </div>
    </div>
@@ -563,12 +604,12 @@ SCREENS.home=()=>({tab:'home',html:`
 
   <div class="sec">
    <div class="sec-h"><h3>지금 뜨는 명소</h3><a>11월 기준</a></div>
-   <div style="padding:0 8px">${['enoshima','kifune'].map(id=>spotRow(spot(id))).join('')}</div>
+   <div style="padding:0 16px">${['enoshima','kifune'].map(id=>spotRow(spot(id))).join('')}</div>
   </div>
 
   <div class="sec" style="padding-bottom:24px">
    <div class="sec-h"><h3>순례자들의 AR 기록</h3><a data-tab="community">더보기</a></div>
-   <div class="hscroll">${POSTS.map(p=>`<div style="width:140px;flex:none;cursor:pointer" data-tab="community">${ph(p.exp,180)}<div class="small" style="margin-top:6px">@${p.u}</div></div>`).join('')}</div>
+   <div class="hscroll">${POSTS.map(p=>`<div style="width:140px;flex:none;cursor:pointer" data-tab="community">${art(spot(p.spot),180,{cap:false,bk:false})}<div class="small" style="margin-top:6px">@${p.u}</div></div>`).join('')}</div>
   </div>
  </div>`});
 
@@ -597,13 +638,13 @@ SCREENS.scan=()=>({html:`
   <div class="card lg rank" style="margin-top:28px"><div class="hd"><b>실시간 인기 검색어</b><span>11월 15일 기준</span></div>
    <ol>${['슬램덩크','너의 이름은','주술회전','귀멸의 칼날','하이큐','스즈메의 문단속','봇치 더 락','최애의 아이','케이온','체인소맨'].map((k,i)=>`<li class="${i<3?'hot':''}" data-act="qchip" data-q="${k}"><i>${i+1}</i>${k}</li>`).join('')}</ol></div>
   <div style="margin-top:28px;font-weight:700;margin-bottom:10px;color:var(--b);font-size:18px">최근 검색한 장면</div>
-  <div class="hscroll" style="padding:0;margin-bottom:24px">${['hida','ihwa','kifune'].map(id=>`<div style="width:110px;flex:none;cursor:pointer" data-go="spot" data-id="${id}">${ph('',80)}<div class="small" style="margin-top:4px">${work(spot(id)).title}</div></div>`).join('')}</div>
+  <div class="hscroll" style="padding:0;margin-bottom:24px">${['hida','ihwa','kifune'].map(id=>`<div style="width:110px;flex:none;cursor:pointer" data-go="spot" data-id="${id}">${art(spot(id),80,{cap:false,bk:false,cls:'sm'})}<div class="small" style="margin-top:4px">${work(spot(id)).title}</div></div>`).join('')}</div>
  </div></div>`});
 
 SCREENS.scanning=()=>({html:`
  ${hdr('',{right:''})}
  <div class="body" style="text-align:center"><div class="pad">
-  <div class="scanbox">${S.upload?`<img src="${S.upload}" style="width:100%;height:100%;object-fit:cover">`:ph('',240,'border-radius:16px','샘플 캡처<br>(노을 · 건널목)')}<div class="scanline"></div></div>
+  <div class="scanbox">${S.upload?`<img src="${S.upload}" style="width:100%;height:100%;object-fit:cover">`:art(spot('kamakura'),240,{cap:false,bk:false,st:'border-radius:16px;'})}<div class="scanline"></div></div>
   <div style="font-size:18px;font-weight:700">장면을 알아보는 중이에요</div>
   <div class="muted small" id="scanstep" style="margin-top:6px">구도와 색감을 분석하고 있어요…</div>
   <div class="bar" style="margin:22px 40px 0"><i id="scanbar" style="width:5%;transition:width 1.6s ease"></i></div>
@@ -619,7 +660,7 @@ SCREENS.scanresult=()=>{const top=spot('kamakura');const others=SPOTS.filter(s=>
  <div class="body">
   <div class="pad">
    <div class="row" style="gap:12px;margin:4px 0 16px">
-    ${S.upload?`<img src="${S.upload}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">`:ph('',56,'width:56px;flex:none')}
+    ${S.upload?`<img src="${S.upload}" style="width:56px;height:56px;border-radius:8px;object-fit:cover">`:art(top,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}
     <div><div class="small muted">${S.scanQuery?`"${S.scanQuery}"`:'올린 캡처'}와 가장 닮은 장면</div><div style="font-weight:700">5개 장소를 찾았어요</div></div>
    </div>
    <div class="card" style="overflow:hidden;cursor:pointer" data-go="spot" data-id="${top.id}">
@@ -633,7 +674,7 @@ SCREENS.scanresult=()=>{const top=spot('kamakura');const others=SPOTS.filter(s=>
    </div>
    <div style="font-weight:700;margin:22px 0 4px">비슷한 장면</div>
    ${others.map(s=>`<div class="opt" style="cursor:pointer" data-go="spot" data-id="${s.id}">
-     ${ph('',60,'width:80px;flex:none')}
+     ${art(s,60,{cap:false,bk:false,cls:'sm',st:'width:80px;flex:none;border-radius:10px;'})}
      <div style="flex:1"><div class="row between"><b>${s.name}</b><span class="match">${s.match}%</span></div>
      <div class="small muted">${work(s).title} · ${s.ep}</div></div></div>`).join('')}
    <p class="small muted" style="text-align:center;margin:18px 0 28px">찾는 장면이 없나요? <a style="text-decoration:underline;cursor:pointer" data-toast="제보 접수 화면 (추후)">장면 제보하기</a></p>
@@ -648,9 +689,9 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
    <span class="tag" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#fff">장면 ↔ 현실 비교</span>
   </div>
   <div class="pad" style="margin-top:16px">
-   <div style="font-size:14px;color:var(--b-ink)">${w.title} · ${w.genre}</div>
-   <div style="font-size:22px;font-weight:700;color:var(--navy);margin:4px 0 0">${sp.name}</div><div style="font-size:16px;font-weight:500;color:var(--slate);margin-bottom:8px">${sp.jp}</div>
-   <div class="row small muted" style="gap:4px">${I.pin.replace('<svg','<svg width="14" height="14"')} ${sp.region} · 여기서 ${sp.dist}</div>
+   <div style="font-size:15px;color:var(--b-ink)">${w.title} · ${w.genre}</div>
+   <div style="font-size:22px;font-weight:700;color:var(--navy);margin:4px 0 0">${sp.name}</div><div style="font-size:17px;font-weight:500;color:var(--slate);margin-bottom:8px">${sp.jp}</div>
+   <div class="row small muted" style="gap:4px">${I.pin.replace('<svg','<svg width="16" height="16"')} ${sp.region} · 여기서 ${sp.dist}</div>
    <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${sp.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
   </div>
   <div class="pad sec">
@@ -663,7 +704,7 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
   </div>
   <div class="sec">
    <div class="sec-h"><h3>여기서 할 수 있는 AR 경험</h3></div>
-   <div class="hscroll">${SITE_EXP.map(e=>`<div class="card" style="width:150px;flex:none;padding:12px">${ph('',70)}<div style="font-weight:700;margin-top:8px;font-size:13px">${e.name}</div><div class="small muted" style="font-size:11px">${e.desc}</div></div>`).join('')}</div>
+   <div class="hscroll">${SITE_EXP.map(e=>`<div class="card" style="width:150px;flex:none;padding:12px">${ph('',70)}<div style="font-weight:700;margin-top:8px;font-size:15px">${e.name}</div><div class="small muted" style="font-size:15px">${e.desc}</div></div>`).join('')}</div>
   </div>
   <div class="pad sec"><div class="card" style="padding:14px;background:var(--bg);border:0"><b class="small">순례 팁</b><div class="small muted" style="margin-top:4px">${sp.tip}</div></div></div>
   ${near.length?`<div class="sec"><div class="sec-h"><h3>같은 작품의 다른 장면</h3></div><div class="hscroll">${near.map(s=>spotCard(s,160)).join('')}</div></div>`:''}
@@ -685,7 +726,7 @@ const ROUTES=sp=>sp.abroad?[
 SCREENS.plan=()=>{const sp=spot();const rs=ROUTES(sp);const r=rs[Math.min(S.route,rs.length-1)];return{html:`
  ${hdr('방문 계획')}
  <div class="body"><div class="pad">
-  <div class="row" style="gap:12px;margin:4px 0 18px">${ph('',56,'width:56px;flex:none')}<div><div class="small muted">${work(sp).title} · ${sp.ep}</div><b>${sp.name}</b></div></div>
+  <div class="row" style="gap:12px;margin:4px 0 18px">${art(sp,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}<div><div class="small muted">${work(sp).title} · ${sp.ep}</div><b>${sp.name}</b></div></div>
   <div style="display:grid;gap:8px">
    <div class="field"><span class="small muted">출발</span><b>${S.from}</b></div>
    <div class="field"><span class="small muted">날짜</span><b>${S.date}</b></div>
@@ -866,7 +907,7 @@ const SCENE_FEAT={kamakura:'cross',shichiri:'sea',enoshima:'sea',hida:'bridge',i
 const LINES={natsu:'「이 건널목을 건너면, 그 여름이 시작돼」',nami:'「저 섬까지, 멈추지 말고 달려!」',hoshi:'「너의 이름을 부를게. 몇 번이고」',neko:'「반장님, 이쪽 계단이에요!」',yuki:'「눈이 그치기 전에, 다시 와 줘」'};
 function star4(c,x,y,r,a){c.save();c.globalAlpha=a;c.fillStyle='#fff';c.beginPath();c.moveTo(x,y-r);c.quadraticCurveTo(x,y,x+r,y);c.quadraticCurveTo(x,y,x,y+r);c.quadraticCurveTo(x,y,x-r,y);c.quadraticCurveTo(x,y,x,y-r);c.fill();c.restore()}
 function sparkles(c,w,h,t,n=22){for(let i=0;i<n;i++){const sp=(i%4+1)*.012;const x=((i*137.5)%w+t*sp*0.6)%w;const y=h-((i*91.7)%h+t*sp)%h;const r=(i%3+2)*w/220;star4(c,x,y,r,.35+.45*Math.abs(Math.sin(t/600+i)))}}
-function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 ${fs}px "Noto Sans KR",sans-serif`;const tw=c.measureText(text).width;const pw=tw+fs*1.4,ph=fs*2.1,x=(w-pw)/2;c.fillStyle='rgba(0,0,0,.55)';rr(c,x,y,pw,ph,ph/2);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(text,w/2,y+ph/2+1);c.restore()}
+function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 ${fs}px "Pretendard Variable",Pretendard,sans-serif`;const tw=c.measureText(text).width;const pw=tw+fs*1.4,ph=fs*2.1,x=(w-pw)/2;c.fillStyle='rgba(0,0,0,.55)';rr(c,x,y,pw,ph,ph/2);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(text,w/2,y+ph/2+1);c.restore()}
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 function drawScene(c,w,h,t,alpha){const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
  const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
@@ -891,7 +932,7 @@ function drawChar(c,w,h,t){const cx=w*.7,base=h*.86,H=h*.46,bob=Math.sin(t/500)*
  c.fillStyle='#f6d7c3';c.beginPath();c.arc(cx,base-H*.8+bob,H*.13,0,7);c.fill();
  c.fillStyle='#3b2a4a';c.beginPath();c.arc(cx,base-H*.84+bob,H*.145,Math.PI,0);c.fill();c.fillRect(cx-H*.145,base-H*.85+bob,H*.05,H*.14);c.fillRect(cx+H*.095,base-H*.85+bob,H*.05,H*.14);
  c.shadowBlur=0;c.fillStyle='#fff';c.beginPath();c.arc(cx-H*.045,base-H*.79+bob,H*.018,0,7);c.arc(cx+H*.045,base-H*.79+bob,H*.018,0,7);c.fill();
- c.restore();const name=work(spot()).chars[0];c.save();const fs=Math.round(w/26);c.font=`700 ${fs}px "Noto Sans KR",sans-serif`;const tw=c.measureText(name).width+fs;c.fillStyle='#4f46e5';rr(c,cx-tw/2,base-H*1.05+bob,tw,fs*1.7,fs*.85);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(name,cx,base-H*1.05+bob+fs*.88);c.restore()}
+ c.restore();const name=work(spot()).chars[0];c.save();const fs=Math.round(w/26);c.font=`700 ${fs}px "Pretendard Variable",Pretendard,sans-serif`;const tw=c.measureText(name).width+fs;c.fillStyle='#0078e9';rr(c,cx-tw/2,base-H*1.05+bob,tw,fs*1.7,fs*.85);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(name,cx,base-H*1.05+bob+fs*.88);c.restore()}
 function drawOverlay(c,w,h,t){
  if(S.screen==='move'){sparkles(c,w,h,t,S.moveExp.charfilter?26:12);if(S.moveExp.narr)subtitle(c,w,h,'“지금 지나는 이 길, '+work(spot()).chars[0]+'도 걸었던 길이야”',h*.6)}
  else if(S.screen==='arrive'){if(!S.locked)return;const k=Math.min(1,(t-S.lockAt)/700);
@@ -910,7 +951,7 @@ function captureAR(ctxName){const v=document.getElementById('camv'),img=document
  const t=performance.now();
  if(S.screen==='arrive'&&S.siteMode==='pano'){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#e76f51');g.addColorStop(1,'#2a2438');c.fillStyle=g;c.fillRect(0,0,W,H)}
  drawOverlay(c,W,H,t);
- const sp=spot();c.save();c.font='700 34px "Noto Sans KR",sans-serif';c.fillStyle='rgba(0,0,0,.45)';rr(c,40,H-130,W-80,90,45);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText('덕모잇 · '+work(sp).title+' · '+sp.name,80,H-85);c.restore();
+ const sp=spot();c.save();c.font='700 34px "Pretendard Variable",Pretendard,sans-serif';c.fillStyle='rgba(0,0,0,.45)';rr(c,40,H-130,W-80,90,45);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText('덕모잇 · '+work(sp).title+' · '+sp.name,80,H-85);c.restore();
  return cv.toDataURL('image/jpeg',.86)}
 
 SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
@@ -919,7 +960,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
  <div class="${S.moveExp.charfilter?'filter':''} ${S.moveExp.tone?'tone':''} ${S.device==='glass'?'glass':''}" style="position:absolute;inset:0">
  ${camLayer(`<div class="camlb">카메라 시뮬레이션</div>${[[18,120],[40,150],[63,110],[80,135]].map((p,i)=>`<div class="person" style="left:${p[0]}%;height:${p[1]}px"><span class="tagp">${ch[i%ch.length]}</span></div>`).join('')}`)}
  <div class="hud"></div></div>
- <div class="ov" style="top:calc(var(--sat) + 12px);left:12px;right:12px">
+ <div class="ov" style="top:calc(var(--sat) + 12px);left:16px;right:16px">
   <div class="row between">
    <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)">${I.close}</button>
    <div class="seg" style="width:190px"><button class="${S.device==='phone'?'on':''}" data-act="device" data-v="phone">스마트폰</button><button class="${S.device==='glass'?'on':''}" data-act="device" data-v="glass">AI 글래스</button></div>
@@ -930,11 +971,11 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
    <div class="bar" style="background:rgba(255,255,255,.2)"><i style="width:${pct}%;background:#fff"></i></div>
    <div class="small" style="opacity:.7;margin-top:6px">${st[1]}</div>
   </div>
-  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap"><span class="pill small" style="padding:6px 10px" id="cambadge">${camBadge()}</span>${S.moveExp.ost?`<span class="pill row small" style="padding:6px 10px;display:inline-flex;gap:4px">${I.music.replace('<svg','<svg width="13" height="13"')} OST 재생 중</span>`:''}</div>
+  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap"><span class="pill small" style="padding:6px 10px" id="cambadge">${camBadge()}</span>${S.moveExp.ost?`<span class="pill row small" style="padding:6px 10px;display:inline-flex;gap:4px">${I.music.replace('<svg','<svg width="16" height="16"')} OST 재생 중</span>`:''}</div>
   ${fxBar()}
  </div>
  ${fallbackCard()}
- <div class="ov" style="left:0;right:0;bottom:0;padding:0 20px max(var(--sab),24px)">
+ <div class="ov" style="left:0;right:0;bottom:0;padding:0 16px max(var(--sab),24px)">
   <div class="chips" style="padding:0 0 14px;justify-content:center">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>`<span class="chip" style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff">${e.name}</span>`).join('')||'<span class="small" style="opacity:.6">AR 경험 꺼짐</span>'}</div>
   <div class="row between">
    <button class="cb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i>경험 선택</button>
@@ -950,7 +991,7 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
    view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div style="background:linear-gradient(${h[0]},${h[1]})">${h[2]}</div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
  else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
  return{dark:true,ar:true,html:`${view}
- <div class="ov" style="top:calc(var(--sat) + 12px);left:12px;right:12px">
+ <div class="ov" style="top:calc(var(--sat) + 12px);left:16px;right:16px">
   <div class="row between"><button class="ib" data-act="back" style="background:rgba(0,0,0,.35)">${I.close}</button>
    <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
    <button class="ib" data-act="sheet-exp" data-ctx="site" style="background:rgba(0,0,0,.35)">${I.sparkle}</button></div>
@@ -958,7 +999,7 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
   ${pano?'':fxBar()}
  </div>
  ${pano?'':fallbackCard()}
- <div class="ov" style="left:0;right:0;bottom:0;padding:0 20px max(var(--sab),24px);z-index:8">
+ <div class="ov" style="left:0;right:0;bottom:0;padding:0 16px max(var(--sab),24px);z-index:8">
   ${S.siteMode==='overlay'?`<div class="pill" style="margin-bottom:12px;padding:10px 14px"><div class="row between small" style="opacity:.8"><span>카메라</span><span>장면 투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
   <div class="seg" style="margin-bottom:16px">${modes.map(m=>`<button class="${m.id===S.siteMode?'on':''}" data-act="sitemode" data-v="${m.id}">${m.name.replace('장면 ','').replace(' 재현','')}</button>`).join('')}</div>
   <div class="row between">
@@ -1000,17 +1041,17 @@ SCREENS.explore=()=>{const list=SPOTS.filter(s=>S.exploreWork==='all'||s.work===
    <span class="small muted" style="position:absolute;left:14%;top:76%">한국</span><span class="small muted" style="position:absolute;left:60%;top:82%">일본</span>
    ${list.map(s=>`<div class="pin ${s.id===S.exploreSel?'on':''}" style="left:${s.map.x}%;top:${s.map.y}%" data-act="esel" data-v="${s.id}"><b>${s.name.split(' ')[0]}</b><i></i></div>`).join('')}
   </div>
-  ${sel?`<div class="pad" style="margin-top:-28px;position:relative"><div class="card row" style="padding:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer" data-go="spot" data-id="${sel.id}">${ph('',72,'width:72px;flex:none')}<div style="flex:1"><div class="small muted">${work(sel).title} · ${sel.ep}</div><b>${sel.name}</b><div class="small muted">${sel.region}</div></div><span class="muted">›</span></div></div>`:''}
+  ${sel?`<div class="pad" style="margin-top:-28px;position:relative"><div class="card row" style="padding:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);cursor:pointer" data-go="spot" data-id="${sel.id}">${art(sel,72,{cap:false,bk:false,cls:'sm',st:'width:72px;flex:none;border-radius:12px;'})}<div style="flex:1"><div class="small muted">${work(sel).title} · ${sel.ep}</div><b>${sel.name}</b><div class="small muted">${sel.region}</div></div><span class="muted">›</span></div></div>`:''}
   <div class="sec-h" style="margin-top:22px"><h3>목록 ${list.length}곳</h3><a>순례 많은 순</a></div>
-  <div style="padding:0 8px 20px">${list.map(spotRow).join('')}</div>
+  <div style="padding:0 16px 20px">${list.map(spotRow).join('')}</div>
  </div>`}};
 
 SCREENS.community=()=>({tab:'community',html:`
  ${hdr('커뮤니티',{back:S.stack.length>0&&S.screen==='community'&&S._fromSpot,left:true})}
  <div class="pad" style="margin-bottom:10px"><div class="seg"><button class="${S.commTab==='feed'?'on':''}" data-act="ctab" data-v="feed">AR 기록 피드</button><button class="${S.commTab==='goods'?'on':''}" data-act="ctab" data-v="goods">굿즈 추천</button></div></div>
- <div class="body">${S.commTab==='feed'?POSTS.map((p,i)=>{const sp=spot(p.spot);return`<div style="padding:14px 20px;border-bottom:8px solid var(--bg)">
+ <div class="body">${S.commTab==='feed'?POSTS.map((p,i)=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;border-bottom:8px solid var(--bg)">
    <div class="row"><div class="av"></div><div style="flex:1"><b class="small">@${p.u}</b><div class="small muted">${sp.name} · ${p.t}</div></div><button class="ib">${I.more}</button></div>
-   <div style="margin:10px 0">${ph(p.exp+' 기록',300,'border-radius:12px')}</div>
+   <div style="margin:10px 0">${art(sp,300,{cap:false,bk:false})}</div>
    <div class="small">${p.txt}</div>
    <div class="row" style="margin-top:10px;gap:16px"><button class="row small" style="gap:4px;${S.liked[i]?'color:var(--accent)':''}" data-act="like" data-i="${i}">${I.heart.replace('<svg','<svg width="18" height="18"')} ${fmt(p.like+(S.liked[i]?1:0))}</button><span class="small muted">댓글 ${p.c}</span><span style="flex:1"></span><button class="tag ac" data-go="spot" data-id="${p.spot}">이 장소 가기 ›</button></div>
   </div>`}).join(''):`<div class="pad">${Object.entries(GOODS).map(([k,gs])=>`<div class="sec" style="margin-top:14px"><div class="row between" style="margin-bottom:10px"><b>${WORKS[k].title}</b><span class="small muted">성지 연계</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">${gs.map(g=>`<div>${ph(g.s,130)}<div class="small" style="margin-top:6px;font-weight:500">${g.n}</div><div class="small muted">${g.p}</div></div>`).join('')}</div></div>`).join('')}<div style="height:24px"></div></div>`}
@@ -1026,9 +1067,9 @@ SCREENS.archive=()=>{const got=new Set(S.archive.map(a=>a.spot));return{tab:'arc
   </div></div>
   <div class="pad" style="margin-top:16px"><div class="seg"><button class="${S.archTab==='timeline'?'on':''}" data-act="atab" data-v="timeline">타임라인</button><button class="${S.archTab==='stamp'?'on':''}" data-act="atab" data-v="stamp">스탬프</button><button class="${S.archTab==='trip'?'on':''}" data-act="atab" data-v="trip">여정</button></div></div>
   <div class="pad" style="margin-top:18px;padding-bottom:24px">
-  ${S.archTab==='timeline'?`<div class="tl">${S.archive.map(a=>{const sp=spot(a.spot);return`<div class="st done"><div class="small muted">${a.date}</div><div class="card" style="padding:12px;margin-top:6px;cursor:pointer" data-go="spot" data-id="${sp.id}"><div class="row" style="align-items:flex-start">${a.img?`<img src="${a.img}" style="width:70px;height:96px;object-fit:cover;border-radius:10px;flex:none">`:ph('',70,'width:70px;flex:none')}<div style="flex:1"><b class="small">${sp.name}</b><div class="small muted">${work(sp).title} · ${sp.ep}</div><div class="row" style="gap:4px;margin-top:6px;flex-wrap:wrap">${a.exp.map(e=>`<span class="tag ac">${e}</span>`).join('')}</div></div></div>${a.memo?`<div class="small" style="margin-top:8px">${a.memo}</div>`:''}</div></div>`}).join('')}</div>`:
+  ${S.archTab==='timeline'?`<div class="tl">${S.archive.map(a=>{const sp=spot(a.spot);return`<div class="st done"><div class="small muted">${a.date}</div><div class="card" style="padding:12px;margin-top:6px;cursor:pointer" data-go="spot" data-id="${sp.id}"><div class="row" style="align-items:flex-start">${a.img?`<img src="${a.img}" style="width:70px;height:96px;object-fit:cover;border-radius:10px;flex:none">`:art(sp,96,{cap:false,bk:false,cls:'sm',st:'width:70px;flex:none;border-radius:10px;'})}<div style="flex:1"><b class="small">${sp.name}</b><div class="small muted">${work(sp).title} · ${sp.ep}</div><div class="row" style="gap:4px;margin-top:6px;flex-wrap:wrap">${a.exp.map(e=>`<span class="tag ac">${e}</span>`).join('')}</div></div></div>${a.memo?`<div class="small" style="margin-top:8px">${a.memo}</div>`:''}</div></div>`}).join('')}</div>`:
    S.archTab==='stamp'?Object.entries(WORKS).map(([k,w])=>{const ss=SPOTS.filter(s=>s.work===k);return`<div style="margin-bottom:20px"><div class="row between" style="margin-bottom:10px"><b class="small">${w.title}</b><span class="small muted">${ss.filter(s=>got.has(s.id)).length}/${ss.length}</span></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">${ss.map(s=>`<div class="stamp ${got.has(s.id)?'got':''}">${s.name.split(' ')[0]}</div>`).join('')}</div></div>`}).join(''):
-   S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${ph('',56,'width:56px;flex:none')}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><span class="muted">›</span></div>`}).join('')}
+   S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><span class="muted">›</span></div>`}).join('')}
   </div>
  </div>`}};
 
