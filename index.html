@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>덕모잇 프로토타입</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap">
 <style>
 /* 산돌프레스: 라이선스 폰트라 CDN이 없어요. fonts/ 폴더에 파일을 넣으면 자동 적용, 없으면 기기에 설치된 폰트 → Pretendard Black 순으로 대체 */
 @font-face{font-family:"Sandoll Press";font-weight:400 900;font-display:swap;
@@ -40,8 +41,8 @@ input,textarea,select{font:inherit;color:inherit}
 .body{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .body::-webkit-scrollbar{display:none}
 /* PC에서 열면 모바일 화면 크기로 표시 */
-@media (min-width:600px){
-  .phone{width:390px;height:min(844px,calc(100vh - 40px));border-radius:28px;box-shadow:0 20px 50px -18px rgba(0,0,0,.3)}
+@media all{
+  .phone{width:390px;height:844px;border-radius:28px;box-shadow:0 20px 50px -18px rgba(0,0,0,.3)}
 }
 input,textarea{font-size:17px}
 button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
@@ -215,14 +216,16 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
    덕모잇 테마 — Figma 디자인 적용 (색상 · 폰트 · 컴포넌트)
    ===================================================================== */
 .press{font-family:var(--f-press);font-weight:900;letter-spacing:-.02em}
-.wrap{background:#dfe8f2}
+.wrap{background:#dfe8f2;height:100dvh;min-height:0;overflow:hidden}
+/* 아이폰 14 (390×844) 고정: 화면이 작으면 비율 그대로 축소만 */
+.phone{transform-origin:center center;transform:scale(var(--fit,1))}
 .screen,.screen .body{background:var(--bg)}
 .screen.dark,.screen.dark .body{background:#0d0d10}
 
 /* 아이폰 14 프레임 (390×844) + 상태바 — PC에서 열 때 */
 .sbar{display:none}
-@media (min-width:600px){
-  .phone{width:390px;height:844px;max-height:calc(100vh - 32px);border-radius:47px;box-shadow:0 0 0 10px #111,0 0 0 12px #2b2b2e,0 30px 60px -20px rgba(0,40,90,.45)}
+@media all{
+  .phone{width:390px;height:844px;border-radius:47px;box-shadow:0 0 0 10px #111,0 0 0 12px #2b2b2e,0 30px 60px -20px rgba(0,40,90,.45)}
   .phone{--sat:47px;--sab:22px}
   .sbar{display:flex;position:absolute;top:0;left:0;right:0;height:47px;z-index:101;align-items:center;justify-content:space-between;padding:4px 30px 0 44px;pointer-events:none;color:#000;font:600 17px/1 -apple-system,"SF Pro Text",var(--f-body);letter-spacing:-.02em}
   .sbar .ic{display:flex;gap:6px;align-items:center}
@@ -1221,6 +1224,11 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
  if(['spot','plan','move','arrive','record','scanresult'].includes(id)){S.spot=S.spot||'kamakura'}
  if(id==='move')S.moveProg=0;
  S.stack=TOP.includes(id)?[]:['home'];S.screen=id;render();});
+
+/* ================= iPhone 14 FIT ================= */
+(function(){const ph=document.getElementById('phone');
+ const fit=()=>{const k=Math.min(1,(innerWidth-24)/414,(innerHeight-24)/868);ph.style.setProperty('--fit',k.toFixed(4))};
+ fit();addEventListener('resize',fit);})();
 
 /* ================= SPLASH ================= */
 (function(){const sp=document.getElementById('splash'),ph=document.getElementById('phone');
