@@ -624,6 +624,56 @@ input,textarea{font-size:17px}
 .popt-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .popt-in{height:44px;padding:0 12px;font:inherit;font-size:16px;color:var(--navy);min-width:0;flex:0 1 170px}
 
+/* ===== 방문록 ===== */
+.rvh{position:relative;display:grid;grid-template-columns:190px 1fr;height:190px;margin:4px 0 10px}
+.rvh-img{border-radius:15px;overflow:hidden;cursor:pointer}
+.rvh-img .cart{height:190px!important;border-radius:15px}
+.rvh-t{padding:14px 0 0 18px;display:flex;flex-direction:column;line-height:1.05}
+.rvh-t b{font-family:var(--f-press);font-weight:900;font-size:32px;color:#0b2a4a;transform:skewX(-6deg);transform-origin:left;letter-spacing:-.02em}
+.rvh-t span{font-family:var(--f-press);font-weight:800;font-size:28px;color:#0b2a4a;letter-spacing:.14em;margin-top:6px}
+.rvh-b{position:absolute;right:0;bottom:0;width:calc(100% - 206px)}
+.rvh-b .qx{font-size:17px}
+.rvs{display:flex;align-items:center;gap:16px;padding:16px 18px}
+.rvs-l{flex:none;width:92px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.rvs-l b{font-size:34px;font-weight:800;color:var(--navy);line-height:1}
+.rvs-l>span:last-child{font-size:15px;color:var(--sub);white-space:nowrap}
+.rvstars{display:inline-flex;gap:1px;font-size:15px;color:#d5dee8;letter-spacing:0}
+.rvstars i{font-style:normal}.rvstars i.on{color:var(--navy)}
+.rvs-r{flex:1;display:grid;gap:4px}
+.rvs-row{display:grid;grid-template-columns:42px 1fr 30px;align-items:center;gap:8px;font-size:15px;color:var(--sub)}
+.rvs-row.top{color:var(--navy);font-weight:700}
+.rvs-bar{height:9px;border-radius:5px;background:#eef3f8;overflow:hidden}
+.rvs-bar i{display:block;height:100%;border-radius:5px;background:var(--b)}
+.rvs-s{text-align:right}
+.rv-cta{width:100%;margin:12px 0 6px;height:54px;font-size:17px;gap:8px;justify-content:center;position:relative}
+.rv-cta .jp{font-weight:500;opacity:.9}
+.rv-cta .go{position:absolute;right:18px;display:inline-flex}.rv-cta .go svg{width:18px;height:18px;transform:rotate(180deg)}
+.rvi{padding:14px 2px;border-bottom:1px solid var(--line)}
+.rvi-h{display:flex;align-items:center;gap:8px}
+.rvi-av{width:34px;height:34px;flex:none}
+.rvi-u{font-size:16px;color:var(--navy)}
+.rvi-d{font-size:15px;color:var(--mute)}
+.rvi-me{font-size:15px;font-weight:600;color:var(--b);background:var(--b-weak);padding:0 6px;border-radius:6px}
+.rvi-r{margin-left:auto;font-size:15px;font-weight:700;color:var(--b);background:var(--b-weak);padding:2px 8px;border-radius:8px;white-space:nowrap}
+.rvi-t{margin:8px 0 8px;font-size:17px;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rvi-f{display:flex;align-items:center;justify-content:space-between;min-height:26px}
+.rvi-tag{font-size:15px;font-weight:600;color:#fff;background:var(--b);padding:2px 10px;border-radius:12px}
+.rvi-like{display:inline-flex;align-items:center;gap:4px;font-size:15px;color:var(--slate);padding:4px 2px}
+.rvi-like svg{width:18px;height:18px}
+.rvi-like.on{color:#e5484d}.rvi-like.on svg path:first-child{fill:#e5484d}
+.rv-end{text-align:center;font-size:15px;color:var(--mute);padding:22px 0 30px}
+.rvw-l{font-size:15px;font-weight:600;color:var(--navy);margin:12px 0 6px}
+.rvw-stars{display:flex;align-items:center;gap:2px}
+.rvw-stars button{font-size:32px;line-height:1;color:#d5dee8;padding:2px}
+.rvw-stars button.on{color:var(--b)}
+.rvw-sv{margin-left:8px;font-size:17px;font-weight:700;color:var(--b)}
+.rvw-in{display:flex;align-items:center;gap:8px;height:50px;padding:0 14px;border:1.5px solid var(--b-light);border-radius:14px;background:#fff}
+.rvw-in:focus-within{border-color:var(--b)}
+.rvw-in input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:17px;background:none;color:var(--navy)}
+.rvw-in span{font-size:15px;color:var(--mute);flex:none}
+.rvw-tags{display:flex;flex-wrap:wrap;gap:6px}
+.btn:disabled{opacity:.45;pointer-events:none}
+
 /* 스플래시 (Figma: 블루 + 집중선 + 로고) */
 .splash{position:absolute;inset:0;z-index:100;background:#0078e9;display:grid;place-items:center;overflow:hidden;transition:opacity .45s ease,visibility 0s .45s}
 .splash::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 50%,rgba(255,255,255,.28) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side,transparent 34%,#000 80%);mask:radial-gradient(closest-side,transparent 34%,#000 80%);animation:spin 40s linear infinite}
@@ -741,16 +791,38 @@ const MOVE_EXP=[
  {id:'ost',name:'OST 사운드트랙',desc:'이동 구간마다 작품 속 BGM이 이어서 재생돼요'},
  {id:'narr',name:'장면 내레이션',desc:'지나는 장소에 얽힌 작품 속 에피소드를 들려줘요'},
 ];
-const REVIEW_POOL=[
- {u:'성지순례러',t:'3일 전',r:5,txt:'원작 구도 그대로라 도착하자마자 소름 돋았어요. 같은 각도로 사진 꼭 찍어 보세요!'},
- {u:'아침산책',t:'1주 전',r:4.5,txt:'평일 아침에 가니 사람이 거의 없어서 여유롭게 둘러봤어요. 주변이 조용하니 매너 지켜 주세요.'},
- {u:'길치탈출',t:'2주 전',r:5,txt:'역에서 생각보다 가까워요. 앱 길 안내대로 가니 헤매지 않았어요.'},
- {u:'노을수집가',t:'3주 전',r:4.5,txt:'해 질 녘 빛이 장면이랑 제일 비슷해요. 360° 재현 켜고 보니까 감동 두 배.'},
- {u:'덕질여행중',t:'1달 전',r:4,txt:'잠깐 들르려다 두 시간 있었네요. 근처 카페도 분위기 좋아요.'},
- {u:'스탬프마스터',t:'1달 전',r:5,txt:'순례 스탬프 찍고 기록 남기니까 여행 일기처럼 남아서 좋아요.'},
-];
-const reviewsFor=sp=>{const own=POSTS.filter(p=>p.spot===sp.id).map(p=>({u:p.u,t:p.t,r:5,txt:p.txt}));const k=[...sp.id].reduce((a,c)=>a+c.charCodeAt(0),0);
- const pool=REVIEW_POOL.map((_,i)=>REVIEW_POOL[(i+k)%REVIEW_POOL.length]);return own.concat(pool).slice(0,3)};
+/* ================= 방문록(명소별 한 줄 후기) ================= */
+const RV_TAGS=['#접근성굿','#원작그대로','#OST필수성취','#사진맛집','#소름주의','#매너필수'];
+const RV_BASE={shibuya:[
+ {u:'이스트블루',d:'2026.10.07',r:5,txt:'시부야 구경 갈 겸 딱 좋음!',tag:'#접근성굿',like:0},
+ {u:'제발킹누',d:'2026.10.07',r:5,txt:'킹누 specialz 들으셈',tag:'#OST필수성취',like:22},
+ {u:'하치',d:'2026.10.05',r:5,txt:'모어댄월즈 이것도 무조건 들어야함',tag:'#OST필수성취',like:19},
+ {u:'갸륵갸루',d:'2026.10.04',r:5,txt:'스쿠나가 주인공이 되버리는',tag:'#소름주의',like:3},
+ {u:'여행자',d:'2026.10.04',r:4,txt:'한가할 때 가고싶으면 이른 아침에 가세요',tag:'',like:2},
+ {u:'카무사리',d:'2026.10.03',r:3,txt:'사람 엄청 많아서 힘들긴 해요..',tag:'',like:0},
+ {u:'테루테루보즈',d:'2026.10.01',r:5,txt:'진짜 노래들으면 시부야 사변 일어난거 같음',tag:'#원작그대로',like:0},
+ {u:'오니니나레',d:'2026.09.20',r:5,txt:'좋아요',tag:'#접근성굿',like:0},
+ {u:'신죠사사게오',d:'2026.09.19',r:5,txt:'성지순례하고 쇼핑하기 좋음',tag:'#접근성굿',like:1}]};
+const RV_SUM_FIX={shibuya:{avg:4.9,n:1428,dist:[85,67,21,2,1]}};   // Figma 시안 수치
+const RV_LINE={shibuya:'領域展開\n無量空処'};
+const RV_POOL=[['원작 구도 그대로라 소름 돋았어요',5,'#원작그대로'],['사진 스팟으로 최고예요',5,'#사진맛집'],['역에서 가까워서 찾기 쉬워요',5,'#접근성굿'],['평일 아침이 제일 한적해요',4,''],['해 질 녘에 가면 장면 그대로',5,'#원작그대로'],['주민 생활공간이라 조용히 다녀왔어요',4,'#매너필수'],['OST 들으면서 걸으면 감동 두 배',5,'#OST필수성취'],['사람이 많아서 조금 정신없었어요',3,''],['생각보다 작아서 놀랐어요',4,''],['또 오고 싶은 성지',5,'#사진맛집']];
+const RV_NICK=['순례왕','노을덕후','아침산책','덕질여행중','스탬프마스터','길치탈출','성지기록러','하루한성지','새벽순례','오타쿠여행자'];
+const rvSeed=sp=>[...sp.id].reduce((a,c)=>a+c.charCodeAt(0),0);
+function rvBase(sp){if(RV_BASE[sp.id])return RV_BASE[sp.id];const k=rvSeed(sp);
+ RV_BASE[sp.id]=Array.from({length:8},(_,i)=>{const p=RV_POOL[(k+i*3)%RV_POOL.length];const day=12-((i*3+k)%4)-i*2;const mo=day>0?10:9;const dd=day>0?day:30+day;
+  return{u:RV_NICK[(k+i)%RV_NICK.length],d:`2026.${String(mo).padStart(2,'0')}.${String(dd).padStart(2,'0')}`,r:p[1],txt:p[0],tag:p[2],like:(k*7+i*11)%24}});
+ return RV_BASE[sp.id]}
+const rvList=sp=>((S.myReviews||{})[sp.id]||[]).concat(rvBase(sp)).map((r,i)=>({...r,id:r.id||sp.id+'-'+i}));
+function rvSum(sp){const mine=(S.myReviews||{})[sp.id]||[];const fx=RV_SUM_FIX[sp.id];
+ if(fx){const n=fx.n+mine.length;const avg=(fx.avg*fx.n+mine.reduce((a,r)=>a+r.r,0))/n;return{avg,n,dist:fx.dist}}
+ const all=rvList(sp),base=Math.max(all.length,Math.round(sp.visits*.09));const cnt=[5,4,3,2,1].map(v=>all.filter(r=>Math.round(r.r)===v).length);
+ const avg=all.reduce((a,r)=>a+r.r,0)/all.length;return{avg,n:base+mine.length,dist:cnt.map(c=>Math.round(c/all.length*100))}}
+const stars=(v,cls='')=>`<span class="rvstars ${cls}" aria-label="별점 ${v.toFixed(1)}">${[1,2,3,4,5].map(i=>`<i class="${v>=i-.25?'on':''}">★</i>`).join('')}</span>`;
+const rvItem=r=>{const liked=(S.rvLiked||{})[r.id];return`<div class="rvi">
+ <div class="rvi-h"><div class="av rvi-av"></div><b class="rvi-u">${r.u}</b><span class="rvi-d">${r.d}</span>${r.mine?'<span class="rvi-me">내 후기</span>':''}<span class="rvi-r">★ ${r.r.toFixed(1)}</span></div>
+ <div class="rvi-t">${r.txt.replace(/</g,'&lt;')}</div>
+ <div class="rvi-f">${r.tag?`<span class="rvi-tag">${r.tag}</span>`:'<span></span>'}<button class="rvi-like ${liked?'on':''}" data-act="rvlike" data-v="${r.id}" aria-label="좋아요">${I.heart}<span>${r.like+(liked?1:0)}</span></button></div></div>`};
+
 const SITE_EXP=[
  {id:'overlay',name:'장면 오버레이',desc:'원작 장면을 실제 풍경 위에 겹쳐 같은 구도를 찾아요',rec:true},
  {id:'pano',name:'360° 장면 재현',desc:'원작에선 볼 수 없던 뒤쪽까지 장면 속을 둘러봐요',rec:true},
@@ -964,9 +1036,9 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
   </div>
   <div class="pad sec"><div class="card" style="padding:14px;background:var(--bg);border:0"><b class="small">순례 팁</b><div class="small muted" style="margin-top:4px">${sp.tip}</div></div></div>
   ${near.length?`<div class="sec"><div class="sec-h"><h3>같은 작품의 다른 장면</h3></div><div class="hscroll">${near.map(s=>spotCard(s,160)).join('')}</div></div>`:''}
-  <div class="sec" style="padding-bottom:24px"><div class="sec-h"><h3>방문 후기</h3><span class="small muted">${fmt(Math.round(sp.visits*.08))}개</span></div>
-   <div class="pad">${reviewsFor(sp).map(r=>`<div class="rv"><div class="row" style="gap:10px"><div class="av" style="width:34px;height:34px;flex:none"></div><div style="flex:1;min-width:0"><b style="font-size:15px">@${r.u}</b><div class="small muted">${r.t}</div></div><span class="rv-star">★ ${r.r.toFixed(1)}</span></div><div style="margin-top:8px;font-size:15px;line-height:1.5">${r.txt}</div></div>`).join('')}
-    <button class="btn out sm" style="width:100%;margin-top:12px" data-go="community" data-sub="feed">후기 더보기</button></div></div>
+  <div class="sec" style="padding-bottom:24px"><div class="sec-h"><h3>방문 후기</h3><span class="small muted">★ ${rvSum(sp).avg.toFixed(1)} · ${fmt(rvSum(sp).n)}개</span></div>
+   <div class="pad">${rvList(sp).slice(0,3).map(rvItem).join('')}
+    <button class="btn out sm" style="width:100%;margin-top:12px" data-go="reviews">후기 더보기</button></div></div>
  </div>
  <div class="cta"><button class="btn out ar360" style="width:56px;flex:none" data-act="sheet-exp" data-ctx="site" aria-label="AR 경험 선택">${I.p360}</button><button class="btn pri" data-go="plan">방문 계획하기</button></div>`}};
 
@@ -1032,6 +1104,46 @@ function planRoute(sp){
  return{total:drive+park,cost:money(cost,krw),costNote:taxi?'택시 기준':'유류비·통행료 기준',transfers:0,km,nodes,summary:`약 ${km<1?km.toFixed(1):Math.round(km)}km 주행`,warn:''};
 }
 /* 여정 시작(이동 중 AR) 화면은 기존과 같은 형태로 선택된 경로를 받아요 */
+SCREENS.reviews=()=>{const sp=spot();const list=rvList(sp);const sm=rvSum(sp);const line=RV_LINE[sp.id]||sp.line||'ここが\n聖地だ！';return{html:`
+ ${hdr('',{right:`<button class="ib" data-act="gohome" aria-label="홈">${I.home}</button><button class="ib" data-go="archive" aria-label="내 기록">${I.face}</button>`})}
+ <div class="body"><div class="pad">
+  <div class="rvh">
+   <div class="rvh-img" data-go="spot" data-id="${sp.id}">${art(sp,190,{cap:false,bk:false,img:true})}</div>
+   <div class="rvh-t"><b>방문록</b><span>レビュー</span></div>
+   <div class="qbub rvh-b"><i class="qt l" style="top:60%"></i><span class="qx" lang="ja">${line.replace(/\n/g,'<br>')}</span></div>
+  </div>
+  <div class="rvs card">
+   <div class="rvs-l"><b>${sm.avg.toFixed(1)}</b>${stars(sm.avg)}<span>${fmt(sm.n)}명 참여</span></div>
+   <div class="rvs-r">${sm.dist.map((p,i)=>`<div class="rvs-row ${i===0?'top':''}"><span class="rvs-p">${p}%</span><span class="rvs-bar"><i style="width:${p}%"></i></span><span class="rvs-s">${5-i}점</span></div>`).join('')}</div>
+  </div>
+  <button class="btn pri rv-cta" data-act="rvwrite">방문록 등록하기<span class="jp">| アニメの中見物</span><span class="go">${I.back}</span></button>
+  <div class="rvlist">${list.map(rvItem).join('')}</div>
+  <div class="rv-end">${sp.name}의 방문록을 모두 봤어요</div>
+ </div></div>`}};
+function openReviewSheet(){const sp=spot();const el=document.getElementById('sheet');const f={r:5,txt:'',tag:''};
+ const draw=()=>{el.innerHTML=`<div class="grab"></div>
+  <div style="font-size:18px;font-weight:700">방문록 등록하기</div>
+  <div class="small muted" style="margin:2px 0 14px">${work(sp).title} · ${sp.name}</div>
+  <div class="rvw-l">평점</div>
+  <div class="rvw-stars" role="radiogroup" aria-label="평점">${[1,2,3,4,5].map(i=>`<button class="${i<=f.r?'on':''}" data-rw="star" data-v="${i}" role="radio" aria-checked="${i===f.r}" aria-label="${i}점">★</button>`).join('')}<span class="rvw-sv">${f.r}.0</span></div>
+  <div class="rvw-l">한 줄 후기</div>
+  <div class="rvw-in"><input id="rvtxt" type="text" maxlength="40" enterkeyhint="done" autocomplete="off" placeholder="이 성지를 한 줄로 남겨 주세요" value="${f.txt.replace(/"/g,'&quot;')}"><span id="rvcnt">${f.txt.length}/40</span></div>
+  <div class="rvw-l">태그 <span class="small muted">· 선택</span></div>
+  <div class="rvw-tags">${RV_TAGS.map(t=>`<button class="chip ${f.tag===t?'on':''}" data-rw="tag" data-v="${t}">${t}</button>`).join('')}</div>
+  <button class="btn pri" style="margin-top:16px;width:100%" data-rw="done" id="rvdone" ${f.txt.trim()?'':'disabled'}>등록하기</button>`;
+  const inp=el.querySelector('#rvtxt');inp.oninput=()=>{f.txt=inp.value.replace(/[\r\n]/g,'');el.querySelector('#rvcnt').textContent=f.txt.length+'/40';el.querySelector('#rvdone').disabled=!f.txt.trim()};
+  inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();if(f.txt.trim())submit()}};};
+ const submit=()=>{const d=new Date();S.myReviews=S.myReviews||{};(S.myReviews[sp.id]=S.myReviews[sp.id]||[]).unshift({id:'my'+Date.now(),u:S.nick||'나',d:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,r:f.r,txt:f.txt.trim(),tag:f.tag,like:0,mine:true});
+  closeSheet();render();const b=curScreen()&&curScreen().querySelector('.rvlist');if(b)b.scrollIntoView({block:'start'});toast('방문록을 등록했어요')};
+ draw();
+ el.onclick=e=>{const t=e.target.closest('[data-rw]');if(!t)return;const a=t.dataset.rw;
+  if(a==='star'){f.r=+t.dataset.v;f.txt=el.querySelector('#rvtxt').value;draw()}
+  else if(a==='tag'){f.tag=f.tag===t.dataset.v?'':t.dataset.v;f.txt=el.querySelector('#rvtxt').value;draw()}
+  else if(a==='done'&&f.txt.trim())submit()};
+ document.getElementById('dim').classList.add('on');el.classList.add('on');
+ setTimeout(()=>{const i=el.querySelector('#rvtxt');if(i)i.focus({preventScroll:true})},250);
+}
+
 const ROUTES=sp=>{const r=planRoute(sp),n=r.nodes;const steps=n.slice(1).map((x,i)=>[`${n[i].name} → ${x.name}`,`${x.seg.label} · ${fmtMin(x.seg.min)}`]);
  return[{name:MODES.find(m=>m.id===S.planMode).name,time:'약 '+fmtMin(r.total),cost:r.cost,steps:steps.length?steps:[[`${planFrom(sp).name} → ${sp.name}`,'도보']]}]};
 const planRouteHTML=sp=>{const r=planRoute(sp);const n=r.nodes;return`
@@ -1610,6 +1722,9 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'qchip':document.getElementById('q').value=t.dataset.q;S.scanQuery=t.dataset.q;S.upload=null;go('scanning');break;
   case 'qsearch':{const v=document.getElementById('q').value.trim();if(!v){toast('기억나는 장면을 적어주세요');break}S.scanQuery=v;S.upload=null;go('scanning');break}
   case 'route':S.route=+t.dataset.i;render();break;
+  case 'rvwrite':openReviewSheet();break;
+  case 'rvlike':{S.rvLiked=S.rvLiked||{};const id=t.dataset.v;S.rvLiked[id]=!S.rvLiked[id];t.classList.toggle('on',S.rvLiked[id]);const n=t.querySelector('span');n.textContent=(+n.textContent)+(S.rvLiked[id]?1:-1);break}
+  case 'gohome':tabTo('home');break;
   case 'pfrom':S.planFrom=t.dataset.v;planUpdate();break;
   case 'pmode':S.planMode=t.dataset.v;planUpdate();break;
   case 'popt':S.planOptOpen=!t.closest('details').open;break;
