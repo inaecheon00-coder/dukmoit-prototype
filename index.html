@@ -128,8 +128,6 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .cam.filter .person{background:rgba(160,170,255,.45);outline:2px dashed rgba(200,205,255,.8);outline-offset:2px}
 .cam.filter .person .tagp{opacity:1}
 .hud{position:absolute;inset:0;pointer-events:none}
-.glass .hud::before{content:"";position:absolute;inset:60px 18px 140px;border:1px solid rgba(255,255,255,.25);border-radius:40px}
-.glass .camlb::after{content:" · AI 글래스 HUD";}
 .ov{position:absolute;z-index:5}
 .pill{background:rgba(20,20,24,.7);backdrop-filter:blur(8px);color:#fff;border-radius:14px;padding:10px 14px}
 .dark .ib:hover{background:rgba(255,255,255,.12)}
@@ -476,6 +474,7 @@ input,textarea{font-size:17px}
 .arb{min-width:96px;height:72px;padding:8px 12px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
  background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.8);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#fff;font-size:15px;font-weight:600;white-space:nowrap;cursor:pointer}
 .arb i{display:grid;place-items:center;font-style:normal}.arb svg{width:24px;height:24px}
+.expth{width:56px;height:56px;flex:none;border-radius:12px;object-fit:cover;display:block}
 .arb:active{background:rgba(255,255,255,.34)}
 .mguide .mg-route{display:flex;align-items:center;gap:6px;font-size:17px;line-height:1.35;word-break:keep-all;flex-wrap:wrap}
 .mguide .mg-ar{opacity:.7}
@@ -1447,25 +1446,23 @@ function captureAR(ctxName){const v=document.getElementById('camv'),img=document
  const sp=spot();c.save();c.font='700 34px "Pretendard Variable",Pretendard,sans-serif';c.fillStyle='rgba(0,0,0,.45)';rr(c,40,H-130,W-80,90,45);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText('덕모잇 · '+work(sp).title+' · '+sp.name,80,H-85);c.restore();
  return cv.toDataURL('image/jpeg',.86)}
 
-/* 이동 안내: 사용자가 고른 출발지 → 도착지 · 이동수단 · 남은 시간만 */
+/* 이동 안내: 사용자가 고른 출발지 → 도착지 · 이동수단 · 소요시간 */
 function moveGuide(sp){const r=planRoute(sp),n=r.nodes,m=MODES.find(x=>x.id===S.planMode)||MODES[0];
- const done=n.slice(1,1+S.moveProg).reduce((a,x)=>a+(x.seg?x.seg.min:0),0),left=Math.max(1,r.total-done);
  return`<div class="mg-route"><b>${planFrom(sp).name}</b><span class="mg-ar">→</span><b>${sp.name}</b></div>
- <div class="mg-meta"><span class="mg-mode">${I[m.icon]}${m.name}</span><span class="mg-left">남은 시간 <b>약 ${fmtMin(left)}</b></span></div>`}
+ <div class="mg-meta"><span class="mg-mode">${I[m.icon]}${m.name}</span><span class="mg-left">소요시간 <b>약 ${fmtMin(r.total)}</b></span></div>`}
 SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
  const ch=work(sp).chars;
  return{dark:true,ar:true,html:`
- <div class="${S.moveExp.charfilter?'filter':''} ${S.moveExp.tone?'tone':''} ${S.device==='glass'?'glass':''}" style="position:absolute;inset:0">
+ <div class="${S.moveExp.charfilter?'filter':''} ${S.moveExp.tone?'tone':''}" style="position:absolute;inset:0">
  ${camLayer(`<div class="camlb">카메라 시뮬레이션</div>${[[18,120],[40,150],[63,110],[80,135]].map((p,i)=>`<div class="person" style="left:${p[0]}%;height:${p[1]}px"><span class="tagp">${ch[i%ch.length]}</span></div>`).join('')}`)}
  <div class="hud"></div></div>
  <div class="ov" style="top:calc(var(--sat) + 12px);left:16px;right:16px">
   <div class="row between">
    <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
-   <div class="seg" style="width:190px"><button class="${S.device==='phone'?'on':''}" data-act="device" data-v="phone">스마트폰</button><button class="${S.device==='glass'?'on':''}" data-act="device" data-v="glass">AI 글래스</button></div>
+   <div class="pill small" style="padding:6px 12px" id="cambadge">${camBadge()}</div>
    <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
   </div>
   <div class="pill mguide" id="mguide" style="margin-top:12px">${moveGuide(sp)}</div>
-  <div class="row" style="margin-top:8px;gap:6px;flex-wrap:wrap"><span class="pill small" style="padding:6px 10px" id="cambadge">${camBadge()}</span></div>
   ${fxBar()}
  </div>
  ${fallbackCard()}
@@ -1474,7 +1471,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
   <div class="row between">
    <button class="arb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i><span>경험 선택</span></button>
    <button class="rb" data-act="capture" data-ctx="move" aria-label="촬영"><span></span></button>
-   <button class="arb" data-act="nextstep"><i>${I.map}</i><span id="nextlbl">${S.moveProg>=r.steps.length-1?'도착':'다음 구간'}</span></button>
+   <button class="arb" data-act="nextstep"><i>${I.map}</i><span>도착</span></button>
   </div>
  </div><div class="flash" id="flash"></div>`,after(){startCam();arLoop()}}};
 
@@ -1582,7 +1579,7 @@ function openExpSheet(ctx){
   <div style="font-size:18px;font-weight:700">${ctx==='move'?'이동 중 AR 경험':'현장 AR 경험'}</div>
   <div class="small muted" style="margin:2px 0 8px">${ctx==='move'?'이동 시간도 덕질이 되도록, 원하는 경험을 골라보세요':'이 장면 앞에서 즐길 경험을 골라보세요'}</div>
   <div class="row" style="gap:6px;margin-bottom:6px"><button class="chip" data-sx="rec">추천 조합 적용</button><button class="chip" data-sx="all">전부 켜기</button></div>
-  ${list.map(e=>`<div class="opt" style="cursor:pointer" data-sx="t" data-id="${e.id}">${ph('',56,'width:56px;flex:none')}<div style="flex:1"><div class="row" style="gap:6px"><b>${e.name}</b>${e.rec?'<span class="tag ac">추천</span>':''}</div><div class="small muted">${e.desc}</div></div><span class="tg ${st[e.id]?'on':''}"></span></div>`).join('')}
+  ${list.map(e=>`<div class="opt" style="cursor:pointer" data-sx="t" data-id="${e.id}">${ctx==='move'?`<img class="expth" src="assets/exp/${e.id}.jpg?v=${ASSET_V}" alt="" loading="lazy">`:ph('',56,'width:56px;flex:none')}<div style="flex:1"><div class="row" style="gap:6px"><b>${e.name}</b>${e.rec?'<span class="tag ac">추천</span>':''}</div><div class="small muted">${e.desc}</div></div><span class="tg ${st[e.id]?'on':''}"></span></div>`).join('')}
   <button class="btn pri" style="margin-top:14px" data-sx="done">적용하기</button>`;};
  draw();
  el.onclick=e=>{const t=e.target.closest('[data-sx]');if(!t)return;const a=t.dataset.sx;
@@ -1774,8 +1771,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'poptclear':S.planDate='';S.planArr='';curScreen().querySelectorAll('[data-pset]').forEach(i=>i.value='');document.getElementById('poptsum').textContent=planOptSummary();break;
   case 'savetrip':{const f=planFrom(spot()),m=MODES.find(x=>x.id===S.planMode),tr={spot:S.spot,date:planOptSummary().startsWith('날짜·')?'날짜 미정':planOptSummary(),status:'예정',from:f.name,mode:m.name};const i=S.trips.findIndex(x=>x.spot===S.spot);if(i>=0)S.trips[i]={...S.trips[i],...tr};else S.trips.push(tr);toast(`여정을 저장했어요 · ${f.name}에서 ${m.name}`);break}
   case 'sheet-exp':openExpSheet(t.dataset.ctx);break;
-  case 'device':S.device=t.dataset.v;render();toast(S.device==='glass'?'AI 글래스에 연결됨 (시뮬레이션)':'스마트폰 카메라 모드');break;
-  case 'nextstep':{S.locked=false;const n=ROUTES(spot()).length?ROUTES(spot())[Math.min(S.route,ROUTES(spot()).length-1)].steps.length:1;if(S.moveProg>=n-1){replace('arrive');toast('장면 포인트에 도착했어요!')}else{S.moveProg++;const g=document.getElementById('mguide');if(g)g.innerHTML=moveGuide(spot());const l=document.getElementById('nextlbl');if(l)l.textContent=S.moveProg>=n-1?'도착':'다음 구간';toast('다음 구간으로 이동해요')}break}
+  case 'nextstep':{S.locked=false;replace('arrive');toast('장면 포인트에 도착했어요!');break}
   case 'sitemode':S.siteMode=t.dataset.v;render();break;
   case 'capture':{const ctx=t.dataset.ctx;if(ctx==='site'&&S.siteMode!=='pano'&&!S.locked){toast('장면을 인식하는 중이에요. 잠시만요');break}const exp=ctx==='move'?MOVE_EXP.filter(x=>S.moveExp[x.id]).map(x=>x.name):[SITE_EXP.find(x=>x.id===S.siteMode).name];const fl=document.getElementById('flash');if(fl){fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on')}let img=null;try{img=captureAR(ctx)}catch(e){}S.lastCapture={ctx,exp:exp.length?exp:['일반 촬영'],img,src:{live:'실시간 카메라',photo:'사진',sim:'시뮬레이션'}[S.camMode]||''};setTimeout(()=>go('record'),180);break}
   case 'fxtoggle':{const tgt=S.screen==='move'?S.moveExp:S.siteFx;const keys=['anime','tone','sky'];const on=keys.some(k=>tgt[k]);const key=S.screen==='move'?'_fxm':'_fxs';if(on){S[key]=keys.reduce((a,k)=>(a[k]=tgt[k],a),{});keys.forEach(k=>tgt[k]=false)}else{const prev=S[key]||(S.screen==='move'?{anime:true,tone:true,sky:true}:{anime:true,tone:true,sky:false});keys.forEach(k=>tgt[k]=prev[k])}render();break}
