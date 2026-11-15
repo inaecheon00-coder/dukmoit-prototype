@@ -546,6 +546,16 @@ input,textarea{font-size:17px}
 .hero-q{position:absolute;right:0;bottom:4px;width:calc(100% - 196px)}
 .hero-q .qx{font-size:16px}
 
+/* ===== 포스터 썸네일 · 히어로 이미지 ===== */
+.cart.mc .kj{display:none}
+.cart.mc .bk{z-index:3}
+.cart.mc.has-img{background:#e9eef5}
+.cart .poster{object-position:center 30%}
+.hero-pic{border-radius:15px;overflow:hidden;background:#cfe3f7}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.hero-pic::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,30,70,.18),rgba(0,0,0,0) 40%,rgba(0,0,0,0) 70%,rgba(0,30,70,.15));pointer-events:none;z-index:1}
+.hero-ret,.hero-tag{z-index:4}
+
 /* 스플래시 (Figma: 블루 + 집중선 + 로고) */
 .splash{position:absolute;inset:0;z-index:100;background:#0078e9;display:grid;place-items:center;overflow:hidden;transition:opacity .45s ease,visibility 0s .45s}
 .splash::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 50%,rgba(255,255,255,.28) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side,transparent 34%,#000 80%);mask:radial-gradient(closest-side,transparent 34%,#000 80%);animation:spin 40s linear infinite}
@@ -612,12 +622,12 @@ const WORKS={
  shiro:{title:'하얀 계절의 너',genre:'로맨스',year:2017,eps:12,chars:['유키나','하루토']},
 };
 const SPOTS=[
- {id:'kamakura',line:'夕焼けの踏切で、\nまた会おう。',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#ffcf8a','#ff8a6b','#5a63d8','rgba(30,22,60,.6)'],jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},cmap:{x:30,y:66},match:94},
- {id:'shichiri',line:'この海の色、\n忘れないよ。',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#bfe6ff','#59b4f5','#0f6fc9','rgba(10,40,80,.55)'],jp:'七里ヶ浜海岸',st:'시치리가하마역 5분',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},cmap:{x:44,y:78},match:71},
+ {id:'kamakura',line:'君の名前は...！',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#ffcf8a','#ff8a6b','#5a63d8','rgba(30,22,60,.6)'],jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},cmap:{x:30,y:66},match:94},
+ {id:'shichiri',line:'大丈夫,\n僕, 最強だから',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#bfe6ff','#59b4f5','#0f6fc9','rgba(10,40,80,.55)'],jp:'七里ヶ浜海岸',st:'시치리가하마역 5분',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},cmap:{x:44,y:78},match:71},
  {id:'enoshima',line:'波の向こうに\n君がいた。',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#c9f0ff','#6ccff0','#1a8ec9','rgba(8,50,80,.5)'],jp:'江の島弁天橋',st:'에노시마역 12분',work:'nami',name:'에노시마 벤텐교',region:'일본 가나가와현 후지사와',abroad:true,ep:'3화',time:'18:05',scene:'긴 다리를 자전거로 달리며 섬을 향해 소리치는 장면',dist:'1,158km',visits:9340,tags:['다리','바다','자전거'],tip:'자전거는 다리 입구에서 끌고 가야 해요.',map:{x:72,y:58},cmap:{x:18,y:84},match:63},
  {id:'hida',line:'星の駅で、\n待ってるから！',cat:'',air:'주부',hub:'다카야마',pal:['#ffd9b0','#c58ae0','#3b2f8f','rgba(20,15,50,.6)'],jp:'飛騨古川駅跨線橋',st:'히다후루카와역 2분',work:'hoshi',name:'히다후루카와역 육교',region:'일본 기후현 히다',abroad:true,ep:'극장판',time:'48:30',scene:'육교 위에서 지나가는 열차를 내려다보며 이름을 부르는 장면',dist:'1,020km',visits:21500,tags:['육교','역','열차'],tip:'역 관광안내소에서 성지 지도를 받을 수 있어요.',map:{x:48,y:38},match:58},
  {id:'ihwa',line:'事件は\n路地裏で起きる！',cat:'',pal:['#fff2c4','#ffb37a','#e8645a','rgba(70,30,30,.55)'],jp:'梨花洞の階段道',st:'혜화역 14분',work:'neko',name:'이화동 계단길',region:'서울 종로구 이화동',abroad:false,ep:'2화',time:'09:40',scene:'고양이를 쫓아 좁은 계단길을 뛰어 올라가는 장면',dist:'8.2km',visits:3120,tags:['계단','골목','벽화'],tip:'주거지역이에요. 대화와 촬영은 조용히 해 주세요.',map:{x:22,y:40},match:47},
- {id:'kifune',line:'雪の鳥居を\nくぐったら…',cat:'osaka',air:'간사이',hub:'교토',pal:['#eef5ff','#9fbde6','#c94a4a','rgba(60,20,30,.55)'],jp:'貴船神社参道',st:'기부네구치역 30분',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},cmap:{x:58,y:20},match:52},
+ {id:'kifune',line:'ひとりなら\nロックをやれ！',cat:'osaka',air:'간사이',hub:'교토',pal:['#eef5ff','#9fbde6','#c94a4a','rgba(60,20,30,.55)'],jp:'貴船神社参道',st:'기부네구치역 30분',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},cmap:{x:58,y:20},match:52},
  {id:'shibuya',line:'信号が変わる前に、\n走れ！',cat:'tokyo',air:'하네다',hub:'시부야',pal:['#d9e8ff','#7b8cff','#2b2f8f','rgba(15,15,50,.6)'],jp:'渋谷スクランブル交差点',st:'시부야역 1분',work:'kaze',name:'시부야 스크램블 교차로',region:'일본 도쿄도 시부야구',abroad:true,ep:'1화',time:'00:42',scene:'신호가 바뀌는 순간 수백 명 사이로 두 사람이 서로를 알아보는 장면',dist:'1,150km',visits:15600,tags:['교차로','도심','야경'],tip:'역 2층 연결통로에서 원작과 같은 부감 구도를 찍을 수 있어요.',map:{x:69,y:44},cmap:{x:56,y:46},match:66},
  {id:'suga',line:'やっと、\n君を見つけた。',cat:'tokyo',air:'하네다',hub:'요쓰야',pal:['#ffe9c7','#ffb88a','#d0566c','rgba(70,25,35,.55)'],jp:'須賀神社男坂',st:'요쓰야산초메역 9분',work:'kaze',name:'스가 신사 계단',region:'일본 도쿄도 신주쿠구',abroad:true,ep:'12화',time:'21:10',scene:'계단 위와 아래에서 엇갈리던 두 사람이 마침내 멈춰 서는 장면',dist:'1,151km',visits:14200,tags:['계단','신사','엇갈림'],tip:'주택가 계단이에요. 계단을 막고 오래 촬영하지 말아 주세요.',map:{x:70,y:42},cmap:{x:68,y:30},match:61},
  {id:'dotonbori',line:'たこ焼き、\nもう一個だけ！',cat:'osaka',air:'간사이',hub:'난바',pal:['#fff0b3','#ffa25c','#e8455a','rgba(60,15,25,.55)'],jp:'道頓堀戎橋',st:'난바역 3분',work:'machi',name:'도톤보리 에비스바시',region:'일본 오사카부 오사카시',abroad:true,ep:'1화',time:'05:30',scene:'네온 간판 아래 다리 위에서 타코야키를 나눠 먹는 오프닝 장면',dist:'830km',visits:13900,tags:['다리','네온','먹방'],tip:'저녁 6시 이후 간판 불이 켜지면 원작 색감과 가장 비슷해요.',map:{x:52,y:60},cmap:{x:40,y:60},match:56},
@@ -705,14 +715,15 @@ const TAIL='<svg class="tail" viewBox="0 0 44 30" aria-hidden="true"><path d="M0
 const cb=(inner,{tail='r',cls='',attrs=''}={})=>`<div class="cb tail-${tail} ${cls}" ${attrs}><span class="fx"></span>${TAIL}<div class="in">${inner}</div></div>`;
 const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="scan"><span class="cat" data-act="catmenu" role="button" aria-haspopup="listbox" aria-label="카테고리 선택">${catName(S.homeCat)} ${I.chev}</span><span class="bar1"></span><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div>
  <div class="catmenu" role="listbox">${CATS.map(([k,n])=>`<button role="option" class="${S.homeCat===k?'on':''}" data-act="homecat" data-v="${k}">${n}${S.homeCat===k?'<i>✓</i>':''}</button>`).join('')}</div></div>`;
-const art=(sp,h,{cap=true,bk=true,cls='',st=''}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${poster(sp)}
+const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp):''}
  <div class="gr"></div><div class="kj">${sp.jp.slice(0,cls.includes('sm')?Math.max(2,Math.floor((h-14)/14)):Math.max(2,Math.min(8,Math.floor(((typeof h==='number'?h:220)-(cap?112:30))/24))))}</div>${cap?`<div class="sh"></div><div class="cap"><div class="w">${work(sp).title}</div><div class="n">${sp.name}</div></div>`:''}${bk?`<button class="bk ${S.saved&&S.saved[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="저장">${I.star}</button>`:''}</div>`};
 const qb=(q,tail)=>{const sp=SPOTS.find(x=>x.work===q.w);return cb(q.jp.replace(/\n/g,'<br>'),{tail,cls:'qb',attrs:sp?`data-go="spot" data-id="${sp.id}"`:''})};
 /* 명대사 말풍선: Figma 말풍선 그래픽(assets/bubble) + 일본어 대사. dir: 꼬리 방향 up|down|l|r, x: 꼬리 위치(%) */
 const qbub=(sp,dir='down',x=30)=>`<div class="qbub" data-go="spot" data-id="${sp.id}"><i class="qt ${dir}" style="${dir==='up'||dir==='down'?`left:${x}%`:`top:${x}%`}"></i><span class="qx" lang="ja">${sp.line.replace(/\n/g,'<br>')}</span></div>`;
-const masonry=list=>{const c0=[],c1=[];list.forEach((sp,i)=>(i%2?c1:c0).push(sp));const H0=[250,210,330],H1=[300,240,190];
- const L=c0.map((sp,j)=>art(sp,H0[j%3])+(j===0?qbub(sp,'up',70):'')).join('');
- const R=c1.map((sp,j)=>(j===0||j===2?qbub(sp,'down',28):'')+art(sp,H1[j%3])).join('');
+const mcard=(sp,h)=>art(sp,h,{cap:false,bk:true,img:true,go:true,cls:'mc'});   // 썸네일: 이미지 + 별 아이콘만
+const masonry=list=>{const c0=[],c1=[];list.forEach((sp,i)=>(i%2?c1:c0).push(sp));const H0=[260,250,330],H1=[290,240,240];
+ const L=c0.map((sp,j)=>mcard(sp,H0[j%3])+(j===0?qbub(sp,'up',70):'')).join('');
+ const R=c1.map((sp,j)=>(j===0||j===2?qbub(sp,'down',28):'')+mcard(sp,H1[j%3])).join('');
  return`<div class="mason"><div class="col">${L}</div><div class="col">${R}</div></div>`};
 const spotRow=s=>`<div class="spotrow" data-go="spot" data-id="${s.id}">${art(s,96,{cap:false,bk:false,cls:'sm',st:'width:96px;flex:none;border-radius:12px;'})}<div style="flex:1;min-width:0"><div class="w">${work(s).title}</div><div class="n">${s.name}</div><div class="j">${s.jp}</div><div class="s">${s.st}</div></div></div>`;
 const fmt=n=>n.toLocaleString('ko-KR');
@@ -736,7 +747,7 @@ SCREENS.home=()=>({tab:'home',html:`
  <div class="body">
   <div class="pad">
    <div class="hero">
-    <div class="hero-pic" data-go="scan">${art(spot('kamakura'),176,{cap:false,bk:false})}<div class="hero-ret"><i></i><i></i><i></i><i></i></div><span class="hero-tag">${I.img} CAPTURE</span></div>
+    <div class="hero-pic" data-go="scan"><img class="hero-img" src="assets/hero-capture.jpg" alt="애니 장면 캡처 예시"><div class="hero-ret"><i></i><i></i><i></i><i></i></div><span class="hero-tag">${I.img} CAPTURE</span></div>
     <div class="hero-t"><b>장면 찾기</b><span>シーン探し</span></div>
     <div class="qbub hero-q" data-go="scan"><i class="qt l" style="top:56%"></i><span class="qx">캡처 한 장이면<br>성지가 보여!</span></div>
    </div>
