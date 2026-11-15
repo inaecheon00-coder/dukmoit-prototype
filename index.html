@@ -789,7 +789,7 @@ SPOTS.push({...SPOTS.find(x=>x.id==='kamakura'),id:'kamakura_sd',work:'slamdunk'
 /* 홈 '떠나고 싶은 애니 속으로' — 키워드(검색바 드롭다운)마다 독립된 영역. 지정받은 구성을 그대로 고정.
    s: 연결 명소, p: 영역 전용 포스터(assets/area/…), q: 말풍선 대사 (말풍선 자리: 1번째·2번째·6번째 칸) */
 const AREAS={
- all:[{s:'suga',p:'all-1',q:'君の名前は...！'},{s:'shibuya',p:'all-2',q:'大丈夫,\n僕, 最強だから'},{s:'karumai',p:'all-3'},{s:'haboro',p:'all-4'},{s:'meguro',p:'all-5'},{s:'shelter',p:'all-6',q:'ひとりなら\nロックをやれ！'}],
+ all:[{s:'suga',p:'all-1',q:'君の名前は...！'},{s:'shibuya',p:'all-2',q:'大丈夫,\n僕, 最強だから'},{s:'karumai',p:'all-3'},{s:'haboro',p:'all-4'},{s:'meguro',p:'all-5'},{s:'shelter',p:'all-6',q:'ひとりなら\nロックをやれ！'},{s:'onnazaka',p:'all-7'},{s:'kamakura_sd',p:'all-8'},{s:'sunshine',p:'all-9'},{s:'kifune_cn',p:'all-10'},{s:'keion',p:'all-11'},{s:'gotoubun',p:'all-12'},{s:'seihantai',p:'all-13'},{s:'yanineko',p:'all-14'},{s:'tamako',p:'all-15'}],
  hot:[{s:'hida',q:'星の駅で、\n待ってるから！'},{s:'kifune',q:'ひとりなら\nロックをやれ！'},{s:'onnazaka'},{s:'shibuya',p:'hot-4'},{s:'suga',p:'hot-5'},{s:'dotonbori',q:'たこ焼き、\nもう一個だけ！'}],
  tokyo:[{s:'shibuya',p:'tokyo-1',q:'大丈夫,\n僕, 最強だから'},{s:'shelter',p:'tokyo-2',q:'ひとりなら\nロックをやれ！'},{s:'onnazaka',p:'tokyo-3'},{s:'suga',p:'tokyo-4'},{s:'kamakura_sd',p:'tokyo-5'},{s:'sunshine',p:'tokyo-6',q:'パイのサクサクと\nリンゴの甘みの\nハーモニー!'}],
  osaka:[{s:'kifune_cn',p:'osaka-1',q:'しんじつは\nいつもひとつ!'},{s:'keion',p:'osaka-2',q:'萌え萌え\nキュン'},{s:'gotoubun',p:'osaka-3'},{s:'seihantai',p:'osaka-4'},{s:'yanineko',p:'osaka-5'},{s:'tamako',p:'osaka-6',q:'私もちゅうしゃの\n入口に立ってる気分'}]
@@ -905,7 +905,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611152';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611153';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
