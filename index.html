@@ -745,6 +745,8 @@ const WORKS={
  yuki:{title:'눈 내리는 신사',genre:'판타지',year:2018,eps:13,chars:['시즈쿠','신령 코하쿠']},
  kaze:{title:'바람의 교차로',genre:'액션 · 청춘',year:2023,eps:24,chars:['렌','아오이']},
  machi:{title:'나니와 맛집 일기',genre:'코미디 · 일상',year:2020,eps:12,chars:['코하루','타코짱']},
+ slamdunk:{title:'슬램덩크 (SLAM DUNK)',genre:'스포츠 · 청춘',year:1993,eps:101,chars:['사쿠라기 하나미치','루카와 카에데']},
+ aonohako:{title:'푸른 상자 (アオのハコ)',genre:'로맨스 · 스포츠',year:2024,eps:25,chars:['이노마타 타이키','카노 치나츠']},
  conan:{title:'명탐정 코난 (名探偵コナン)',genre:'추리 · 미스터리',year:1996,eps:1100,chars:['에도가와 코난','핫토리 헤이지']},
  keion:{title:'케이온! (けいおん!)',genre:'음악 · 일상',year:2009,eps:41,chars:['히라사와 유이','아키야마 미오']},
  seihantai:{title:'정반대의 너와 나 (正反対な君と僕)',genre:'로맨스 · 코미디',year:2026,eps:12,chars:['스즈키','타니']},
@@ -761,8 +763,8 @@ const WORKS={
  shiro:{title:'하얀 계절의 너',genre:'로맨스',year:2017,eps:12,chars:['유키나','하루토']},
 };
 const SPOTS=[
- {id:'kamakura',line:'君の名前は...！',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#ffcf8a','#ff8a6b','#5a63d8','rgba(30,22,60,.6)'],jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},cmap:{x:30,y:66},match:94},
- {id:'shichiri',line:'大丈夫,\n僕, 最強だから',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#bfe6ff','#59b4f5','#0f6fc9','rgba(10,40,80,.55)'],jp:'七里ヶ浜海岸',st:'시치리가하마역 5분',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},cmap:{x:44,y:78},match:71},
+ {id:'kamakura',line:'',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#ffcf8a','#ff8a6b','#5a63d8','rgba(30,22,60,.6)'],jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'slamdunk',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},cmap:{x:30,y:66},match:94},
+ {id:'shichiri',line:'',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#bfe6ff','#59b4f5','#0f6fc9','rgba(10,40,80,.55)'],jp:'七里ヶ浜海岸',st:'시치리가하마역 5분',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},cmap:{x:44,y:78},match:71},
  {id:'enoshima',line:'波の向こうに\n君がいた。',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#c9f0ff','#6ccff0','#1a8ec9','rgba(8,50,80,.5)'],jp:'江の島弁天橋',st:'에노시마역 12분',work:'nami',name:'에노시마 벤텐교',region:'일본 가나가와현 후지사와',abroad:true,ep:'3화',time:'18:05',scene:'긴 다리를 자전거로 달리며 섬을 향해 소리치는 장면',dist:'1,158km',visits:9340,tags:['다리','바다','자전거'],tip:'자전거는 다리 입구에서 끌고 가야 해요.',map:{x:72,y:58},cmap:{x:18,y:84},match:63},
  {id:'hida',line:'星の駅で、\n待ってるから！',cat:'',air:'주부',hub:'다카야마',pal:['#ffd9b0','#c58ae0','#3b2f8f','rgba(20,15,50,.6)'],jp:'飛騨古川駅跨線橋',st:'히다후루카와역 2분',work:'hoshi',name:'히다후루카와역 육교',region:'일본 기후현 히다',abroad:true,ep:'극장판',time:'48:30',scene:'육교 위에서 지나가는 열차를 내려다보며 이름을 부르는 장면',dist:'1,020km',visits:21500,tags:['육교','역','열차'],tip:'역 관광안내소에서 성지 지도를 받을 수 있어요.',map:{x:48,y:38},match:58},
  {id:'ihwa',line:'事件は\n路地裏で起きる！',cat:'',pal:['#fff2c4','#ffb37a','#e8645a','rgba(70,30,30,.55)'],jp:'梨花洞の階段道',st:'혜화역 14분',work:'neko',name:'이화동 계단길',region:'서울 종로구 이화동',abroad:false,ep:'2화',time:'09:40',scene:'고양이를 쫓아 좁은 계단길을 뛰어 올라가는 장면',dist:'8.2km',visits:3120,tags:['계단','골목','벽화'],tip:'주거지역이에요. 대화와 촬영은 조용히 해 주세요.',map:{x:22,y:40},match:47},
@@ -779,6 +781,7 @@ const SPOTS=[
  {id:'gotoubun',line:'',cat:'osaka',air:'간사이',hub:'우즈마사',pal:['#ffe6ef','#f7a8c4','#8a4fd0','rgba(50,20,60,.5)'],jp:'東映太秦映画村 中村座',st:'JR 우즈마사역 인근',work:'gotoubun',name:'나카무라자 극장',region:'일본 교토부 교토시 우쿄구',abroad:true,ep:'',time:'',scene:'교토 수학여행 에피소드에 등장하는 영화마을의 극장',dist:'842km',visits:13600,tags:['영화마을','수학여행','교토'],tip:'도에이 우즈마사 영화마을 입장권이 필요해요.',map:{x:54,y:56},cmap:{x:44,y:24},match:54},
  {id:'yanineko',line:'',cat:'osaka',air:'간사이',hub:'교토',pal:['#e8f4e0','#9fd08a','#3a6a3a','rgba(20,40,20,.5)'],jp:'京都駅',st:'교토역 바로 앞',work:'yanineko',name:'교토역',region:'일본 교토부 교토시 시모교구',abroad:true,ep:'',time:'',scene:'작품 속 교토역 장면',dist:'838km',visits:12100,tags:['역','교토','도시'],tip:'역 빌딩 대계단 위에서 교토 시내가 한눈에 보여요.',map:{x:55,y:58},cmap:{x:55,y:34},match:52},
  {id:'tamako',line:'私もちゅうしゃの\n入口に立ってる気分',cat:'osaka',air:'간사이',hub:'데마치야나기',pal:['#fff0dd','#ffb98a','#d0603e','rgba(70,30,20,.5)'],jp:'出町桝形商店街',st:'데마치야나기역 인근',work:'tamako',name:'센마루야 본점',region:'일본 교토부 교토시 가미교구',abroad:true,ep:'',time:'',scene:'타마코네 떡집이 있는 우사기야마 상점가의 모델 지역',dist:'845km',visits:11400,tags:['상점가','떡집','교토'],tip:'상점가 안 가게들은 영업 중이에요. 촬영 전 가게에 한마디 해 주세요.',map:{x:55,y:56},cmap:{x:58,y:16},match:50},
+ {id:'sunshine',line:'パイのサクサクと\nリンゴの甘みの\nハーモニー!',cat:'tokyo',air:'하네다',hub:'이케부쿠로',pal:['#d8f1ff','#7cc8f2','#1f6fb8','rgba(10,40,80,.5)'],jp:'サンシャイン水族館',st:'이케부쿠로역 도보 약 10분',work:'aonohako',name:'선샤인 수족관',region:'일본 도쿄도 도시마구',abroad:true,ep:'',time:'',scene:'타이키와 치나츠가 함께 수족관에 나들이 가는 장면',dist:'1,153km',visits:13100,tags:['수족관','데이트','이케부쿠로'],tip:'옥상의 "하늘의 펭귄" 수조 앞이 장면과 같은 구도의 포토 스폿이에요.',map:{x:70,y:41},cmap:{x:54,y:22},match:53},
  {id:'dotonbori',line:'たこ焼き、\nもう一個だけ！',cat:'osaka',air:'간사이',hub:'난바',pal:['#fff0b3','#ffa25c','#e8455a','rgba(60,15,25,.55)'],jp:'道頓堀戎橋',st:'난바역 3분',work:'machi',name:'도톤보리 에비스바시',region:'일본 오사카부 오사카시',abroad:true,ep:'1화',time:'05:30',scene:'네온 간판 아래 다리 위에서 타코야키를 나눠 먹는 오프닝 장면',dist:'830km',visits:13900,tags:['다리','네온','먹방'],tip:'저녁 6시 이후 간판 불이 켜지면 원작 색감과 가장 비슷해요.',map:{x:52,y:60},cmap:{x:40,y:60},match:56},
  {id:'tsutenkaku',line:'勝負は\nソースで決まる！',cat:'osaka',air:'간사이',hub:'신이마미야',pal:['#e4f6ff','#8ad0ff','#3a6fd0','rgba(15,35,80,.5)'],jp:'通天閣と新世界',st:'에비스초역 3분',work:'machi',name:'츠텐카쿠 신세카이 거리',region:'일본 오사카부 오사카시',abroad:true,ep:'6화',time:'14:05',scene:'타워를 배경으로 쿠시카츠 가게 앞에서 내기를 하는 장면',dist:'832km',visits:8700,tags:['타워','골목','레트로'],tip:'쿠시카츠 소스는 한 번만 찍는 게 규칙이에요.',map:{x:53,y:62},cmap:{x:52,y:80},match:49},
  {id:'odori',line:'雪が溶けても、\n忘れないで。',cat:'sapporo',air:'신치토세',hub:'삿포로',pal:['#f2f8ff','#b9d6f2','#5a7fb8','rgba(25,40,70,.5)'],jp:'大通公園テレビ塔',st:'오도리역 1분',work:'shiro',name:'오도리 공원 TV타워',region:'일본 홋카이도 삿포로시',abroad:true,ep:'3화',time:'19:48',scene:'눈 축제 조명 아래 TV타워 시계를 보며 고백을 망설이는 장면',dist:'1,420km',visits:11200,tags:['눈','공원','야경'],tip:'2월 눈축제 기간엔 원작과 같은 조명을 볼 수 있어요.',map:{x:80,y:14},cmap:{x:50,y:44},match:54},
@@ -786,6 +789,7 @@ const SPOTS=[
  {id:'otaru',line:'さよならは、\n言わないよ。',cat:'sapporo',air:'신치토세',hub:'오타루',pal:['#e8f1ff','#a7c4ea','#3d5f99','rgba(15,30,60,.55)'],jp:'小樽運河',st:'오타루역 10분',work:'shiro',name:'오타루 운하',region:'일본 홋카이도 오타루시',abroad:true,ep:'12화',time:'22:15',scene:'가스등이 켜진 운하를 따라 걸으며 마지막 인사를 나누는 장면',dist:'1,440km',visits:9800,tags:['운하','가스등','겨울'],tip:'해 질 녘 아사쿠사바시 다리 위가 원작 구도예요.',map:{x:78,y:13},cmap:{x:20,y:30},match:47},
 ];
 const HOME_ALL=['suga','shibuya','karumai','haboro','meguro','shelter'];
+const HOME_TOKYO=['shibuya','shelter','onnazaka','suga','kamakura','sunshine'];   // 홈 '도쿄' 포스터 순서
 const HOME_OSAKA=['kifune','keion','gotoubun','seihantai','yanineko','tamako'];   // 홈 '오사카' 포스터 순서   // 홈 '전체' 포스터 순서
 const CATS=[['all','전체'],['hot','인기'],['tokyo','도쿄'],['osaka','오사카'],['sapporo','삿포로']];
 const byCat=c=>c==='all'?SPOTS.slice():c==='hot'?SPOTS.slice().sort((a,b)=>b.visits-a.visits).slice(0,6):SPOTS.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits);
@@ -858,6 +862,7 @@ const GOODS={
  neko:[{n:'고양이 반장 뱃지',p:'6,000원',s:'팝업스토어'},{n:'골목 지도 손수건',p:'14,000원',s:'온라인'}],
  yuki:[{n:'등롱 무드등',p:'39,000원',s:'온라인'},{n:'신사 오마모리 콜라보',p:'11,000원',s:'현지 한정'}],
  oshinoko:[{n:'아이 아크릴 스탠드',p:'16,000원',s:'온라인'},{n:'B코마치 응원봉',p:'32,000원',s:'팝업스토어'}],
+ slamdunk:[{n:'쇼호쿠 유니폼 타월',p:'25,000원',s:'현지 한정'}],aonohako:[{n:'치나츠 아크릴 스탠드',p:'15,000원',s:'온라인'}],
  conan:[{n:'코난 탐정 배지',p:'9,000원',s:'팝업스토어'}],keion:[{n:'경음부 피크 세트',p:'12,000원',s:'현지 한정'}],seihantai:[{n:'스즈키 아크릴 스탠드',p:'15,000원',s:'온라인'}],gotoubun:[{n:'오등분 리본 키링',p:'11,000원',s:'온라인'}],yanineko:[{n:'냥코 쿠션',p:'25,000원',s:'팝업스토어'}],tamako:[{n:'타마야 떡 모양 키링',p:'8,000원',s:'현지 한정'}],
  jjk:[{n:'고죠 아크릴 스탠드',p:'16,000원',s:'온라인'},{n:'시부야 사변 포스터',p:'22,000원',s:'팝업스토어'}],
  haikyu:[{n:'카라스노 저지 타월',p:'25,000원',s:'현지 한정'},{n:'배구공 키링',p:'9,000원',s:'관광안내소'}],
@@ -956,13 +961,13 @@ SCREENS.home=()=>({tab:'home',html:`
    <div class="sec-h"><h3>다가오는 여정</h3><a data-go="plan" data-id="kamakura">계획 보기</a></div>
    <div class="pad"><div class="card row" style="padding:12px;cursor:pointer" data-go="plan" data-id="kamakura">
     ${art(spot('kamakura'),64,{cap:false,bk:false,cls:'sm',st:'width:64px;flex:none;border-radius:12px;'})}
-    <div style="flex:1"><div class="small muted">D-40 · ${S.trips[0].date}</div><div style="font-weight:700">${spot('kamakura').name}</div><div class="small muted">${WORKS.natsu.title} 1화</div></div>
+    <div style="flex:1"><div class="small muted">D-40 · ${S.trips[0].date}</div><div style="font-weight:700">${spot('kamakura').name}</div><div class="small muted">${work(spot('kamakura')).title}</div></div>
     <button class="btn pri sm" style="width:auto;padding:0 12px" data-go="move" data-id="kamakura">출발</button>
    </div></div>
   </div>
 
   <div class="burst-h"><h3>떠나고 싶은 애니 속으로</h3>${S.homeCat!=='all'?`<span class="catpill">${catName(S.homeCat)}</span>`:''}<a data-act="homeall">전체</a></div>
-  ${masonry(S.homeCat==='all'?HOME_ALL.map(spot):S.homeCat==='osaka'?HOME_OSAKA.map(spot):byCat(S.homeCat).slice(0,6))}
+  ${masonry(S.homeCat==='all'?HOME_ALL.map(spot):S.homeCat==='osaka'?HOME_OSAKA.map(spot):S.homeCat==='tokyo'?HOME_TOKYO.map(spot):byCat(S.homeCat).slice(0,6))}
 
   <div class="sec">
    <div class="sec-h"><h3>지금 뜨는 명소</h3><a>11월 기준</a></div>
@@ -1087,6 +1092,7 @@ const PROUTE={
  suga:{tokyo:{t:[['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:210,km:6},shibuya:{t:[['지하철 긴자선',9,'아카사카미쓰케역'],['지하철 마루노우치선',5,'요쓰야산초메역']],walk:9,fare:180,km:6},narita:{t:[NEX,['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:3280,km:72}},
  shibuya:{tokyo:{t:[['JR 야마노테선',24,'시부야역']],walk:1,fare:210,km:8},shibuya:{t:[],walk:2,fare:0,km:.2},narita:{t:[NEXS],walk:1,fare:3250,km:78}},
  onnazaka:{tokyo:{t:[['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:150,km:3},shibuya:{t:[['JR 야마노테선',13,'신주쿠역'],['JR 주오·소부선',12,'스이도바시역']],walk:7,fare:210,km:9},narita:{t:[NEX,['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:3220,km:68}},
+ sunshine:{tokyo:{t:[['지하철 마루노우치선',16,'이케부쿠로역']],walk:10,fare:210,km:9},shibuya:{t:[['JR 야마노테선',16,'이케부쿠로역']],walk:10,fare:180,km:8},narita:{t:[['게이세이 스카이라이너',41,'닛포리역'],['JR 야마노테선',10,'이케부쿠로역']],walk:10,fare:2730,km:75}},
  meguro:{tokyo:{t:[['JR 야마노테선',20,'에비스역'],['지하철 히비야선',2,'나카메구로역']],walk:5,fare:360,km:10},shibuya:{t:[['도큐 도요코선',3,'나카메구로역']],walk:5,fare:140,km:3},narita:{t:[NEXS,['도큐 도요코선',3,'나카메구로역']],walk:5,fare:3390,km:80}},
  shelter:{tokyo:{t:[['지하철 마루노우치선',18,'신주쿠역'],['오다큐선',8,'시모키타자와역']],walk:3,fare:380,km:12},shibuya:{t:[['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:140,km:3},narita:{t:[NEXS,['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:3390,km:82}},
  kamakura:kana('가마쿠라코코마에역',17,1),shichiri:kana('시치리가하마역',19,5),enoshima:kana('에노시마역',10,12),
