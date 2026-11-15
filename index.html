@@ -539,9 +539,9 @@ input,textarea{font-size:17px}
 @media (prefers-reduced-motion:reduce){.enter-push,.leave-push,.enter-pop,.leave-pop{animation-duration:.01s}}
 
 /* ===== 명대사 말풍선 (Figma 그래픽 그대로) ===== */
-.qbub{position:relative;z-index:4;aspect-ratio:520/232;background:url(assets/bubble/body.png) center/100% 100% no-repeat;display:grid;place-items:center;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.qbub{position:relative;z-index:4;aspect-ratio:520/232;background:url(assets/bubble/body.png?v=2611152) center/100% 100% no-repeat;display:grid;place-items:center;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .qbub .qx{position:relative;color:#fff;font-size:16px;font-weight:500;line-height:1.3;letter-spacing:-.01em;white-space:nowrap;text-shadow:0 1px 2px rgba(0,40,110,.18)}
-.qbub .qt{position:absolute;width:21.7%;aspect-ratio:113/68;background:url(assets/bubble/tail.png) center/100% 100% no-repeat;pointer-events:none}
+.qbub .qt{position:absolute;width:21.7%;aspect-ratio:113/68;background:url(assets/bubble/tail.png?v=2611152) center/100% 100% no-repeat;pointer-events:none}
 .qbub .qt.r{left:calc(100% - 2px)}
 .qbub .qt.l{right:calc(100% - 2px);transform:scaleX(-1)}
 .qbub .qt.up{top:0;transform:translate(-50%,-50%) rotate(-90deg) translateX(calc(50% - 1px))}
@@ -694,7 +694,7 @@ input,textarea{font-size:17px}
 <div class="wrap">
   <div class="phone splash-on" id="phone">
     <div class="sbar" aria-hidden="true"><span>9:41</span><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.2A10.2 10.2 0 008 .5 10.2 10.2 0 00.8 3.4L2 4.6a8.5 8.5 0 016-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.2A6.8 6.8 0 008 3.9a6.8 6.8 0 00-4.8 1.9l1.2 1.2c1-.9 2.2-1.4 3.6-1.4zM8 9l2.3-2.3a3.3 3.3 0 00-4.6 0z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4a2 2 0 000-4z" fill="currentColor" opacity=".5"/></svg></span></div>
-    <div class="splash" id="splash"><div class="c"><img class="logo-img" src="assets/logo-white.png" alt="덕모잇" width="240"><div class="sub">덕후들 모여잇</div></div></div>
+    <div class="splash" id="splash"><div class="c"><img class="logo-img" src="assets/logo-white.png?v=2611152" alt="덕모잇" width="240"><div class="sub">덕후들 모여잇</div></div></div>
     <div id="app"></div>
     <div id="edge" aria-hidden="true"></div>
     <div class="dim" id="dim"></div>
@@ -763,12 +763,12 @@ const WORKS={
  shiro:{title:'하얀 계절의 너',genre:'로맨스',year:2017,eps:12,chars:['유키나','하루토']},
 };
 const SPOTS=[
- {id:'kamakura',line:'',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#ffcf8a','#ff8a6b','#5a63d8','rgba(30,22,60,.6)'],jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'slamdunk',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},cmap:{x:30,y:66},match:94},
+ {id:'kamakura',line:'夕焼けの踏切で、\nまた会おう。',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#ffcf8a','#ff8a6b','#5a63d8','rgba(30,22,60,.6)'],jp:'鎌倉高校前駅踏切',st:'가마쿠라코코마에역 1분',work:'natsu',name:'가마쿠라코코마에역 앞 건널목',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'1화',time:'12:48',scene:'노을 아래 전차가 지나가고, 두 사람이 건널목 양쪽에서 마주 보는 장면',dist:'1,160km',visits:12840,tags:['건널목','노을','전차'],tip:'오후 5시 전후 역광이 원작 장면과 가장 비슷해요. 선로 진입과 차도 위 촬영은 금지예요.',map:{x:66,y:46},cmap:{x:30,y:66},match:94},
  {id:'shichiri',line:'',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#bfe6ff','#59b4f5','#0f6fc9','rgba(10,40,80,.55)'],jp:'七里ヶ浜海岸',st:'시치리가하마역 5분',work:'natsu',name:'시치리가하마 해안 계단',region:'일본 가나가와현 가마쿠라',abroad:true,ep:'7화',time:'03:12',scene:'졸업식 날 바다를 보며 계단에 나란히 앉아 있는 장면',dist:'1,163km',visits:6210,tags:['바다','계단'],tip:'만조 시간엔 아래 계단이 잠겨요.',map:{x:69,y:52},cmap:{x:44,y:78},match:71},
  {id:'enoshima',line:'波の向こうに\n君がいた。',cat:'tokyo',air:'하네다',hub:'후지사와',pal:['#c9f0ff','#6ccff0','#1a8ec9','rgba(8,50,80,.5)'],jp:'江の島弁天橋',st:'에노시마역 12분',work:'nami',name:'에노시마 벤텐교',region:'일본 가나가와현 후지사와',abroad:true,ep:'3화',time:'18:05',scene:'긴 다리를 자전거로 달리며 섬을 향해 소리치는 장면',dist:'1,158km',visits:9340,tags:['다리','바다','자전거'],tip:'자전거는 다리 입구에서 끌고 가야 해요.',map:{x:72,y:58},cmap:{x:18,y:84},match:63},
  {id:'hida',line:'星の駅で、\n待ってるから！',cat:'',air:'주부',hub:'다카야마',pal:['#ffd9b0','#c58ae0','#3b2f8f','rgba(20,15,50,.6)'],jp:'飛騨古川駅跨線橋',st:'히다후루카와역 2분',work:'hoshi',name:'히다후루카와역 육교',region:'일본 기후현 히다',abroad:true,ep:'극장판',time:'48:30',scene:'육교 위에서 지나가는 열차를 내려다보며 이름을 부르는 장면',dist:'1,020km',visits:21500,tags:['육교','역','열차'],tip:'역 관광안내소에서 성지 지도를 받을 수 있어요.',map:{x:48,y:38},match:58},
  {id:'ihwa',line:'事件は\n路地裏で起きる！',cat:'',pal:['#fff2c4','#ffb37a','#e8645a','rgba(70,30,30,.55)'],jp:'梨花洞の階段道',st:'혜화역 14분',work:'neko',name:'이화동 계단길',region:'서울 종로구 이화동',abroad:false,ep:'2화',time:'09:40',scene:'고양이를 쫓아 좁은 계단길을 뛰어 올라가는 장면',dist:'8.2km',visits:3120,tags:['계단','골목','벽화'],tip:'주거지역이에요. 대화와 촬영은 조용히 해 주세요.',map:{x:22,y:40},match:47},
- {id:'kifune',line:'しんじつは\nいつもひとつ!',cat:'osaka',air:'간사이',hub:'교토',pal:['#eef5ff','#9fbde6','#c94a4a','rgba(60,20,30,.55)'],jp:'貴船神社参道',st:'기부네구치역 30분',work:'conan',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},cmap:{x:58,y:20},match:52},
+ {id:'kifune',line:'雪の鳥居を\nくぐったら…',cat:'osaka',air:'간사이',hub:'교토',pal:['#eef5ff','#9fbde6','#c94a4a','rgba(60,20,30,.55)'],jp:'貴船神社参道',st:'기부네구치역 30분',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},cmap:{x:58,y:20},match:52},
  {id:'shibuya',line:'大丈夫,\n僕, 最強だから',cat:'tokyo',air:'하네다',hub:'시부야',pal:['#d9e8ff','#7b8cff','#2b2f8f','rgba(15,15,50,.6)'],jp:'渋谷スクランブル交差点',st:'시부야역 1분',work:'jjk',name:'시부야 스크램블 교차로',region:'일본 도쿄도 시부야구',abroad:true,ep:'2기 시부야 사변',time:'',scene:'할로윈 밤, 시부야 사변이 시작되는 교차로 장면',dist:'1,150km',visits:15600,tags:['교차로','도심','야경'],tip:'역 2층 연결통로에서 원작과 같은 부감 구도를 찍을 수 있어요.',map:{x:69,y:44},cmap:{x:56,y:46},match:66},
  {id:'suga',line:'君の名前は...！',cat:'tokyo',air:'하네다',hub:'요쓰야',pal:['#ffe9c7','#ffb88a','#d0566c','rgba(70,25,35,.55)'],jp:'須賀神社男坂',st:'요쓰야산초메역 9분',work:'kiminona',name:'스가 신사 계단',region:'일본 도쿄도 신주쿠구',abroad:true,ep:'극장판',time:'',scene:'계단 위와 아래에서 엇갈리던 두 사람이 마침내 서로를 알아보는 마지막 장면',dist:'1,151km',visits:14200,tags:['계단','신사','엇갈림'],tip:'주택가 계단이에요. 계단을 막고 오래 촬영하지 말아 주세요.',map:{x:70,y:42},cmap:{x:68,y:30},match:61},
  {id:'onnazaka',line:'',cat:'tokyo',air:'하네다',hub:'스이도바시',pal:['#e6ecef','#a9b8bf','#4d5b62','rgba(20,28,32,.55)'],jp:'東京女坂',st:'스이도바시역 7분',work:'csm',name:'온나자카',region:'일본 도쿄도 분쿄구',abroad:true,ep:'1화',time:'03:12',scene:'나무 그늘이 드리운 언덕길 계단을 오르며 새로운 일상을 시작하는 장면',dist:'1,152km',visits:16200,tags:['언덕길','계단','일상'],tip:'주택가 언덕길이에요. 이른 아침엔 통학하는 학생이 많아요.',map:{x:70,y:43},cmap:{x:62,y:38},match:58},
@@ -788,9 +788,17 @@ const SPOTS=[
  {id:'tokeidai',line:'鐘が鳴ったら、\n会いに行く。',cat:'sapporo',air:'신치토세',hub:'삿포로',pal:['#fff6e8','#f2c9a0','#8a5a44','rgba(50,30,20,.5)'],jp:'札幌市時計台',st:'오도리역 5분',work:'shiro',name:'삿포로 시계탑',region:'일본 홋카이도 삿포로시',abroad:true,ep:'8화',time:'11:20',scene:'시계탑 종소리에 맞춰 첫 데이트 약속 시간을 정하는 장면',dist:'1,421km',visits:7400,tags:['시계탑','종소리'],tip:'정각마다 울리는 종소리를 들으며 명대사 재생을 켜 보세요.',map:{x:81,y:16},cmap:{x:66,y:28},match:44},
  {id:'otaru',line:'さよならは、\n言わないよ。',cat:'sapporo',air:'신치토세',hub:'오타루',pal:['#e8f1ff','#a7c4ea','#3d5f99','rgba(15,30,60,.55)'],jp:'小樽運河',st:'오타루역 10분',work:'shiro',name:'오타루 운하',region:'일본 홋카이도 오타루시',abroad:true,ep:'12화',time:'22:15',scene:'가스등이 켜진 운하를 따라 걸으며 마지막 인사를 나누는 장면',dist:'1,440km',visits:9800,tags:['운하','가스등','겨울'],tip:'해 질 녘 아사쿠사바시 다리 위가 원작 구도예요.',map:{x:78,y:13},cmap:{x:20,y:30},match:47},
 ];
-const HOME_ALL=['suga','shibuya','karumai','haboro','meguro','shelter'];
-const HOME_TOKYO=['shibuya','shelter','onnazaka','suga','kamakura','sunshine'];   // 홈 '도쿄' 포스터 순서
-const HOME_OSAKA=['kifune','keion','gotoubun','seihantai','yanineko','tamako'];   // 홈 '오사카' 포스터 순서   // 홈 '전체' 포스터 순서
+/* 같은 장소를 다른 작품으로 안내하는 영역 전용 명소 (기존 명소 데이터는 건드리지 않음) */
+SPOTS.push({...SPOTS.find(x=>x.id==='kamakura'),id:'kamakura_sd',work:'slamdunk',line:''},{...SPOTS.find(x=>x.id==='kifune'),id:'kifune_cn',work:'conan',line:''});
+/* 홈 '떠나고 싶은 애니 속으로' — 키워드(검색바 드롭다운)마다 독립된 영역. 지정받은 구성을 그대로 고정.
+   s: 연결 명소, p: 영역 전용 포스터(assets/area/…), q: 말풍선 대사 (말풍선 자리: 1번째·2번째·6번째 칸) */
+const AREAS={
+ all:[{s:'suga',p:'all-1',q:'君の名前は...！'},{s:'shibuya',p:'all-2',q:'大丈夫,\n僕, 最強だから'},{s:'karumai',p:'all-3'},{s:'haboro',p:'all-4'},{s:'meguro',p:'all-5'},{s:'shelter',p:'all-6',q:'ひとりなら\nロックをやれ！'}],
+ hot:[{s:'hida',q:'星の駅で、\n待ってるから！'},{s:'kifune',q:'ひとりなら\nロックをやれ！'},{s:'onnazaka'},{s:'shibuya',p:'hot-4'},{s:'suga',p:'hot-5'},{s:'dotonbori',q:'たこ焼き、\nもう一個だけ！'}],
+ tokyo:[{s:'shibuya',p:'tokyo-1',q:'大丈夫,\n僕, 最強だから'},{s:'shelter',p:'tokyo-2',q:'ひとりなら\nロックをやれ！'},{s:'onnazaka',p:'tokyo-3'},{s:'suga',p:'tokyo-4'},{s:'kamakura_sd',p:'tokyo-5'},{s:'sunshine',p:'tokyo-6',q:'パイのサクサクと\nリンゴの甘みの\nハーモニー!'}],
+ osaka:[{s:'kifune_cn',p:'osaka-1',q:'しんじつは\nいつもひとつ!'},{s:'keion',p:'osaka-2',q:'萌え萌え\nキュン'},{s:'gotoubun',p:'osaka-3'},{s:'seihantai',p:'osaka-4'},{s:'yanineko',p:'osaka-5'},{s:'tamako',p:'osaka-6',q:'私もちゅうしゃの\n入口に立ってる気分'}],
+ sapporo:[{s:'odori',q:'雪が溶けても、\n忘れないで。'},{s:'otaru',q:'さよならは、\n言わないよ。'},{s:'tokeidai'}],
+};
 const CATS=[['all','전체'],['hot','인기'],['tokyo','도쿄'],['osaka','오사카'],['sapporo','삿포로']];
 const byCat=c=>c==='all'?SPOTS.slice():c==='hot'?SPOTS.slice().sort((a,b)=>b.visits-a.visits).slice(0,6):SPOTS.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits);
 const CITYMAP={tokyo:{label:'도쿄 · 가나가와',lands:[['8%','14%','84%','46%','40% 60% 45% 55%'],['4%','56%','60%','34%','50% 40% 60% 45%']],sea:[['62%','62%','도쿄만'],['10%','92%','사가미만']]},
@@ -905,7 +913,8 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const poster=(sp,dir='posters')=>`<img class="poster" alt="" src="assets/${dir}/${sp.id}.jpg" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
+const ASSET_V='2611152';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
 const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${(back==='auto'?S.stack.length>0:back)?`<button class="ib" data-act="back" aria-label="뒤로">${I.back}</button>`:''}<div class="t ${left?'left':''}">${title}</div>${right}</div>`;
@@ -914,15 +923,15 @@ const TAIL='<svg class="tail" viewBox="0 0 44 30" aria-hidden="true"><path d="M0
 const cb=(inner,{tail='r',cls='',attrs=''}={})=>`<div class="cb tail-${tail} ${cls}" ${attrs}><span class="fx"></span>${TAIL}<div class="in">${inner}</div></div>`;
 const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="scan"><span class="cat" data-act="catmenu" role="button" aria-haspopup="listbox" aria-label="카테고리 선택">${catName(S.homeCat)} ${I.chev}</span><span class="bar1"></span><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div>
  <div class="catmenu" role="listbox">${CATS.map(([k,n])=>`<button role="option" class="${S.homeCat===k?'on':''}" data-act="homecat" data-v="${k}">${n}${S.homeCat===k?'<i>✓</i>':''}</button>`).join('')}</div></div>`;
-const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp,img==='thumb'?'thumbs':'posters'):''}
+const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false,src=''}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp,img==='thumb'?'thumbs':img==='area'?'area':'posters',img==='area'?src:''):''}
  <div class="gr"></div><div class="kj">${sp.jp.slice(0,cls.includes('sm')?Math.max(2,Math.floor((h-14)/14)):Math.max(2,Math.min(8,Math.floor(((typeof h==='number'?h:220)-(cap?112:30))/24))))}</div>${cap?`<div class="sh"></div><div class="cap"><div class="w">${work(sp).title}</div><div class="n">${sp.name}</div></div>`:''}${bk?`<button class="bk ${S.saved&&S.saved[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="저장">${I.star}</button>`:''}</div>`};
 const qb=(q,tail)=>{const sp=SPOTS.find(x=>x.work===q.w);return cb(q.jp.replace(/\n/g,'<br>'),{tail,cls:'qb',attrs:sp?`data-go="spot" data-id="${sp.id}"`:''})};
 /* 명대사 말풍선: Figma 말풍선 그래픽(assets/bubble) + 일본어 대사. dir: 꼬리 방향 up|down|l|r, x: 꼬리 위치(%) */
-const qbub=(sp,dir='down',x=30)=>!sp.line?'':`<div class="qbub" data-go="spot" data-id="${sp.id}"><i class="qt ${dir}" style="${dir==='up'||dir==='down'?`left:${x}%`:`top:${x}%`}"></i><span class="qx" lang="ja">${sp.line.replace(/\n/g,'<br>')}</span></div>`;
-const mcard=(sp,h)=>art(sp,h,{cap:false,bk:true,img:true,go:true,cls:'mc'});   // 썸네일: 이미지 + 별 아이콘만
-const masonry=list=>{const c0=[],c1=[];list.forEach((sp,i)=>(i%2?c1:c0).push(sp));const H0=[260,250,330],H1=[290,240,240];
- const L=c0.map((sp,j)=>mcard(sp,H0[j%3])+(j===0?qbub(sp,'up',70):'')).join('');
- const R=c1.map((sp,j)=>(j===0||j===2?qbub(sp,'down',28):'')+mcard(sp,H1[j%3])).join('');
+const qbub=(sp,dir='down',x=30,line=sp.line)=>!line?'':`<div class="qbub" data-go="spot" data-id="${sp.id}"><i class="qt ${dir}" style="${dir==='up'||dir==='down'?`left:${x}%`:`top:${x}%`}"></i><span class="qx" lang="ja">${line.replace(/\n/g,'<br>')}</span></div>`;
+const mcard=(it,h)=>art(spot(it.s),h,{cap:false,bk:true,img:it.p?'area':false,src:it.p,go:true,cls:'mc'});   // 썸네일: 이미지 + 별 아이콘만
+const masonry=items=>{const c0=[],c1=[];items.forEach((it,i)=>(i%2?c1:c0).push(it));const H0=[260,250,330],H1=[290,240,240];
+ const L=c0.map((it,j)=>mcard(it,H0[j%3])+(j===0?qbub(spot(it.s),'up',70,it.q||''):'')).join('');
+ const R=c1.map((it,j)=>(j===0||j===2?qbub(spot(it.s),'down',28,it.q||''):'')+mcard(it,H1[j%3])).join('');
  return`<div class="mason"><div class="col">${L}</div><div class="col">${R}</div></div>`};
 const spotRow=(s,img=false)=>`<div class="spotrow" data-go="spot" data-id="${s.id}">${art(s,96,{cap:false,bk:false,cls:'sm',img,st:'width:96px;flex:none;border-radius:12px;'})}<div style="flex:1;min-width:0"><div class="w">${work(s).title}</div><div class="n">${s.name}</div><div class="j">${s.jp}</div><div class="s">${s.st}</div></div></div>`;
 const fmt=n=>n.toLocaleString('ko-KR');
@@ -946,7 +955,7 @@ SCREENS.home=()=>({tab:'home',html:`
  <div class="body">
   <div class="pad">
    <div class="hero">
-    <div class="hero-pic" data-go="scan"><img class="hero-img" src="assets/hero-capture.jpg" alt="애니 장면 캡처 예시"><div class="hero-ret"><i></i><i></i><i></i><i></i></div><span class="hero-tag">${I.img} CAPTURE</span></div>
+    <div class="hero-pic" data-go="scan"><img class="hero-img" src="assets/hero-capture.jpg?v=2611152" alt="애니 장면 캡처 예시"><div class="hero-ret"><i></i><i></i><i></i><i></i></div><span class="hero-tag">${I.img} CAPTURE</span></div>
     <div class="hero-t"><b>장면 찾기</b><span>シーン探し</span></div>
     <div class="qbub hero-q" data-go="scan"><i class="qt l" style="top:56%"></i><span class="qx">캡처 한 장이면<br>성지가 보여!</span></div>
    </div>
@@ -961,13 +970,13 @@ SCREENS.home=()=>({tab:'home',html:`
    <div class="sec-h"><h3>다가오는 여정</h3><a data-go="plan" data-id="kamakura">계획 보기</a></div>
    <div class="pad"><div class="card row" style="padding:12px;cursor:pointer" data-go="plan" data-id="kamakura">
     ${art(spot('kamakura'),64,{cap:false,bk:false,cls:'sm',st:'width:64px;flex:none;border-radius:12px;'})}
-    <div style="flex:1"><div class="small muted">D-40 · ${S.trips[0].date}</div><div style="font-weight:700">${spot('kamakura').name}</div><div class="small muted">${work(spot('kamakura')).title}</div></div>
+    <div style="flex:1"><div class="small muted">D-40 · ${S.trips[0].date}</div><div style="font-weight:700">${spot('kamakura').name}</div><div class="small muted">${WORKS.natsu.title} 1화</div></div>
     <button class="btn pri sm" style="width:auto;padding:0 12px" data-go="move" data-id="kamakura">출발</button>
    </div></div>
   </div>
 
   <div class="burst-h"><h3>떠나고 싶은 애니 속으로</h3>${S.homeCat!=='all'?`<span class="catpill">${catName(S.homeCat)}</span>`:''}<a data-act="homeall">전체</a></div>
-  ${masonry(S.homeCat==='all'?HOME_ALL.map(spot):S.homeCat==='osaka'?HOME_OSAKA.map(spot):S.homeCat==='tokyo'?HOME_TOKYO.map(spot):byCat(S.homeCat).slice(0,6))}
+  ${masonry(AREAS[S.homeCat]||AREAS.all)}
 
   <div class="sec">
    <div class="sec-h"><h3>지금 뜨는 명소</h3><a>11월 기준</a></div>
@@ -1092,6 +1101,7 @@ const PROUTE={
  suga:{tokyo:{t:[['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:210,km:6},shibuya:{t:[['지하철 긴자선',9,'아카사카미쓰케역'],['지하철 마루노우치선',5,'요쓰야산초메역']],walk:9,fare:180,km:6},narita:{t:[NEX,['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:3280,km:72}},
  shibuya:{tokyo:{t:[['JR 야마노테선',24,'시부야역']],walk:1,fare:210,km:8},shibuya:{t:[],walk:2,fare:0,km:.2},narita:{t:[NEXS],walk:1,fare:3250,km:78}},
  onnazaka:{tokyo:{t:[['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:150,km:3},shibuya:{t:[['JR 야마노테선',13,'신주쿠역'],['JR 주오·소부선',12,'스이도바시역']],walk:7,fare:210,km:9},narita:{t:[NEX,['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:3220,km:68}},
+ kamakura_sd:null,kifune_cn:null,
  sunshine:{tokyo:{t:[['지하철 마루노우치선',16,'이케부쿠로역']],walk:10,fare:210,km:9},shibuya:{t:[['JR 야마노테선',16,'이케부쿠로역']],walk:10,fare:180,km:8},narita:{t:[['게이세이 스카이라이너',41,'닛포리역'],['JR 야마노테선',10,'이케부쿠로역']],walk:10,fare:2730,km:75}},
  meguro:{tokyo:{t:[['JR 야마노테선',20,'에비스역'],['지하철 히비야선',2,'나카메구로역']],walk:5,fare:360,km:10},shibuya:{t:[['도큐 도요코선',3,'나카메구로역']],walk:5,fare:140,km:3},narita:{t:[NEXS,['도큐 도요코선',3,'나카메구로역']],walk:5,fare:3390,km:80}},
  shelter:{tokyo:{t:[['지하철 마루노우치선',18,'신주쿠역'],['오다큐선',8,'시모키타자와역']],walk:3,fare:380,km:12},shibuya:{t:[['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:140,km:3},narita:{t:[NEXS,['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:3390,km:82}},
@@ -1111,6 +1121,7 @@ const PROUTE={
  karumai:{ninohe:{t:[['노선버스',50,'카루마이 중심가']],walk:8,fare:1200,km:30},hachinohe:{t:[['노선버스',70,'카루마이 중심가']],walk:8,fare:1500,km:40},morioka:{t:[['도호쿠 신칸센',30,'니노헤역'],['노선버스',50,'카루마이 중심가']],walk:8,fare:4200,km:95}},
  hida:{takayama:{t:[['JR 다카야마 본선',15,'히다후루카와역']],walk:2,fare:240,km:15},nagoya:{t:[['JR 특급 히다',150,'다카야마역'],['JR 다카야마 본선',15,'히다후루카와역']],walk:2,fare:6000,km:170},centrair:{t:[['메이테쓰 뮤스카이',28,'나고야역'],['JR 특급 히다',150,'다카야마역'],['JR 다카야마 본선',15,'히다후루카와역']],walk:2,fare:7400,km:200}},
 };
+PROUTE.kamakura_sd=PROUTE.kamakura;PROUTE.kifune_cn=PROUTE.kifune;
 const CAR_VIA={tokyo:km=>km>30?'고속도로 경유':km>8?'수도고속도로 경유':'시내 일반도로',osaka:km=>km>30?'한신고속도로 경유':'시내 일반도로',hokkaido:km=>km>30?'도오자동차도 경유':'시내 일반도로',seoul:km=>km>30?'공항고속도로 경유':'도심 일반도로',tohoku:km=>km>45?'하치노헤자동차도 경유':'국도 경유',hida:km=>km>30?'도카이호쿠리쿠자동차도 경유':'국도 41호선 경유'};
 const MODES=[{id:'transit',name:'대중교통',icon:'train'},{id:'walk',name:'도보',icon:'walk'},{id:'car',name:'자동차',icon:'car'}];
 const fmtMin=m=>{m=Math.round(m);return m<60?`${m}분`:`${Math.floor(m/60)}시간${m%60?` ${m%60}분`:''}`};
