@@ -745,6 +745,7 @@ const WORKS={
  yuki:{title:'눈 내리는 신사',genre:'판타지',year:2018,eps:13,chars:['시즈쿠','신령 코하쿠']},
  kaze:{title:'바람의 교차로',genre:'액션 · 청춘',year:2023,eps:24,chars:['렌','아오이']},
  machi:{title:'나니와 맛집 일기',genre:'코미디 · 일상',year:2020,eps:12,chars:['코하루','타코짱']},
+ oshinoko:{title:'최애의 아이 (【推しの子】)',genre:'드라마 · 미스터리',year:2023,eps:24,chars:['호시노 아쿠아','쿠로카와 아카네']},
  jjk:{title:'주술회전 (呪術廻戦)',genre:'액션 · 다크 판타지',year:2020,eps:47,chars:['이타도리 유지','고죠 사토루']},
  haikyu:{title:'하이큐!! (ハイキュー!!)',genre:'스포츠 · 청춘',year:2014,eps:85,chars:['히나타 쇼요','카게야마 토비오']},
  todoke:{title:'너에게 닿기를 (君に届け)',genre:'로맨스 · 청춘',year:2009,eps:62,chars:['쿠로누마 사와코','카제하야 쇼타']},
@@ -766,13 +767,14 @@ const SPOTS=[
  {id:'karumai',line:'',cat:'',air:'하네다',hub:'니노헤',pal:['#fff1dc','#ffb15c','#2f2f35','rgba(25,20,15,.55)'],jp:'軽米町民体育館',st:'니노헤역에서 버스 이용',work:'haikyu',name:'카루마이 주민 체육관',region:'일본 이와테현 카루마이초',abroad:true,ep:'1기',time:'',scene:'히나타와 카게야마가 처음으로 이야기를 나눈 체육관의 모델',dist:'1,330km',visits:11800,tags:['체육관','배구','청춘'],tip:'실제 운영 중인 주민 체육관이에요. 이용 시간(9:00~21:00)을 지켜 주세요.',map:{x:74,y:30},cmap:{x:50,y:50},match:62},
  {id:'haboro',line:'',cat:'',air:'신치토세',hub:'루모이',pal:['#eef8ff','#9fd3e8','#3f86a8','rgba(15,45,60,.5)'],jp:'羽幌神社',st:'하보로 터미널 도보 6분',work:'todoke',name:'하보로 신사',region:'일본 홋카이도 하보로초',abroad:true,ep:'원작자 고향',time:'',scene:'원작자 시이나 카루호의 고향 하보로에 있는 신사',dist:'1,520km',visits:6900,tags:['신사','홋카이도','원작자 고향'],tip:'삿포로에서 루모이행 고속버스 → 연안버스로 하보로 터미널까지 가요.',map:{x:77,y:8},cmap:{x:30,y:40},match:48},
  {id:'shelter',line:'ひとりなら\nロックをやれ！',cat:'tokyo',air:'하네다',hub:'시모키타자와',pal:['#ffe2c2','#f08a5d','#3a2a4a','rgba(30,15,35,.6)'],jp:'下北沢SHELTER',st:'시모키타자와역 3분',work:'bocchi',name:'라이브 하우스 SHELTER',region:'일본 도쿄도 세타가야구',abroad:true,ep:'1기',time:'',scene:'결속밴드가 공연하는 라이브 하우스 STARRY의 모델',dist:'1,148km',visits:13400,tags:['라이브하우스','밴드','시모키타자와'],tip:'지하 1층 공연장이에요. 공연이 없는 시간엔 입구 촬영만 가능해요.',map:{x:69,y:45},cmap:{x:46,y:52},match:57},
+ {id:'meguro',line:'',cat:'tokyo',air:'하네다',hub:'나카메구로',pal:['#e9e4ff','#b49cff','#3b2f7a','rgba(25,15,55,.55)'],jp:'中目黒小前歩道橋',st:'나카메구로역 인근',work:'oshinoko',name:'메구로 거리',region:'일본 도쿄도 메구로구',abroad:true,ep:'6화 · 22화',time:'',scene:'아쿠아가 아카네를 구하고, 아카네가 마음을 전하는 육교 장면',dist:'1,149km',visits:12600,tags:['육교','나카메구로','드라마'],tip:'초등학교 앞 육교예요. 등하교 시간에는 통행에 방해되지 않게 촬영해 주세요.',map:{x:69,y:46},cmap:{x:52,y:58},match:55},
  {id:'dotonbori',line:'たこ焼き、\nもう一個だけ！',cat:'osaka',air:'간사이',hub:'난바',pal:['#fff0b3','#ffa25c','#e8455a','rgba(60,15,25,.55)'],jp:'道頓堀戎橋',st:'난바역 3분',work:'machi',name:'도톤보리 에비스바시',region:'일본 오사카부 오사카시',abroad:true,ep:'1화',time:'05:30',scene:'네온 간판 아래 다리 위에서 타코야키를 나눠 먹는 오프닝 장면',dist:'830km',visits:13900,tags:['다리','네온','먹방'],tip:'저녁 6시 이후 간판 불이 켜지면 원작 색감과 가장 비슷해요.',map:{x:52,y:60},cmap:{x:40,y:60},match:56},
  {id:'tsutenkaku',line:'勝負は\nソースで決まる！',cat:'osaka',air:'간사이',hub:'신이마미야',pal:['#e4f6ff','#8ad0ff','#3a6fd0','rgba(15,35,80,.5)'],jp:'通天閣と新世界',st:'에비스초역 3분',work:'machi',name:'츠텐카쿠 신세카이 거리',region:'일본 오사카부 오사카시',abroad:true,ep:'6화',time:'14:05',scene:'타워를 배경으로 쿠시카츠 가게 앞에서 내기를 하는 장면',dist:'832km',visits:8700,tags:['타워','골목','레트로'],tip:'쿠시카츠 소스는 한 번만 찍는 게 규칙이에요.',map:{x:53,y:62},cmap:{x:52,y:80},match:49},
  {id:'odori',line:'雪が溶けても、\n忘れないで。',cat:'sapporo',air:'신치토세',hub:'삿포로',pal:['#f2f8ff','#b9d6f2','#5a7fb8','rgba(25,40,70,.5)'],jp:'大通公園テレビ塔',st:'오도리역 1분',work:'shiro',name:'오도리 공원 TV타워',region:'일본 홋카이도 삿포로시',abroad:true,ep:'3화',time:'19:48',scene:'눈 축제 조명 아래 TV타워 시계를 보며 고백을 망설이는 장면',dist:'1,420km',visits:11200,tags:['눈','공원','야경'],tip:'2월 눈축제 기간엔 원작과 같은 조명을 볼 수 있어요.',map:{x:80,y:14},cmap:{x:50,y:44},match:54},
  {id:'tokeidai',line:'鐘が鳴ったら、\n会いに行く。',cat:'sapporo',air:'신치토세',hub:'삿포로',pal:['#fff6e8','#f2c9a0','#8a5a44','rgba(50,30,20,.5)'],jp:'札幌市時計台',st:'오도리역 5분',work:'shiro',name:'삿포로 시계탑',region:'일본 홋카이도 삿포로시',abroad:true,ep:'8화',time:'11:20',scene:'시계탑 종소리에 맞춰 첫 데이트 약속 시간을 정하는 장면',dist:'1,421km',visits:7400,tags:['시계탑','종소리'],tip:'정각마다 울리는 종소리를 들으며 명대사 재생을 켜 보세요.',map:{x:81,y:16},cmap:{x:66,y:28},match:44},
  {id:'otaru',line:'さよならは、\n言わないよ。',cat:'sapporo',air:'신치토세',hub:'오타루',pal:['#e8f1ff','#a7c4ea','#3d5f99','rgba(15,30,60,.55)'],jp:'小樽運河',st:'오타루역 10분',work:'shiro',name:'오타루 운하',region:'일본 홋카이도 오타루시',abroad:true,ep:'12화',time:'22:15',scene:'가스등이 켜진 운하를 따라 걸으며 마지막 인사를 나누는 장면',dist:'1,440km',visits:9800,tags:['운하','가스등','겨울'],tip:'해 질 녘 아사쿠사바시 다리 위가 원작 구도예요.',map:{x:78,y:13},cmap:{x:20,y:30},match:47},
 ];
-const HOME_ALL=['suga','shibuya','karumai','haboro','ihwa','shelter'];   // 홈 '전체' 포스터 순서
+const HOME_ALL=['suga','shibuya','karumai','haboro','meguro','shelter'];   // 홈 '전체' 포스터 순서
 const CATS=[['all','전체'],['hot','인기'],['tokyo','도쿄'],['osaka','오사카'],['sapporo','삿포로']];
 const byCat=c=>c==='all'?SPOTS.slice():c==='hot'?SPOTS.slice().sort((a,b)=>b.visits-a.visits).slice(0,6):SPOTS.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits);
 const CITYMAP={tokyo:{label:'도쿄 · 가나가와',lands:[['8%','14%','84%','46%','40% 60% 45% 55%'],['4%','56%','60%','34%','50% 40% 60% 45%']],sea:[['62%','62%','도쿄만'],['10%','92%','사가미만']]},
@@ -843,6 +845,7 @@ const GOODS={
  hoshi:[{n:'역명판 키홀더',p:'7,000원',s:'관광안내소'},{n:'극장판 아트북',p:'32,000원',s:'온라인'}],
  neko:[{n:'고양이 반장 뱃지',p:'6,000원',s:'팝업스토어'},{n:'골목 지도 손수건',p:'14,000원',s:'온라인'}],
  yuki:[{n:'등롱 무드등',p:'39,000원',s:'온라인'},{n:'신사 오마모리 콜라보',p:'11,000원',s:'현지 한정'}],
+ oshinoko:[{n:'아이 아크릴 스탠드',p:'16,000원',s:'온라인'},{n:'B코마치 응원봉',p:'32,000원',s:'팝업스토어'}],
  jjk:[{n:'고죠 아크릴 스탠드',p:'16,000원',s:'온라인'},{n:'시부야 사변 포스터',p:'22,000원',s:'팝업스토어'}],
  haikyu:[{n:'카라스노 저지 타월',p:'25,000원',s:'현지 한정'},{n:'배구공 키링',p:'9,000원',s:'관광안내소'}],
  todoke:[{n:'사와코 아크릴 스탠드',p:'15,000원',s:'온라인'},{n:'하보로 한정 엽서 세트',p:'8,000원',s:'현지 한정'}],
@@ -1071,6 +1074,7 @@ const PROUTE={
  suga:{tokyo:{t:[['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:210,km:6},shibuya:{t:[['지하철 긴자선',9,'아카사카미쓰케역'],['지하철 마루노우치선',5,'요쓰야산초메역']],walk:9,fare:180,km:6},narita:{t:[NEX,['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:3280,km:72}},
  shibuya:{tokyo:{t:[['JR 야마노테선',24,'시부야역']],walk:1,fare:210,km:8},shibuya:{t:[],walk:2,fare:0,km:.2},narita:{t:[NEXS],walk:1,fare:3250,km:78}},
  onnazaka:{tokyo:{t:[['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:150,km:3},shibuya:{t:[['JR 야마노테선',13,'신주쿠역'],['JR 주오·소부선',12,'스이도바시역']],walk:7,fare:210,km:9},narita:{t:[NEX,['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:3220,km:68}},
+ meguro:{tokyo:{t:[['JR 야마노테선',20,'에비스역'],['지하철 히비야선',2,'나카메구로역']],walk:5,fare:360,km:10},shibuya:{t:[['도큐 도요코선',3,'나카메구로역']],walk:5,fare:140,km:3},narita:{t:[NEXS,['도큐 도요코선',3,'나카메구로역']],walk:5,fare:3390,km:80}},
  shelter:{tokyo:{t:[['지하철 마루노우치선',18,'신주쿠역'],['오다큐선',8,'시모키타자와역']],walk:3,fare:380,km:12},shibuya:{t:[['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:140,km:3},narita:{t:[NEXS,['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:3390,km:82}},
  kamakura:kana('가마쿠라코코마에역',17,1),shichiri:kana('시치리가하마역',19,5),enoshima:kana('에노시마역',10,12),
  dotonbori:{umeda:{t:[['지하철 미도스지선',8,'난바역']],walk:3,fare:240,km:5},namba:{t:[],walk:4,fare:0,km:.4},kix:{t:[['난카이 특급 라피트',38,'난바역']],walk:3,fare:1490,km:50}},
