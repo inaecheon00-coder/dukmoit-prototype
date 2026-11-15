@@ -215,7 +215,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 /* =====================================================================
    덕모잇 테마 — Figma 디자인 적용 (색상 · 폰트 · 컴포넌트)
    ===================================================================== */
-.press{font-family:var(--f-press);font-weight:900;letter-spacing:-.02em}
+.press{font-family:var(--f-press);font-weight:700;letter-spacing:-.02em}
 .wrap{background:#dfe8f2;height:100dvh;min-height:0;overflow:hidden}
 /* 아이폰 14 (390×844) 고정: 화면이 작으면 비율 그대로 축소만 */
 .phone{transform-origin:center center;transform:scale(var(--fit,1))}
@@ -238,7 +238,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 /* header */
 .hdr{height:56px;padding:0 12px}
 .hdr .t{font-size:17px;font-weight:700;color:var(--navy)}
-.hdr .t.left{font-family:var(--f-press);font-weight:900;font-size:26px;color:var(--b);letter-spacing:-.02em;margin-left:8px}
+.hdr .t.left{font-family:var(--f-press);font-weight:700;font-size:26px;color:var(--b);letter-spacing:-.02em;margin-left:8px}
 .ib{color:var(--b)}
 .dark .ib{color:#fff}
 .ib:hover{background:var(--b-weak)}
@@ -358,7 +358,7 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 .cart::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(circle,rgba(255,255,255,.34) 1.15px,transparent 1.6px) 0 0/6px 6px;-webkit-mask:linear-gradient(160deg,#000 0%,transparent 65%);mask:linear-gradient(160deg,#000 0%,transparent 65%)}
 .cart::after{content:"";position:absolute;inset:-50%;z-index:0;background:repeating-conic-gradient(from 0deg at 50% 45%,rgba(255,255,255,.2) 0 .55deg,transparent .55deg 5deg);-webkit-mask:radial-gradient(closest-side,transparent 42%,#000 95%);mask:radial-gradient(closest-side,transparent 42%,#000 95%)}
 .cart .gr{position:absolute;left:0;right:0;bottom:0;height:24%;z-index:1;background:var(--c4,rgba(20,24,40,.55));clip-path:polygon(0 35%,18% 20%,32% 38%,55% 10%,70% 30%,85% 18%,100% 32%,100% 100%,0 100%)}
-.cart .kj{position:absolute;left:12px;top:14px;z-index:2;writing-mode:vertical-rl;font-family:var(--f-press);font-weight:900;font-size:21px;line-height:1.05;letter-spacing:.04em;color:#fff;text-shadow:2px 2px 0 rgba(0,40,100,.45),-1px -1px 0 rgba(0,40,100,.25)}
+.cart .kj{position:absolute;left:12px;top:14px;z-index:2;writing-mode:vertical-rl;font-family:var(--f-press);font-weight:700;font-size:21px;line-height:1.05;letter-spacing:.04em;color:#fff;text-shadow:2px 2px 0 rgba(0,40,100,.45),-1px -1px 0 rgba(0,40,100,.25)}
 .cart .sh{position:absolute;inset:0;z-index:2;background:linear-gradient(to top,rgba(0,0,0,.45),rgba(255,255,255,0) 45%)}
 .cart .cap{position:absolute;left:12px;right:12px;bottom:11px;z-index:3}
 .cart .cap .w{font-size:15px;opacity:.9}
@@ -380,8 +380,8 @@ textarea{border-color:var(--line2);border-radius:12px;background:#fff}
 .qb.bubble{overflow:visible}
 .qb.bubble::before{inset:0;border-radius:15px;overflow:hidden;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.24) 0 .9deg,transparent .9deg 7deg);-webkit-mask:radial-gradient(farthest-side,transparent 62%,#000 100%);mask:radial-gradient(farthest-side,transparent 62%,#000 100%)}
 .burst-h{display:flex;align-items:center;gap:8px;padding:0 16px;margin:26px 0 12px}
-.burst-h h3{font-family:var(--f-press);font-weight:900;font-size:22px;color:var(--b);letter-spacing:-.01em}
-.burst-h .fx{font-family:var(--f-press);font-weight:900;color:#fff;background:var(--b);font-size:15px;padding:3px 8px;border-radius:6px;transform:rotate(-6deg)}
+.burst-h h3{font-family:var(--f-press);font-weight:700;font-size:22px;color:var(--b);letter-spacing:-.01em}
+.burst-h .fx{font-family:var(--f-press);font-weight:700;color:#fff;background:var(--b);font-size:15px;padding:3px 8px;border-radius:6px;transform:rotate(-6deg)}
 .burst-h a{margin-left:auto;font-size:15px;color:var(--sub2);cursor:pointer}
 .ph::before{background:radial-gradient(circle,rgba(0,120,233,.13) 1.1px,transparent 1.5px) 0 0/6px 6px}
 .toast{background:var(--bubble)!important;font-weight:600}
@@ -456,8 +456,8 @@ input,textarea{font-size:17px}
 .hero-tag{position:absolute;right:8px;top:8px;z-index:4;display:flex;align-items:center;gap:4px;font-size:15px;font-weight:700;color:#fff;background:rgba(0,40,90,.35);backdrop-filter:blur(4px);padding:3px 8px;border-radius:8px;letter-spacing:.02em}
 .hero-tag svg{width:16px;height:16px}
 .hero-t{padding:16px 0 0 20px;display:flex;flex-direction:column;line-height:1.05}
-.hero-t b{font-family:var(--f-press);font-weight:900;font-size:30px;color:#0b2a4a;letter-spacing:-.02em;transform:skewX(-6deg);transform-origin:left}
-.hero-t span{font-family:var(--f-press);font-weight:800;font-size:27px;color:#0b2a4a;letter-spacing:.12em;margin-top:6px}
+.hero-t b{font-family:var(--f-press);font-weight:700;font-size:30px;color:#0b2a4a;letter-spacing:-.02em;transform:skewX(-6deg);transform-origin:left}
+.hero-t span{font-family:var(--f-press);font-weight:700;font-size:26px;color:#0b2a4a;letter-spacing:.08em;margin-top:6px}
 .hero-b{position:absolute;right:0;bottom:0;width:calc(100% - 186px);height:84px;display:grid;place-items:center;text-align:center;font-size:17px;line-height:1.35;cursor:pointer;overflow:visible!important}
 .hero-b::before{inset:0;border-radius:15px;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,255,255,.26) 0 .9deg,transparent .9deg 7deg);-webkit-mask:radial-gradient(farthest-side,transparent 60%,#000 100%);mask:radial-gradient(farthest-side,transparent 60%,#000 100%)}
 .hero-b::after{content:"";position:absolute;left:-16px;bottom:16px;width:26px;height:20px;background:#1b86ef;clip-path:polygon(100% 0,0 75%,100% 100%)}
@@ -629,8 +629,8 @@ input,textarea{font-size:17px}
 .rvh-img{border-radius:15px;overflow:hidden;cursor:pointer}
 .rvh-img .cart{height:190px!important;border-radius:15px}
 .rvh-t{padding:14px 0 0 18px;display:flex;flex-direction:column;line-height:1.05}
-.rvh-t b{font-family:var(--f-press);font-weight:900;font-size:32px;color:#0b2a4a;transform:skewX(-6deg);transform-origin:left;letter-spacing:-.02em}
-.rvh-t span{font-family:var(--f-press);font-weight:800;font-size:28px;color:#0b2a4a;letter-spacing:.14em;margin-top:6px}
+.rvh-t b{font-family:var(--f-press);font-weight:700;font-size:32px;color:#0b2a4a;transform:skewX(-6deg);transform-origin:left;letter-spacing:-.02em}
+.rvh-t span{font-family:var(--f-press);font-weight:700;font-size:27px;color:#0b2a4a;letter-spacing:.08em;margin-top:6px}
 .rvh-b{position:absolute;right:0;bottom:0;width:calc(100% - 206px)}
 .rvh-b .qx{font-size:17px}
 .rvs{display:flex;align-items:center;gap:16px;padding:16px 18px}
@@ -650,7 +650,12 @@ input,textarea{font-size:17px}
 .rv-cta .go{position:absolute;right:18px;display:inline-flex}.rv-cta .go svg{width:18px;height:18px;transform:rotate(180deg)}
 .rvi{padding:14px 2px;border-bottom:1px solid var(--line)}
 .rvi-h{display:flex;align-items:center;gap:8px}
-.rvi-av{width:34px;height:34px;flex:none}
+.pav{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.7)}
+.pav svg{width:24px;height:24px;stroke-width:2.1}
+.rvlist-h{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 2px;font-size:15px;color:var(--mute)}
+.rvlist-h b{font-size:16px;color:var(--navy)}
+.rv-more{width:100%;margin:16px 0 30px;gap:6px}
+.rv-more span{font-weight:500;color:var(--mute)}
 .rvi-u{font-size:16px;color:var(--navy)}
 .rvi-d{font-size:15px;color:var(--mute)}
 .rvi-me{font-size:15px;font-weight:600;color:var(--b);background:var(--b-weak);padding:0 6px;border-radius:6px}
@@ -812,14 +817,18 @@ function rvBase(sp){if(RV_BASE[sp.id])return RV_BASE[sp.id];const k=rvSeed(sp);
  RV_BASE[sp.id]=Array.from({length:8},(_,i)=>{const p=RV_POOL[(k+i*3)%RV_POOL.length];const day=12-((i*3+k)%4)-i*2;const mo=day>0?10:9;const dd=day>0?day:30+day;
   return{u:RV_NICK[(k+i)%RV_NICK.length],d:`2026.${String(mo).padStart(2,'0')}.${String(dd).padStart(2,'0')}`,r:p[1],txt:p[0],tag:p[2],like:(k*7+i*11)%24}});
  return RV_BASE[sp.id]}
-const rvList=sp=>((S.myReviews||{})[sp.id]||[]).concat(rvBase(sp)).map((r,i)=>({...r,id:r.id||sp.id+'-'+i}));
+function rvOlder(sp,page){const k=rvSeed(sp)+7;const out=[];for(let j=0;j<page*10;j++){const i=j+8;const p=RV_POOL[(k+i*7)%RV_POOL.length];const back=20+j*3;const dt=new Date(2026,9,12-back);
+ out.push({u:RV_NICK[(k+i*3)%RV_NICK.length]+(j>=RV_NICK.length?String(j%97):''),d:`${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`,r:p[1],txt:p[0],tag:p[2],like:(k*5+i*13)%18})}return out}
+const rvList=sp=>((S.myReviews||{})[sp.id]||[]).concat(rvBase(sp),rvOlder(sp,(S.rvPage||{})[sp.id]||0)).map((r,i)=>({...r,id:r.id||sp.id+'-'+i}));
 function rvSum(sp){const mine=(S.myReviews||{})[sp.id]||[];const fx=RV_SUM_FIX[sp.id];
  if(fx){const n=fx.n+mine.length;const avg=(fx.avg*fx.n+mine.reduce((a,r)=>a+r.r,0))/n;return{avg,n,dist:fx.dist}}
  const all=rvList(sp),base=Math.max(all.length,Math.round(sp.visits*.09));const cnt=[5,4,3,2,1].map(v=>all.filter(r=>Math.round(r.r)===v).length);
  const avg=all.reduce((a,r)=>a+r.r,0)/all.length;return{avg,n:base+mine.length,dist:cnt.map(c=>Math.round(c/all.length*100))}}
 const stars=(v,cls='')=>`<span class="rvstars ${cls}" aria-label="별점 ${v.toFixed(1)}">${[1,2,3,4,5].map(i=>`<i class="${v>=i-.25?'on':''}">★</i>`).join('')}</span>`;
+const PAV=[['#ffe1bf','#d0711e'],['#d6ebff','#1b6fd1'],['#d7f4e3','#23885a'],['#ffdce8','#c23f6c'],['#e7defe','#6b4fd0'],['#fff1b8','#a27a00'],['#d4f3f6','#16838f']];
+const pav=r=>{const [bg,fg]=r.mine?['#0078e9','#fff']:PAV[[...r.u].reduce((a,c)=>a+c.charCodeAt(0),0)%PAV.length];return`<span class="pav" style="background:${bg};color:${fg}" aria-hidden="true">${I.face}</span>`};
 const rvItem=r=>{const liked=(S.rvLiked||{})[r.id];return`<div class="rvi">
- <div class="rvi-h"><div class="av rvi-av"></div><b class="rvi-u">${r.u}</b><span class="rvi-d">${r.d}</span>${r.mine?'<span class="rvi-me">내 후기</span>':''}<span class="rvi-r">★ ${r.r.toFixed(1)}</span></div>
+ <div class="rvi-h">${pav(r)}<b class="rvi-u">${r.u}</b><span class="rvi-d">${r.d}</span>${r.mine?'<span class="rvi-me">내 후기</span>':''}<span class="rvi-r">★ ${r.r.toFixed(1)}</span></div>
  <div class="rvi-t">${r.txt.replace(/</g,'&lt;')}</div>
  <div class="rvi-f">${r.tag?`<span class="rvi-tag">${r.tag}</span>`:'<span></span>'}<button class="rvi-like ${liked?'on':''}" data-act="rvlike" data-v="${r.id}" aria-label="좋아요">${I.heart}<span>${r.like+(liked?1:0)}</span></button></div></div>`};
 
@@ -1117,8 +1126,9 @@ SCREENS.reviews=()=>{const sp=spot();const list=rvList(sp);const sm=rvSum(sp);co
    <div class="rvs-r">${sm.dist.map((p,i)=>`<div class="rvs-row ${i===0?'top':''}"><span class="rvs-p">${p}%</span><span class="rvs-bar"><i style="width:${p}%"></i></span><span class="rvs-s">${5-i}점</span></div>`).join('')}</div>
   </div>
   <button class="btn pri rv-cta" data-act="rvwrite">방문록 등록하기<span class="jp">| アニメの中見物</span><span class="go">${I.back}</span></button>
+  <div class="rvlist-h"><b>방문록 ${fmt(sm.n)}개</b><span>최신순</span></div>
   <div class="rvlist">${list.map(rvItem).join('')}</div>
-  <div class="rv-end">${sp.name}의 방문록을 모두 봤어요</div>
+  ${list.length<sm.n?`<button class="btn out sm rv-more" data-act="rvmore">이전 방문록 더보기 <span>${fmt(list.length)} / ${fmt(sm.n)}</span></button>`:`<div class="rv-end">${sp.name}의 방문록을 모두 봤어요</div>`}
  </div></div>`}};
 function openReviewSheet(){const sp=spot();const el=document.getElementById('sheet');const f={r:5,txt:'',tag:''};
  const draw=()=>{el.innerHTML=`<div class="grab"></div>
@@ -1723,6 +1733,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'qsearch':{const v=document.getElementById('q').value.trim();if(!v){toast('기억나는 장면을 적어주세요');break}S.scanQuery=v;S.upload=null;go('scanning');break}
   case 'route':S.route=+t.dataset.i;render();break;
   case 'rvwrite':openReviewSheet();break;
+  case 'rvmore':{S.rvPage=S.rvPage||{};S.rvPage[S.spot]=(S.rvPage[S.spot]||0)+1;render();break}
   case 'rvlike':{S.rvLiked=S.rvLiked||{};const id=t.dataset.v;S.rvLiked[id]=!S.rvLiked[id];t.classList.toggle('on',S.rvLiked[id]);const n=t.querySelector('span');n.textContent=(+n.textContent)+(S.rvLiked[id]?1:-1);break}
   case 'gohome':tabTo('home');break;
   case 'pfrom':S.planFrom=t.dataset.v;planUpdate();break;
