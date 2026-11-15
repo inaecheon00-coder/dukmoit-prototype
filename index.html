@@ -1401,7 +1401,10 @@ function star4(c,x,y,r,a){c.save();c.globalAlpha=a;c.fillStyle='#fff';c.beginPat
 function sparkles(c,w,h,t,n=22){for(let i=0;i<n;i++){const sp=(i%4+1)*.012;const x=((i*137.5)%w+t*sp*0.6)%w;const y=h-((i*91.7)%h+t*sp)%h;const r=(i%3+2)*w/220;star4(c,x,y,r,.35+.45*Math.abs(Math.sin(t/600+i)))}}
 function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 ${fs}px "Pretendard Variable",Pretendard,sans-serif`;const tw=c.measureText(text).width;const pw=tw+fs*1.4,ph=fs*2.1,x=(w-pw)/2;c.fillStyle='rgba(0,0,0,.55)';rr(c,x,y,pw,ph,ph/2);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(text,w/2,y+ph/2+1);c.restore()}
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
-function drawScene(c,w,h,t,alpha){const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
+/* 원작 비교 장면 이미지 (가운데 기준 세로 클로즈업) */
+const SCENE_IMG={shibuya:'assets/scene/shibuya.jpg'};const _sceneCache={};
+function sceneImg(id){const u=SCENE_IMG[id];if(!u)return null;let im=_sceneCache[id];if(!im){im=new Image();im.src=u+'?v='+ASSET_V;_sceneCache[id]=im}return im.complete&&im.naturalWidth?im:null}
+function drawScene(c,w,h,t,alpha){const im=sceneImg(spot().id);if(im){c.save();c.globalAlpha=alpha;const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);c.restore();return}const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
  const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
  if(snow){g.addColorStop(0,'#2b3a67');g.addColorStop(1,'#a9b7d8')}else{g.addColorStop(0,'#ff9a5a');g.addColorStop(.5,'#ff6f61');g.addColorStop(1,'#6a4c93')}
  c.fillStyle=g;c.fillRect(0,0,w,h*.62);
@@ -1471,7 +1474,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
   <div class="row between">
    <button class="arb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i><span>경험 선택</span></button>
    <button class="rb" data-act="capture" data-ctx="move" aria-label="촬영"><span></span></button>
-   <button class="arb" data-act="nextstep"><i>${I.map}</i><span>도착</span></button>
+   <button class="arb" data-act="nextstep"><i>${I.map}</i><span>다음</span></button>
   </div>
  </div><div class="flash" id="flash"></div>`,after(){startCam();arLoop()}}};
 
@@ -1485,7 +1488,7 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
  <div class="ov" style="top:calc(var(--sat) + 12px);left:16px;right:16px">
   <div class="row between"><button class="ib" data-act="back" style="background:rgba(0,0,0,.35)">${I.close}</button>
    <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
-   <button class="ib" data-act="sheet-exp" data-ctx="site" style="background:rgba(0,0,0,.35)">${I.sparkle}</button></div>
+   <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button></div>
   <div class="pill" style="margin-top:12px"><div class="small" style="opacity:.7">${work(sp).title} · ${sp.ep} · 장면 포인트 도착</div><b>${sp.name}</b></div>
   ${pano?'':fxBar()}
  </div>
@@ -1496,7 +1499,7 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
   <div class="row between">
    <button class="arb" data-act="sheet-exp" data-ctx="site"><i>${I.sparkle}</i><span>경험 추가</span></button>
    <button class="rb" data-act="capture" data-ctx="site" aria-label="촬영"><span></span></button>
-   <button class="arb" data-act="camflip"><i>${I.flip}</i><span>카메라 전환</span></button>
+   <button class="arb" data-act="back"><i>${I.close}</i><span>종료</span></button>
   </div>
  </div><div class="flash" id="flash"></div>`,after(){
    const b=document.getElementById('blend');if(b)b.oninput=e=>{S.blend=+e.target.value;document.getElementById('blendv').textContent=S.blend};
@@ -1573,20 +1576,23 @@ SCREENS.archive=()=>{const got=new Set(S.archive.map(a=>a.spot));return{tab:'arc
 
 /* ================= SHEET: 경험 선택 ================= */
 function openExpSheet(ctx){
- const list=ctx==='move'?MOVE_EXP:SITE_EXP;const st=ctx==='move'?S.moveExp:S.siteExp;
+ let tab='fx',list,st,thumb;
+ const pick=()=>{if(ctx==='move'){list=MOVE_EXP;st=S.moveExp;thumb=true}else if(tab==='fx'){list=MOVE_EXP;st=S.siteFx;thumb=true}else{list=SITE_EXP;st=S.siteExp;thumb=false}};
  const el=document.getElementById('sheet');
- const draw=()=>{el.innerHTML=`<div class="grab"></div>
-  <div style="font-size:18px;font-weight:700">${ctx==='move'?'이동 중 AR 경험':'현장 AR 경험'}</div>
-  <div class="small muted" style="margin:2px 0 8px">${ctx==='move'?'이동 시간도 덕질이 되도록, 원하는 경험을 골라보세요':'이 장면 앞에서 즐길 경험을 골라보세요'}</div>
+ const draw=()=>{pick();el.innerHTML=`<div class="grab"></div>
+  ${ctx==='site'?`<div class="seg exptab" style="margin-bottom:12px"><button class="${tab==='fx'?'on':''}" data-sx="tab" data-v="fx">AR 필터</button><button class="${tab==='site'?'on':''}" data-sx="tab" data-v="site">현장 AR 경험</button></div>`:''}
+  <div style="font-size:18px;font-weight:700">${ctx==='move'?'이동 중 AR 경험':tab==='fx'?'AR 필터':'현장 AR 경험'}</div>
+  <div class="small muted" style="margin:2px 0 8px">${ctx==='move'?'이동 시간도 덕질이 되도록, 원하는 경험을 골라보세요':tab==='fx'?'카메라 화면에 입힐 애니 필터를 골라보세요':'이 장면 앞에서 즐길 경험을 골라보세요'}</div>
   <div class="row" style="gap:6px;margin-bottom:6px"><button class="chip" data-sx="rec">추천 조합 적용</button><button class="chip" data-sx="all">전부 켜기</button></div>
-  ${list.map(e=>`<div class="opt" style="cursor:pointer" data-sx="t" data-id="${e.id}">${ctx==='move'?`<img class="expth" src="assets/exp/${e.id}.jpg?v=${ASSET_V}" alt="" loading="lazy">`:ph('',56,'width:56px;flex:none')}<div style="flex:1"><div class="row" style="gap:6px"><b>${e.name}</b>${e.rec?'<span class="tag ac">추천</span>':''}</div><div class="small muted">${e.desc}</div></div><span class="tg ${st[e.id]?'on':''}"></span></div>`).join('')}
+  ${list.map(e=>`<div class="opt" style="cursor:pointer" data-sx="t" data-id="${e.id}">${thumb?`<img class="expth" src="assets/exp/${e.id}.jpg?v=${ASSET_V}" alt="" loading="lazy">`:ph('',56,'width:56px;flex:none')}<div style="flex:1"><div class="row" style="gap:6px"><b>${e.name}</b>${e.rec?'<span class="tag ac">추천</span>':''}</div><div class="small muted">${e.desc}</div></div><span class="tg ${st[e.id]?'on':''}"></span></div>`).join('')}
   <button class="btn pri" style="margin-top:14px" data-sx="done">적용하기</button>`;};
  draw();
  el.onclick=e=>{const t=e.target.closest('[data-sx]');if(!t)return;const a=t.dataset.sx;
-  if(a==='t'){st[t.dataset.id]=!st[t.dataset.id];draw();}
+  if(a==='tab'){tab=t.dataset.v;draw();}
+  else if(a==='t'){st[t.dataset.id]=!st[t.dataset.id];draw();}
   else if(a==='rec'){list.forEach(x=>st[x.id]=!!x.rec);draw();}
   else if(a==='all'){list.forEach(x=>st[x.id]=true);draw();}
-  else if(a==='done'){if(ctx==='site'&&!Object.values(st).some(Boolean)){st.overlay=true;}closeSheet();render();toast('AR 경험을 적용했어요');}};
+  else if(a==='done'){if(ctx==='site'&&!Object.values(S.siteExp).some(Boolean)){S.siteExp.overlay=true;}closeSheet();render();toast('AR 경험을 적용했어요');}};
  document.getElementById('dim').classList.add('on');el.classList.add('on');
 }
 function closeSheet(){document.getElementById('dim').classList.remove('on');document.getElementById('sheet').classList.remove('on')}
