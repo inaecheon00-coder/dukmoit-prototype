@@ -508,7 +508,11 @@ input,textarea{font-size:17px}
 .tsearch input{font-size:17px}
 .tsearch button{width:42px;height:42px;display:grid;place-items:center;border-radius:50%;color:var(--b)}
 .tsearch button svg{width:30px;height:30px;stroke-width:2.3}
-.ar360 svg{width:34px!important;height:34px!important}
+.ar360 svg{width:32px!important;height:32px!important}
+.cart.scene .poster{object-position:center 22%}
+.rv{padding:14px 0;border-bottom:1px solid var(--line)}
+.rv:first-child{padding-top:4px}
+.rv-star{font-size:15px;font-weight:700;color:var(--b)}
 
 /* ===== 네이티브 화면 전환 ===== */
 #app{position:absolute;inset:0;overflow:hidden}
@@ -606,7 +610,7 @@ const I={
  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.6 4.4a1.5 1.5 0 012.8 0l1.4 3.3 3.6.4a1.5 1.5 0 01.9 2.6l-2.7 2.4.8 3.6a1.5 1.5 0 01-2.2 1.6L12 16.4l-3.2 1.9a1.5 1.5 0 01-2.2-1.6l.8-3.6-2.7-2.4a1.5 1.5 0 01.9-2.6l3.6-.4z"/><path d="M9.7 12.2c.4.5.5 1.2.2 1.8"/></svg>',
  face:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M5.2 9c1.6.9 4.8.9 6.3-.4 1.5 1.3 4.8 1.3 6.4.4" /><circle cx="9.4" cy="12.4" r=".5" fill="currentColor"/><circle cx="14.6" cy="12.4" r=".5" fill="currentColor"/><path d="M9 15.2a3.6 3.6 0 006 0"/></svg>',
  chev:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5l6 6 6-6"/></svg>',
- p360:'<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><text x="16" y="10.5" text-anchor="middle" fill="currentColor" stroke="none" font-family="Pretendard Variable,Pretendard,sans-serif" font-weight="800" font-size="10.5" letter-spacing="-.3">360°</text><path d="M5.5 15.2c0 1.6 4.7 2.8 10.5 2.8s10.5-1.2 10.5-2.8"/><path d="M5.5 15.2v10c0 1.5 4.7 2.7 10.5 2.7s10.5-1.2 10.5-2.7v-10"/><path d="M8.6 27.2l3.6-4.8 2.3 2.2 3-4.1 4.2 6.6"/><path d="M4.8 13.4a2 2 0 011.6-1.7M27.2 13.4a2 2 0 00-1.6-1.7"/></svg>',
+ p360:'<svg viewBox="0 0 1048 1024" fill="none" stroke="currentColor" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"><text x="590" y="420" text-anchor="middle" fill="currentColor" stroke="none" font-family="-apple-system,BlinkMacSystemFont,Helvetica Neue,Pretendard Variable,Pretendard,sans-serif" font-weight="500" font-size="330" letter-spacing="-6">360°</text><path d="M185 430C163 444 152 463 152 488V822M880 428C902 443 913 461 913 485V822"/><path d="M152 490C300 563 760 566 913 512"/><path d="M152 822C165 937 900 937 913 822"/><path d="M322 876C450 893 640 893 760 876"/><path d="M290 862L408 717 510 818 632 612 778 862"/></svg>',
  hand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.3 13.5V5.2a1.3 1.3 0 012.6 0v6.3"/><path d="M11.9 10.2a1.3 1.3 0 012.6 0v1.3M14.5 10.8a1.3 1.3 0 012.6 0v1M17.1 11.2a1.3 1.3 0 012.4.7v3a5.8 5.8 0 01-11.6.3l-.1-2a1.4 1.4 0 01.9-1.4"/></svg>',
  copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7.5" width="10.5" height="12.5" rx="2"/><path d="M8.5 7.5V5.5a1.5 1.5 0 011.5-1.5h8a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5h-3.5"/></svg>'
 };
@@ -671,11 +675,20 @@ const MOVE_EXP=[
  {id:'ost',name:'OST 사운드트랙',desc:'이동 구간마다 작품 속 BGM이 이어서 재생돼요'},
  {id:'narr',name:'장면 내레이션',desc:'지나는 장소에 얽힌 작품 속 에피소드를 들려줘요'},
 ];
+const REVIEW_POOL=[
+ {u:'성지순례러',t:'3일 전',r:5,txt:'원작 구도 그대로라 도착하자마자 소름 돋았어요. 같은 각도로 사진 꼭 찍어 보세요!'},
+ {u:'아침산책',t:'1주 전',r:4.5,txt:'평일 아침에 가니 사람이 거의 없어서 여유롭게 둘러봤어요. 주변이 조용하니 매너 지켜 주세요.'},
+ {u:'길치탈출',t:'2주 전',r:5,txt:'역에서 생각보다 가까워요. 앱 길 안내대로 가니 헤매지 않았어요.'},
+ {u:'노을수집가',t:'3주 전',r:4.5,txt:'해 질 녘 빛이 장면이랑 제일 비슷해요. 360° 재현 켜고 보니까 감동 두 배.'},
+ {u:'덕질여행중',t:'1달 전',r:4,txt:'잠깐 들르려다 두 시간 있었네요. 근처 카페도 분위기 좋아요.'},
+ {u:'스탬프마스터',t:'1달 전',r:5,txt:'순례 스탬프 찍고 기록 남기니까 여행 일기처럼 남아서 좋아요.'},
+];
+const reviewsFor=sp=>{const own=POSTS.filter(p=>p.spot===sp.id).map(p=>({u:p.u,t:p.t,r:5,txt:p.txt}));const k=[...sp.id].reduce((a,c)=>a+c.charCodeAt(0),0);
+ const pool=REVIEW_POOL.map((_,i)=>REVIEW_POOL[(i+k)%REVIEW_POOL.length]);return own.concat(pool).slice(0,3)};
 const SITE_EXP=[
  {id:'overlay',name:'장면 오버레이',desc:'원작 장면을 실제 풍경 위에 겹쳐 같은 구도를 찾아요',rec:true},
  {id:'pano',name:'360° 장면 재현',desc:'원작에선 볼 수 없던 뒤쪽까지 장면 속을 둘러봐요',rec:true},
  {id:'duo',name:'캐릭터 투샷',desc:'등장인물이 옆에 선 사진을 남겨요'},
- {id:'line',name:'명대사 재생',desc:'그 자리에서 장면 속 대사와 효과음을 들어요'},
 ];
 const GOODS={
  natsu:[{n:'건널목 아크릴 스탠드',p:'18,000원',s:'현지 한정'},{n:'에노덴 1일권 콜라보 케이스',p:'12,000원',s:'역 매점'},{n:'OST 바이닐',p:'45,000원',s:'온라인'}],
@@ -697,7 +710,7 @@ const POSTS=[
  {u:'건널목지기',spot:'kamakura',t:'2시간 전',txt:'5시 12분, 원작이랑 노을 각도 완전히 똑같았어요. 오버레이 투명도 60%가 제일 좋아요',like:328,c:41,exp:'장면 오버레이'},
  {u:'별빛순례자',spot:'hida',t:'어제',txt:'육교 360° 재현 켜고 뒤돌아보면 원작에 없던 마을 쪽 풍경까지 나와서 소름…',like:512,c:77,exp:'360° 장면 재현'},
  {u:'반장집사',spot:'ihwa',t:'3일 전',txt:'이동 중 캐릭터 필터로 지하철 승객이 전부 고양이 탐정단 됨 ㅋㅋ 이동 시간이 제일 재밌었음',like:190,c:23,exp:'캐릭터 필터'},
- {u:'눈꽃신령',spot:'kifune',t:'1주 전',txt:'첫눈 오는 날 다녀왔어요. 명대사 재생은 이어폰 필수!',like:441,c:36,exp:'명대사 재생'},
+ {u:'눈꽃신령',spot:'kifune',t:'1주 전',txt:'첫눈 오는 날 다녀왔어요. 360° 재현은 해 질 녘이 제일 예뻐요!',like:441,c:36,exp:'360° 장면 재현'},
 ];
 
 /* ================= STATE ================= */
@@ -706,7 +719,7 @@ const S={
  upload:null, scanQuery:'',
  moveExp:{anime:true,sky:true,tone:true,charfilter:false,ost:true,narr:false},
  siteFx:{anime:true,tone:true,sky:false},
- siteExp:{overlay:true,pano:true,duo:false,line:false},
+ siteExp:{overlay:true,pano:true,duo:false},
  device:'phone', siteMode:'overlay', blend:55, pan:0,
  route:0, from:'서울역', date:'12월 20일(토)',
  exploreWork:'all', exploreCat:'all', exploreSel:'kamakura', homeCat:'all',
@@ -715,7 +728,7 @@ const S={
  lastCapture:null,
  archive:[
   {spot:'ihwa',date:'2026.10.03',exp:['캐릭터 필터','장면 오버레이'],memo:'반장이 앉아 있던 그 계단. 실제 고양이도 있었다!'},
-  {spot:'hida',date:'2026.08.15',exp:['360° 장면 재현','명대사 재생'],memo:'열차 지나갈 때 대사 재생 타이밍 맞추느라 세 번 기다림'},
+  {spot:'hida',date:'2026.08.15',exp:['360° 장면 재현'],memo:'열차 지나갈 때 타이밍 맞추느라 세 번 기다림'},
  ],
  trips:[{spot:'kamakura',date:'12월 20일(토)',status:'예정'}],
 };
@@ -863,11 +876,10 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
  ${hdr('',{right:`<button class="ib" data-toast="저장했어요">${I.heart}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
  <div class="body">
   <div style="position:relative">
-   <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">${art(sp,220,{cap:false,bk:false,img:true,st:'border-radius:0;'})}${ph('실제 장소',220,'border-radius:0')}</div>
-   <span class="tag" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);background:#fff">장면 ↔ 현실 비교</span>
+   ${art(sp,300,{cap:false,bk:false,img:true,cls:'scene',st:'border-radius:0;'})}
   </div>
   <div class="pad" style="margin-top:16px">
-   <div style="font-size:15px;color:var(--b-ink)">${w.title} · ${w.genre}</div>
+   <div style="font-size:15px;color:var(--b-ink)">${w.title}</div>
    <div style="font-size:22px;font-weight:700;color:var(--navy);margin:4px 0 0">${sp.name}</div><div style="font-size:17px;font-weight:500;color:var(--slate);margin-bottom:8px">${sp.jp}</div>
    <div class="row small muted" style="gap:4px">${I.pin.replace('<svg','<svg width="16" height="16"')} ${sp.region} · 여기서 ${sp.dist}</div>
    <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${sp.tags.map(t=>`<span class="tag">#${t}</span>`).join('')}</div>
@@ -886,10 +898,9 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
   </div>
   <div class="pad sec"><div class="card" style="padding:14px;background:var(--bg);border:0"><b class="small">순례 팁</b><div class="small muted" style="margin-top:4px">${sp.tip}</div></div></div>
   ${near.length?`<div class="sec"><div class="sec-h"><h3>같은 작품의 다른 장면</h3></div><div class="hscroll">${near.map(s=>spotCard(s,160)).join('')}</div></div>`:''}
-  <div class="sec"><div class="sec-h"><h3>이 장소의 굿즈</h3><a data-go="community" data-sub="goods">더보기</a></div>
-   <div class="hscroll">${(GOODS[sp.work]||[]).map(g=>`<div style="width:120px;flex:none">${ph('',120)}<div class="small" style="margin-top:6px;font-weight:500">${g.n}</div><div class="small muted">${g.p} · ${g.s}</div></div>`).join('')}</div></div>
-  <div class="sec" style="padding-bottom:20px"><div class="sec-h"><h3>방문 후기</h3><a data-tab="community">전체</a></div>
-   <div class="pad">${POSTS.filter(p=>p.spot===sp.id).concat(POSTS[0]).slice(0,1).map(p=>`<div class="row" style="align-items:flex-start"><div class="av"></div><div><b class="small">@${p.u}</b><div class="small">${p.txt}</div></div></div>`).join('')}</div></div>
+  <div class="sec" style="padding-bottom:24px"><div class="sec-h"><h3>방문 후기</h3><span class="small muted">${fmt(Math.round(sp.visits*.08))}개</span></div>
+   <div class="pad">${reviewsFor(sp).map(r=>`<div class="rv"><div class="row" style="gap:10px"><div class="av" style="width:34px;height:34px;flex:none"></div><div style="flex:1;min-width:0"><b style="font-size:15px">@${r.u}</b><div class="small muted">${r.t}</div></div><span class="rv-star">★ ${r.r.toFixed(1)}</span></div><div style="margin-top:8px;font-size:15px;line-height:1.5">${r.txt}</div></div>`).join('')}
+    <button class="btn out sm" style="width:100%;margin-top:12px" data-go="community" data-sub="feed">후기 더보기</button></div></div>
  </div>
  <div class="cta"><button class="btn out ar360" style="width:56px;flex:none" data-act="sheet-exp" data-ctx="site" aria-label="AR 경험 선택">${I.p360}</button><button class="btn pri" data-go="plan">방문 계획하기</button></div>`}};
 
@@ -1116,7 +1127,7 @@ function drawOverlay(c,w,h,t){
  else if(S.screen==='arrive'){if(!S.locked)return;const k=Math.min(1,(t-S.lockAt)/700);
   if(S.siteMode==='overlay'){c.save();const sc=1.08-.08*k;c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-w/2,-h/2);drawScene(c,w,h,t,(S.blend/100)*k);c.restore();sparkles(c,w,h,t,14)}
   else if(S.siteMode==='duo'){c.globalAlpha=k;drawChar(c,w,h,t);c.globalAlpha=1;sparkles(c,w,h,t,10)}
-  else if(S.siteMode==='line'){c.globalAlpha=k;subtitle(c,w,h,LINES[spot().work],h*.55);c.globalAlpha=1}}}
+  }}
 function arLoop(){const cv=document.getElementById('arcv');if(!cv)return;fxFrame();const dpr=Math.min(2,window.devicePixelRatio||1);const W=cv.clientWidth*dpr,H=cv.clientHeight*dpr;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
  const c=cv.getContext('2d');c.clearRect(0,0,W,H);drawOverlay(c,W,H,performance.now());S._raf=requestAnimationFrame(arLoop)}
 
