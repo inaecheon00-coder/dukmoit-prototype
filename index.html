@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="덕모잇">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.webmanifest">
+<script>/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone)document.documentElement.classList.add('native')}catch(e){}})();</script>
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="assets/icon-192.png">
 <title>덕모잇</title>
@@ -832,16 +833,14 @@ input,textarea{font-size:17px}
 .splash .sub{margin-top:10px;font-size:17px;font-weight:500;letter-spacing:.02em}
 .splash.off{opacity:0;visibility:hidden}
 
-/* 폰에 앱으로 설치(홈 화면에 추가)해서 열면: 프레임 없이 화면을 꽉 채워요 */
-@media (display-mode: standalone){
-  html,body{background:var(--surface)}
-  .phone{width:100vw!important;height:100dvh!important;border-radius:0!important;box-shadow:none!important;transform:none!important;
-    --sat:env(safe-area-inset-top,0px)!important;--sab:env(safe-area-inset-bottom,0px)!important}
-  .sbar{display:none!important}
-  .phone.land{width:100vw!important;height:100dvh!important;--sat:0px!important;--sab:0px!important}
-  @media (orientation: portrait){.phone.land{width:100dvh!important;height:100vw!important;transform:rotate(90deg)!important}}
-  #flow{display:none!important}
-}
+/* 실제 폰(브라우저·홈 화면 앱 모두)에서 열면: 아이폰 프레임 없이 앱처럼 화면을 꽉 채워요. PC에서만 프레임 표시 */
+html.native,html.native body{background:var(--surface);overflow:hidden}
+html.native body{display:block!important;padding:0!important;margin:0!important}
+html.native .phone{position:fixed!important;left:0;top:0;width:100vw!important;height:100dvh!important;border-radius:0!important;box-shadow:none!important;transform:none!important;margin:0!important;
+  --sat:env(safe-area-inset-top,0px)!important;--sab:env(safe-area-inset-bottom,0px)!important}
+html.native .sbar,html.native .phone::after{display:none!important}
+html.native .phone.land{width:100vw!important;height:100dvh!important;--sat:0px!important;--sab:0px!important}
+@media (orientation: portrait){html.native .phone.land{left:50%;top:50%;width:100dvh!important;height:100vw!important;transform:translate(-50%,-50%) rotate(90deg)!important}}
 </style>
 </head>
 <body>
@@ -2201,7 +2200,7 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
 /* ================= iPhone 14 FIT ================= */
 (function(){const ph=document.getElementById('phone');
  /* 카메라 화면은 가로 촬영: 프레임을 844×390으로 돌리고, 세로로 든 휴대폰에서는 90° 회전해 가득 채워요 */
- const fit=()=>{const land=ph.classList.contains('land'),W=land?868:414,H=land?414:868,rot=land&&innerWidth<innerHeight&&innerWidth<700;
+ const fit=()=>{if(document.documentElement.classList.contains('native')){ph.style.setProperty('--fit','1');ph.style.setProperty('--rot','0deg');return}const land=ph.classList.contains('land'),W=land?868:414,H=land?414:868,rot=land&&innerWidth<innerHeight&&innerWidth<700;
   const k=rot?Math.min(1,(innerHeight-24)/W,(innerWidth-24)/H):Math.min(1,(innerWidth-24)/W,(innerHeight-24)/H);
   ph.style.setProperty('--fit',k.toFixed(4));ph.style.setProperty('--rot',rot?'90deg':'0deg')};
  window.fitPhone=fit;fit();addEventListener('resize',fit);})();
