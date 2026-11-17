@@ -247,7 +247,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .cam-top .mguide{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center!important}
 .cam-top .mguide .mg-route,.cam-top .mguide .mg-meta{justify-content:center}
 .cam-top .mguide .mg-meta{gap:14px}
-/* 애니 화풍 = 스탬프 버튼과 같은 디자인 */
+/* 애니 화풍 = 뱃지 버튼과 같은 디자인 */
 .fxbar .stampbtn{margin-left:0;justify-content:center}
 .fxbar.fxcol .stampbtn{min-width:132px}
 .cam-left{display:none!important}
@@ -575,6 +575,8 @@ input,textarea{font-size:17px}
 
 /* 성지 탐색 실제 지도 */
 .near-h{display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:17px}.near-h svg{width:18px;height:18px;color:var(--b)}.near-h .muted{font-size:15px;margin-left:auto}
+.body.xfade{opacity:.35}
+.body{transition:opacity .18s ease}
 .near{padding:0;overflow:hidden;position:relative;cursor:pointer}
 .near-d{position:absolute;right:12px;top:12px;display:inline-flex;align-items:center;gap:3px;background:rgba(0,0,0,.55);color:#fff;font-size:15px;font-weight:600;padding:4px 10px;border-radius:999px}.near-d svg{width:15px;height:15px}
 .spotrow .dist{color:var(--b);font-weight:700}
@@ -641,6 +643,10 @@ input,textarea{font-size:17px}
 .ms-tap{position:absolute;right:-6px;top:6px;background:#ffd34d;color:#1a2a55;font-weight:800;font-size:15px;padding:6px 11px;border-radius:999px;transform:rotate(12deg);box-shadow:0 4px 0 rgba(0,0,0,.18);animation:msWig 1.2s ease-in-out infinite}
 @keyframes msWig{0%,100%{transform:rotate(12deg)}50%{transform:rotate(-4deg) scale(1.08)}}
 .ms-hint{display:flex;align-items:center;gap:4px;font-size:15px;opacity:.9;margin:0}.ms-hint svg{width:16px;height:16px}
+.badge-img{object-fit:contain;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))}
+.badge-img.lk{filter:grayscale(1) brightness(1.15);opacity:.45}
+.ms-card:has(.badge-img){background:transparent!important;box-shadow:none!important}
+.st-hero .badge-img{margin:4px auto 0}
 .stsvg.lk{filter:grayscale(1);opacity:.8}
 .ms-load{position:relative;margin:34px 0 10px;width:220px;height:220px;display:grid;place-items:center}
 .ms-spin{position:absolute;inset:0;border-radius:50%;border:4px solid rgba(255,255,255,.25);border-top-color:#fff;animation:spin .9s linear infinite}
@@ -653,7 +659,7 @@ input,textarea{font-size:17px}
 @keyframes msBurst{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(.6)}100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1*var(--d) - 60px)) scale(1)}}
 .ms-btn{width:100%;max-width:300px;height:56px;border-radius:16px;background:#fff;color:#0078e9;font-size:17px;font-weight:700;box-shadow:0 6px 0 rgba(0,40,110,.25)}
 .ms-btn:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,40,110,.25)}
-/* 카메라 화면: 애니 화풍 라인 오른쪽 끝 스탬프 버튼 */
+/* 카메라 화면: 애니 화풍 라인 오른쪽 끝 뱃지 버튼 */
 .fxbar{align-items:center}
 .stampbtn{margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;font-size:15px;font-weight:600;color:#fff;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.8);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .stampbtn svg{width:18px;height:18px}
@@ -757,6 +763,7 @@ input,textarea{font-size:17px}
 .cart.sm.has-img .kj{display:none}
 .cart.mc .bk{z-index:3}
 .cart.mc.has-img{background:#e9eef5}
+.cart.has-img{background:#e9eef5}
 .cart .poster{object-position:center 30%}
 .hero-pic{border-radius:15px;overflow:hidden;background:#cfe3f7}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%}
@@ -1069,7 +1076,7 @@ const RV_BASE={shibuya:[
 const RV_SUM_FIX={shibuya:{avg:4.9,n:1428,dist:[85,67,21,2,1]}};   // Figma 시안 수치
 const RV_LINE={shibuya:'領域展開\n無量空処'};
 const RV_POOL=[['원작 구도 그대로라 소름 돋았어요',5,'#원작그대로'],['사진 스팟으로 최고예요',5,'#사진맛집'],['역에서 가까워서 찾기 쉬워요',5,'#접근성굿'],['평일 아침이 제일 한적해요',4,''],['해 질 녘에 가면 장면 그대로',5,'#원작그대로'],['주민 생활공간이라 조용히 다녀왔어요',4,'#매너필수'],['OST 들으면서 걸으면 감동 두 배',5,'#OST필수성취'],['사람이 많아서 조금 정신없었어요',3,''],['생각보다 작아서 놀랐어요',4,''],['또 오고 싶은 성지',5,'#사진맛집']];
-const RV_NICK=['순례왕','노을덕후','아침산책','덕질여행중','스탬프마스터','길치탈출','성지기록러','하루한성지','새벽순례','오타쿠여행자'];
+const RV_NICK=['순례왕','노을덕후','아침산책','덕질여행중','뱃지마스터','길치탈출','성지기록러','하루한성지','새벽순례','오타쿠여행자'];
 const rvSeed=sp=>[...sp.id].reduce((a,c)=>a+c.charCodeAt(0),0);
 function rvBase(sp){if(RV_BASE[sp.id])return RV_BASE[sp.id];const k=rvSeed(sp);
  RV_BASE[sp.id]=Array.from({length:8},(_,i)=>{const p=RV_POOL[(k+i*3)%RV_POOL.length];const day=12-((i*3+k)%4)-i*2;const mo=day>0?10:9;const dd=day>0?day:30+day;
@@ -1155,8 +1162,8 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611184';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
-const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
+const ASSET_V='2611185';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
 const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${(back==='auto'?S.stack.length>0:back)?`<button class="ib" data-act="back" aria-label="뒤로">${I.back}</button>`:''}<div class="t ${left?'left':''}">${title}</div>${right}</div>`;
@@ -1165,7 +1172,7 @@ const TAIL='<svg class="tail" viewBox="0 0 44 30" aria-hidden="true"><path d="M0
 const cb=(inner,{tail='r',cls='',attrs=''}={})=>`<div class="cb tail-${tail} ${cls}" ${attrs}><span class="fx"></span>${TAIL}<div class="in">${inner}</div></div>`;
 const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="search" role="button" aria-label="애니메이션 검색"><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div>
 </div>`;
-const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false,src=''}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp,img==='thumb'?'thumbs':img==='area'?'area':img==='hero'?'hero':'posters',img==='area'?src:''):''}
+const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false,src=''}={})=>{const p=sp.pal;return`<div class="cart ${cls} ${img?'has-img':''}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp,img==='thumb'?'thumbs':img==='area'?'area':img==='hero'?'hero':'posters',img==='area'?src:''):''}
  <div class="gr"></div><div class="kj">${sp.jp.slice(0,cls.includes('sm')?Math.max(2,Math.floor((h-14)/14)):Math.max(2,Math.min(8,Math.floor(((typeof h==='number'?h:220)-(cap?112:30))/24))))}</div>${cap?`<div class="sh"></div><div class="cap"><div class="w">${work(sp).title}</div><div class="n">${sp.name}</div></div>`:''}${bk?`<button class="bk ${S.saved&&S.saved[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="저장">${I.star}</button>`:''}</div>`};
 const qb=(q,tail)=>{const sp=SPOTS.find(x=>x.work===q.w);return cb(q.jp.replace(/\n/g,'<br>'),{tail,cls:'qb',attrs:sp?`data-go="spot" data-id="${sp.id}"`:''})};
 /* 명대사 말풍선: Figma 말풍선 그래픽(assets/bubble) + 일본어 대사. dir: 꼬리 방향 up|down|l|r, x: 꼬리 위치(%) */
@@ -1722,7 +1729,7 @@ function fxFrame(){const cv=document.getElementById('glcv');if(!cv)return;const 
 }
 const fxBar=(cls='')=>{const o=fxOpts();const on=!!(o.toon||o.grade||o.sky);return`<div class="fxbar ${cls}">
  <button class="stampbtn fxbtn ${on?'got':''}" data-act="fxtoggle"><span>${on?'애니 화풍 ON':'애니 화풍 OFF'}</span></button>
- <button class="stampbtn ${hasStamp(spot().id)?'got':''}" data-act="stampmission"><span>${hasStamp(spot().id)?'스탬프 획득 완료':'스탬프 획득'}</span></button></div>`};
+ <button class="stampbtn ${hasStamp(spot().id)?'got':''}" data-act="stampmission"><span>${hasStamp(spot().id)?'뱃지 획득 완료':'뱃지 획득'}</span></button></div>`};
 
 /* AR 오버레이 그리기 (화면·촬영 공용) */
 const SCENE_FEAT={kamakura:'cross',shichiri:'sea',enoshima:'sea',hida:'bridge',ihwa:'stairs',kifune:'snow'};
@@ -1780,7 +1787,7 @@ function captureAR(ctxName){const v=document.getElementById('camv'),img=document
  const sp=spot();c.save();c.font='700 34px "Pretendard Variable",Pretendard,sans-serif';c.fillStyle='rgba(0,0,0,.45)';rr(c,40,H-130,W-80,90,45);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText('덕모잇 · '+work(sp).title+' · '+sp.name,80,H-85);c.restore();
  return cv.toDataURL('image/jpeg',.86)}
 
-/* ===== 명소 스탬프: 명소마다 다른 모양·색·로고(아이콘) ===== */
+/* ===== 명소 뱃지: 명소마다 다른 모양·색·로고(아이콘) ===== */
 const STAMP={
  kamakura:{sh:'oct',c:'#e2573b',ic:'crossing',k:'가마쿠라 건널목'},
  shichiri:{sh:'scallop',c:'#1f7fd1',ic:'wave',k:'시치리가하마'},
@@ -1846,10 +1853,11 @@ function stampShape(sh,r){const C=60,P=(n,rot,rr)=>Array.from({length:n},(_,i)=>
   case'ticket':{const x=C-r,y=C-r*.78,w=r*2,h=r*1.56,n=8;return`M${x+n},${y}H${x+w-n}A${n},${n} 0 0 0 ${x+w},${y+n}V${C-7}A7,7 0 0 0 ${x+w},${C+7}V${y+h-n}A${n},${n} 0 0 0 ${x+w-n},${y+h}H${x+n}A${n},${n} 0 0 0 ${x},${y+h-n}V${C+7}A7,7 0 0 0 ${x},${C-7}V${y+n}A${n},${n} 0 0 0 ${x+n},${y}Z`}
   default:return`M${C-r},${C}a${r},${r} 0 1,0 ${r*2},0a${r},${r} 0 1,0 ${-r*2},0Z`}}
 let _stUid=0;
-function stampSVG(id,{size=96,locked=false,date=''}={}){const sp=spot(id),d=STAMP[id]||{sh:'circle',c:'#0078e9',ic:'star',k:sp.name.split(' ')[0]};const c=locked?'#9aa3ad':d.c,u='st'+(++_stUid);
+const BADGE=new Set(['shibuya','shelter','onnazaka','suga','seihantai','kamakura_sd','karumai','haboro','meguro','sunshine','kifune_cn','keion','gotoubun','yanineko','tamako','nagatoro']);
+function stampSVG(id,{size=96,locked=false,date=''}={}){if(BADGE.has(id))return`<img class="badge-img${locked?' lk':''}" src="assets/badges/${id}.png?v=${ASSET_V}" alt="${spot(id).name} 뱃지" style="width:${size}px;height:${size}px" draggable="false">`;const sp=spot(id),d=STAMP[id]||{sh:'circle',c:'#0078e9',ic:'star',k:sp.name.split(' ')[0]};const c=locked?'#9aa3ad':d.c,u='st'+(++_stUid);
  const sq=d.sh==='ticket',iy=d.ring?50:(sq?50:48),ky=d.ring?76:(sq?78:81),jy=ky+12;
  const jp=(sp.jp||'').length>9?(sp.jp||'').slice(0,9)+'…':(sp.jp||'');
- return`<svg class="stsvg${locked?' lk':''}" viewBox="0 0 120 120" width="${size}" height="${size}" style="color:${c}" aria-label="${d.k} 스탬프">
+ return`<svg class="stsvg${locked?' lk':''}" viewBox="0 0 120 120" width="${size}" height="${size}" style="color:${c}" aria-label="${d.k} 뱃지">
  <defs><filter id="${u}r"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="${id.length*7}"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -.9 1.18"/><feComposite in="SourceGraphic" operator="in"/></filter>${d.ring?`<path id="${u}p" d="M60,60m-41,0a41,41 0 1,1 82,0a41,41 0 1,1 -82,0"/>`:''}</defs>
  <g filter="url(#${u}r)">
   <path d="${stampShape(d.sh,54)}" fill="${c}" fill-opacity=".1" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
@@ -1860,7 +1868,7 @@ function stampSVG(id,{size=96,locked=false,date=''}={}){const sp=spot(id),d=STAM
   ${d.ring?'':`<text x="60" y="${jy}" text-anchor="middle" font-size="6.6" font-weight="600" fill="currentColor" opacity=".85">${date||jp}</text>`}
  </g></svg>`}
 const hasStamp=id=>!!(S.stamps&&S.stamps[id]);
-/* ===== 깜짝 미션 팝업: 위치 인증 → 스탬프 획득 ===== */
+/* ===== 깜짝 미션 팝업: 위치 인증 → 뱃지 획득 ===== */
 function openMission(state){const sp=spot();closeMission(true);S._missionSeen=S._missionSeen||{};S._missionSeen[sp.id]=1;
  const m=document.createElement('div');m.className='mission';m.id='mission';document.getElementById('phone').appendChild(m);
  const today=()=>{const d=new Date();return d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')};
@@ -1870,20 +1878,20 @@ function openMission(state){const sp=spot();closeMission(true);S._missionSeen=S.
   <button class="ms-x" data-ms="x" aria-label="닫기">${I.close}</button>
   <div class="ms-body">
    ${st==='intro'?`<div class="ms-tag">${sp.name}</div>
-    <h2 class="ms-t">깜짝 미션 등장</h2><p class="ms-s">스탬프를 눌러서 획득해 보세요!</p>
-    <button class="ms-stamp" data-ms="go" aria-label="스탬프 획득하기"><span class="ms-ring"></span><span class="ms-card">${stampSVG(sp.id,{size:168,locked:true})}</span><span class="ms-tap">TAP!</span></button>
-    <p class="ms-hint">${I.pin}위치 인증 후 스탬프가 찍혀요</p>`
+    <h2 class="ms-t">깜짝 미션 등장</h2><p class="ms-s">뱃지를 눌러서 획득해 보세요!</p>
+    <button class="ms-stamp" data-ms="go" aria-label="뱃지 획득하기"><span class="ms-ring"></span><span class="ms-card">${stampSVG(sp.id,{size:168,locked:true})}</span><span class="ms-tap">TAP!</span></button>
+    <p class="ms-hint">${I.pin}위치 인증 후 뱃지를 받을 수 있어요</p>`
    :st==='loading'?`<h2 class="ms-t">위치 인증 중…</h2><p class="ms-s">GPS로 ${sp.name} 도착을 확인하고 있어요</p>
     <div class="ms-load"><span class="ms-spin"></span><span class="ms-card dim">${stampSVG(sp.id,{size:150,locked:true})}</span></div>`
-   :`<h2 class="ms-t">스탬프 획득 완료</h2><p class="ms-s">더 친밀해진 우리의 관계에 가까이!</p>
+   :`<h2 class="ms-t">뱃지 획득 완료</h2><p class="ms-s">더 친밀해진 우리의 관계에 가까이!</p>
     <div class="ms-done">${conf()}<span class="ms-card slam">${stampSVG(sp.id,{size:180,date:S.stamps[sp.id]||today()})}</span></div>
-    <button class="ms-btn" data-ms="see">스탬프 보러가기</button>`}
+    <button class="ms-btn" data-ms="see">뱃지 보러가기</button>`}
   </div>`};
  draw(state||(hasStamp(sp.id)?'done':'intro'));
  requestAnimationFrame(()=>m.classList.add('on'));
  m.onclick=e=>{const t=e.target.closest('[data-ms]');if(!t)return;const a=t.dataset.ms;
   if(a==='x')closeMission();
-  else if(a==='go'&&m.dataset.st==='intro'){draw('loading');clearTimeout(S._ms);S._ms=setTimeout(()=>{S.stamps=S.stamps||{};S.stamps[sp.id]=today();draw('done');document.querySelectorAll('[data-act=stampmission]').forEach(b=>{b.classList.add('got');b.lastChild.textContent='스탬프 획득 완료'})},1500)}
+  else if(a==='go'&&m.dataset.st==='intro'){draw('loading');clearTimeout(S._ms);S._ms=setTimeout(()=>{S.stamps=S.stamps||{};S.stamps[sp.id]=today();draw('done');document.querySelectorAll('[data-act=stampmission]').forEach(b=>{b.classList.add('got');b.lastChild.textContent='뱃지 획득 완료'})},1500)}
   else if(a==='see'){closeMission(true);S.archTab='stamp';go('archive')}};
 }
 function closeMission(now){clearTimeout(S._ms);const m=document.getElementById('mission');if(!m)return;if(now){m.remove();return}m.classList.remove('on');m.classList.add('off');setTimeout(()=>m.remove(),260)}
@@ -1962,7 +1970,7 @@ SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버�
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center" class="small">
    ${['인스타그램','X','커뮤니티','링크 복사'].map(n=>`<button data-toast="${n==='커뮤니티'?'커뮤니티에 게시했어요 (더미)':n==='링크 복사'?'링크를 복사했어요':n+'로 공유 (더미)'}"><div class="av" style="width:48px;height:48px;margin:0 auto 6px"></div>${n}</button>`).join('')}
   </div>
-  <div class="card row" style="padding:12px;margin:22px 0 24px"><div class="stamp got" style="width:52px;flex:none">${sp.name.slice(0,4)}</div><div class="small"><b>순례 스탬프 획득!</b><div class="muted">${work(sp).title} 성지 1/${SPOTS.filter(s=>s.work===sp.work).length}곳 완료</div></div></div>
+  <div class="card row" style="padding:12px;margin:22px 0 24px"><div class="stamp got" style="width:52px;flex:none">${sp.name.slice(0,4)}</div><div class="small"><b>순례 뱃지 획득!</b><div class="muted">${work(sp).title} 성지 1/${SPOTS.filter(s=>s.work===sp.work).length}곳 완료</div></div></div>
  </div></div>
  <div class="cta"><button class="btn sec2" style="width:auto;padding:0 18px" data-act="back">다시 찍기</button><button class="btn pri" data-act="savearchive">덕질 아카이브에 저장</button></div>`}};
 
@@ -1974,7 +1982,7 @@ const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,1
  seihantai:[34.6857,135.8399],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[35.0306,135.7703]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
-const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'하라주쿠역',g:[35.6702,139.7027]},osaka:{name:'시조역',g:[35.0037,135.7595]}};
+const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'스이도바시역',g:[35.7020,139.7536]},osaka:{name:'시조역',g:[35.0037,135.7595]}};
 const km=(a,b)=>{const R=6371,t=x=>x*Math.PI/180,d1=t(b[0]-a[0]),d2=t(b[1]-a[1]),h=Math.sin(d1/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
 const fmtKm=d=>d<1?Math.round(d*1000)+'m':d<10?d.toFixed(1)+'km':Math.round(d)+'km';
 const ECATS=[['all','전체'],['tokyo','도쿄'],['osaka','오사카']];
@@ -2034,7 +2042,7 @@ SCREENS.archive=()=>{
  const T=S.archTab,stamps=Object.entries(S.stamps||{}),got=new Set(stamps.map(e=>e[0]));
  const saved=Object.keys(S.saved||{}).filter(k=>S.saved[k]&&spot(k));
  const reviews=Object.entries(S.myReviews||{}).flatMap(([id,l])=>l.map(r=>({...r,spot:id}))).sort((a,b)=>b.d.localeCompare(a.d));
- const tabs=[['mine','내 명소'],['stamp','내 스탬프'],['trip','내 여정'],['ar','내 AR']];
+ const tabs=[['mine','내 명소'],['stamp','내 뱃지'],['trip','내 여정'],['ar','내 AR']];
  const thumb=sp=>art(sp,96,{cap:false,bk:false,img:HERO_SCENE.has(sp.id)?'hero':true,cls:'sm',st:'width:70px;flex:none;border-radius:10px;'});
  /* 타임라인과 같은 구도: 날짜 → 카드(이미지 + 명소 + 작품·회차 + 태그 + 한 줄) */
  const tl=(items)=>items.length?`<div class="tl">${items.map(o=>{const sp=spot(o.id);return`<div class="st done"><div class="small muted">${o.date}</div><div class="card" style="padding:12px;margin-top:6px;cursor:pointer" data-go="spot" data-id="${sp.id}"><div class="row" style="align-items:flex-start">${thumb(sp)}<div style="flex:1;min-width:0"><b class="small">${sp.name}</b><div class="small muted">${work(sp).title} · ${sp.ep}</div><div class="row" style="gap:4px;margin-top:6px;flex-wrap:wrap">${o.tags.map(e=>`<span class="tag ac">${e}</span>`).join('')}</div></div></div>${o.memo?`<div class="small" style="margin-top:8px">${o.memo}</div>`:''}</div></div>`}).join('')}</div>`
@@ -2046,14 +2054,14 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
  else if(T==='ar'){const mine=POSTS.filter(p=>p.mine);body=mine.length?`<div class="myar">${mine.map(postCard).join('')}</div>`:`<div class="small muted" style="text-align:center;padding:40px 0">AR 기록 피드에 등록한 글이 없어요<br><button class="btn pri sm" style="width:auto;padding:0 16px;margin-top:12px" data-go="post">등록하기</button></div>`}
  else if(T==='review')body=`<div class="sub-h">작성 후기</div>`+tl(reviews.map(r=>({id:r.spot,date:r.d,tags:['★ '+Number(r.r).toFixed(1),r.tag].filter(Boolean),memo:r.txt})));
  else if(T==='stamp'){const last=stamps[stamps.length-1];
-  body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><div class="small muted" style="margin-bottom:6px">최근 획득한 스탬프</div>${stampSVG(last[0],{size:168,date:last[1]})}<b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
-  <div class="row between" style="margin:20px 0 10px"><b class="small">전체 스탬프</b><span class="small muted">${got.size}/${REG.length}</span></div>
+  body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><div class="small muted" style="margin-bottom:6px">최근 획득한 뱃지</div>${stampSVG(last[0],{size:168,date:last[1]})}<b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
+  <div class="row between" style="margin:20px 0 10px"><b class="small">전체 뱃지</b><span class="small muted">${got.size}/${REG.length}</span></div>
   <div class="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}<span>${wt(s)}</span></button>`).join('')}</div>`}
  else body=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><span class="muted">›</span></div>`}).join('');
  return{tab:'archive',html:`
  ${hdr('나의 덕질 기록',{back:'auto',left:true})}
  <div class="body">
-  <div class="pad"><div class="card cntbox"><button data-act="atab" data-v="stamp"><b>${got.size}</b><span>스탬프</span></button><i class="cnt-div" aria-hidden="true"></i><button data-act="atab" data-v="review"><b>${reviews.length}</b><span>작성 후기</span></button></div></div>
+  <div class="pad"><div class="card cntbox"><button data-act="atab" data-v="stamp"><b>${got.size}</b><span>뱃지</span></button><i class="cnt-div" aria-hidden="true"></i><button data-act="atab" data-v="review"><b>${reviews.length}</b><span>작성 후기</span></button></div></div>
   <div class="pad" style="margin-top:14px"><div class="seg" role="tablist">${tabs.map(([k,l])=>`<button class="${T===k?'on':''}" data-act="atab" data-v="${k}" role="tab" aria-selected="${T===k}">${l}</button>`).join('')}</div></div>
   <div class="pad" style="margin-top:18px;padding-bottom:24px">${body}</div>
  </div>`}};
@@ -2273,7 +2281,13 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';S.stack=[];S.archTab='timeline';S.screen='archive';render('push');syncHist();toast('아카이브에 저장했어요');break}
   case 'srchset':{const i=document.getElementById('srchq');if(i){i.value=t.dataset.v;i.dispatchEvent(new Event('input'))}break}
   case 'ework':S.exploreWork=t.dataset.v;render();break;
-  case 'ecat':S.exploreCat=t.dataset.v;render();{const ch=document.querySelector('#app .screen:last-child .chips .chip.on');if(ch)ch.scrollIntoView({inline:'nearest',block:'nearest'})}break;
+  case 'ecat':{S.exploreCat=t.dataset.v;const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body){render();break}
+   sc.querySelectorAll('.chips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.exploreCat));
+   const tmp=document.createElement('div');tmp.innerHTML=SCREENS.explore().html;const nb=tmp.querySelector('.body');
+   const imgs=[...nb.querySelectorAll('img')].map(i=>{const im=new Image();im.src=i.src;return im.decode?im.decode().catch(()=>{}):Promise.resolve()});
+   const tk=S._ecat=(S._ecat||0)+1;body.classList.add('xfade');
+   Promise.race([Promise.all(imgs),new Promise(r=>setTimeout(r,600))]).then(()=>{if(tk!==S._ecat)return;body.innerHTML=nb.innerHTML;body.scrollTop=0;requestAnimationFrame(()=>body.classList.remove('xfade'))});
+   break}
   case 'catmenu':{const m=t.closest('.topbar').querySelector('.catmenu');m.classList.toggle('on');break}
   case 'homecat':S.homeCat=t.dataset.v;render();toast(`${catName(S.homeCat)} 추천으로 바꿨어요`);break;
   case 'homeall':S.exploreCat='all';go('explore');break;
