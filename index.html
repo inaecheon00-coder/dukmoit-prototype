@@ -231,9 +231,12 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .phone.land .sbar{display:none}
 .phone.land .tabbar{display:none}
 /* 가로 카메라 배치 */
-.cam-top{top:14px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
+.cam-top{top:14px;left:60px;right:60px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.cam-top .mguide{max-width:380px;flex:0 1 auto;text-align:left}
+.cam-top .mguide .mg-route{justify-content:center}
 .cam-top>span{width:44px}
 .cam-left{top:66px;left:60px;width:330px}
+.cam-left .fxbar{margin-top:0}
 .cam-left .fxbar{margin-top:8px}
 .cam-bl{bottom:14px;left:60px;width:360px}
 .cam-bl .seg{background:rgba(20,20,24,.6)}
@@ -241,6 +244,11 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .cam-rail{right:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:10px}
 .cam-rail .arb{min-width:92px;height:62px;padding:6px 10px}
 .cam-rail .rb{width:66px;height:66px}
+.phone:not(.land) .cam-top{top:calc(var(--sat) + 12px);left:16px;right:16px}
+.phone:not(.land) .cam-top .mguide{flex:1}
+.phone:not(.land) .cam-left{top:calc(var(--sat) + 120px);left:16px;right:16px;width:auto}
+.phone:not(.land) .cam-bl{left:16px;right:16px;width:auto;bottom:calc(max(var(--sab),20px) + 96px)}
+.phone:not(.land) .cam-rail{top:auto;transform:none;left:16px;right:16px;bottom:max(var(--sab),20px);flex-direction:row;justify-content:space-between}
 .phone.land .camfb{left:50%;right:auto;width:420px;margin-left:-210px}
 .phone.land .sheet{left:50%;right:auto;width:560px;margin-left:-280px;max-height:94%;overflow-y:auto}
 /* 깜짝 미션 팝업 가로 배치 */
@@ -847,7 +855,12 @@ html.iospwa .phone{bottom:auto!important;right:auto!important;width:var(--vw)!im
 html.iospwa,html.iospwa body{height:var(--vh)}
 html.native .phone.land{width:auto!important;height:auto!important;--sat:0px!important;--sab:0px!important}
 html.iospwa .phone.land{width:var(--vw)!important;height:var(--vh)!important}
-@media (orientation: portrait){html.native .phone.land{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:var(--vh,100vh)!important;height:var(--vw,100vw)!important;transform:translate(-50%,-50%) rotate(90deg)!important}}
+/* 폰: 가로 카메라는 실제로 폰을 가로로 돌려서 사용 (화면을 강제로 돌리면 카메라 영상이 눌려 보여요) */
+.phone.land::before{content:"";display:none}
+@media (orientation: portrait){html.native .phone.land::before{content:"↻\A휴대폰을 가로로 돌려 주세요\A가로 화면으로 촬영해요";white-space:pre;display:flex;align-items:center;justify-content:center;text-align:center;position:absolute;inset:0;z-index:200;background:rgba(10,12,18,.92);color:#fff;font-size:19px;font-weight:700;line-height:1.8;font-family:var(--f-body)}}
+html.native .phone.land .cam-top,html.native .phone.land .cam-left,html.native .phone.land .cam-bl{left:calc(env(safe-area-inset-left,0px) + 16px)}
+html.native .phone.land .cam-top{right:calc(env(safe-area-inset-right,0px) + 16px)}
+html.native .phone.land .cam-rail{right:calc(env(safe-area-inset-right,0px) + 20px)}
 </style>
 </head>
 <body>
@@ -949,6 +962,25 @@ const SPOTS=[
 /* 같은 장소를 다른 작품으로 안내하는 영역 전용 명소 (기존 명소 데이터는 건드리지 않음) */
 SPOTS.push({id:'nagatoro',line:'',cat:'tokyo',air:'하네다',hub:'무사시사카이',pal:['#ffd9e4','#f39ab4','#4a2a3a','rgba(40,15,25,.55)'],jp:'ベテリナリーメディカルセンター',st:'무사시사카이역 5분',work:'nagatoro',name:'베테리나리 메디컬센터',region:'일본 도쿄도',abroad:true,ep:'1기',time:'노을',scene:'노을 진 하굣길, 나가토로가 센빠이 등에 업혀 장난치던 장면',dist:'1,160km',visits:6200,tags:['노을','하굣길','러브코미디'],tip:'해 질 무렵 건물 외벽이 붉게 물들 때 원작 색감과 가장 비슷해요.',map:{x:66,y:45},cmap:{x:30,y:40},match:61});
 SPOTS.push({...SPOTS.find(x=>x.id==='kamakura'),id:'kamakura_sd',work:'slamdunk',line:''},{...SPOTS.find(x=>x.id==='kifune'),id:'kifune_cn',work:'conan',line:''});
+
+/* 이 장소의 장면 (사용자 제공 설명) */
+const SCENE_FIX={
+ haboro:{ep:'24화',time:'',scene:'사와코의 생일날, 친구들이 사랑을 응원하려고 눈치껏 빠지고 카제하야와 둘이서 신사에 가는 장면'},
+ meguro:{ep:'1화',time:'',scene:'중학생 시절 루비의 하굣길, 메구로 거리에서 캐스팅되는 장면'},
+ onnazaka:{time:'',scene:'레제가 카페로 출근하는 길'},
+ kamakura_sd:{ep:'오프닝',time:'',scene:'오프닝에 나오는, 이제는 유명해져 버린 건널목 장면'},
+ shelter:{ep:'1기 2화',time:'',scene:'소심한 고토 히토리가 라이브 하우스 앞에 도착했지만 망설이는 사이 다른 친구들에게 발견되는 장면'},
+ sunshine:{ep:'5화',time:'',scene:'타이키와 치나츠가 함께 수족관을 찾아 서로에게 조금씩 가까워지는 장면'},
+ kifune_cn:{ep:'855화',time:'',name:'유니버설 스튜디오 재팬',jp:'ユニバーサル・スタジオ・ジャパン',st:'유니버설시티역 5분',region:'일본 오사카부 오사카시 고노하나구',hub:'유니버설시티',tags:['유니버설스튜디오','USJ','오사카'],tip:'정문 앞 지구본은 밤에 조명이 켜질 때 원작 분위기와 가장 비슷해요.',scene:'사건 해결 후 요도가와 공원을 들렀다가, 소노코 일행과 코난 일행이 함께 유니버설 스튜디오를 방문하는 장면'},
+ keion:{ep:'1화',time:'',scene:'히라사와 유이가 고등학교 입학식에 참석하려고 학교에 도착하는 장면'},
+ gotoubun:{ep:'2기 12화',time:'',scene:'후타로를 피하던 미쿠가 영화촌에서 우연히 마주쳐 어색한 상황을 맞이하는 장면'},
+ nagatoro:{ep:'8화',time:'',scene:'가위바위보로 짐 들어주기 내기를 해서 이긴 나가토로가 선배 등에 훅 업히는 장면'},
+ seihantai:{ep:'11화',time:'',name:'도다이지 남대문',jp:'東大寺南大門',st:'긴테쓰나라역 도보 20분',region:'일본 나라현 나라시',hub:'나라',tags:['수학여행','나라','절'],tip:'남대문 양옆의 금강역사상도 꼭 보고 가세요. 사슴이 많으니 간식 조심!',scene:'수학여행으로 나라를 찾은 친구들이 도다이지 남대문 일대를 둘러보며 추억을 쌓는 장면'},
+ yanineko:{ep:'11화',time:'',scene:'야니네코와 아파트 주민들이 교토·나라 여행을 떠나 교토역에 도착하는 장면'},
+ tamako:{ep:'1화',time:'',scene:'타마코와 안코가 동네 목욕탕에 갔다가 모치조와 마주쳐 소소한 일상을 나누는 장면'},
+ shibuya:{ep:'2기 시부야 사변',time:'',scene:'2기 시부야 사변 엔딩에 등장하는 이타도리 유지'},
+};
+Object.entries(SCENE_FIX).forEach(([id,o])=>{const sp=SPOTS.find(x=>x.id===id);if(sp)Object.assign(sp,o)});
 /* 홈 '떠나고 싶은 애니 속으로' — 키워드(검색바 드롭다운)마다 독립된 영역. 지정받은 구성을 그대로 고정.
    s: 연결 명소, p: 영역 전용 포스터(assets/area/…), q: 말풍선 대사 (말풍선 자리: 1번째·2번째·6번째 칸) */
 const AREAS={
@@ -1077,7 +1109,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611183';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611184';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1329,7 +1361,8 @@ const PROUTE={
  shelter:{tokyo:{t:[['지하철 마루노우치선',18,'신주쿠역'],['오다큐선',8,'시모키타자와역']],walk:3,fare:380,km:12},shibuya:{t:[['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:140,km:3},narita:{t:[NEXS,['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:3390,km:82}},
  kamakura:kana('가마쿠라코코마에역',17,1),shichiri:kana('시치리가하마역',19,5),enoshima:kana('에노시마역',10,12),
  keion:{umeda:{t:[['JR 비와코선 신쾌속',60,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:1900,km:110},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 비와코선 신쾌속',60,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:2140,km:115},kix:{t:[['JR 특급 하루카',75,'교토역'],['JR 비와코선',45,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:4800,km:160}},
- seihantai:{umeda:{t:[['한큐 교토선',43,'교토가와라마치역'],['교토 시버스',15,'고조자카']],walk:10,fare:630,km:55},namba:{t:[['지하철 미도스지선',6,'요도야바시역'],['게이한 본선',50,'기요미즈고조역']],walk:25,fare:700,km:57},kix:{t:[['JR 특급 하루카',80,'교토역'],['교토 시버스',20,'고조자카']],walk:10,fare:3000,km:105}},
+ seihantai:{umeda:{t:[['JR 야마토지선 쾌속',50,'나라역'],['나라교통 버스',10,'다이부쓰덴카스가타이샤마에']],walk:5,fare:1040,km:42},namba:{t:[['긴테쓰 나라선 쾌속급행',38,'긴테쓰나라역']],walk:20,fare:680,km:33},kix:{t:[['JR 간쿠쾌속',70,'덴노지역'],['JR 야마토지선 쾌속',33,'나라역'],['나라교통 버스',10,'다이부쓰덴카스가타이샤마에']],walk:5,fare:1890,km:75}},
+ kifune_cn:{umeda:{t:[['JR 오사카순환선',8,'니시쿠조역'],['JR 유메사키선',5,'유니버설시티역']],walk:5,fare:190,km:9},namba:{t:[['한신 난바선',12,'니시쿠조역'],['JR 유메사키선',5,'유니버설시티역']],walk:5,fare:450,km:10},kix:{t:[['리무진 버스',70,'유니버설 스튜디오 재팬']],walk:3,fare:1800,km:50}},
  gotoubun:{umeda:{t:[['JR 교토선 신쾌속',30,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:820,km:60},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 교토선 신쾌속',30,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:1060,km:62},kix:{t:[['JR 특급 하루카',75,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:3900,km:110}},
  yanineko:{umeda:{t:[['JR 교토선 신쾌속',30,'교토역 승강장']],walk:3,fare:580,km:50},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 교토선 신쾌속',30,'교토역 승강장']],walk:3,fare:820,km:52},kix:{t:[['JR 특급 하루카',75,'교토역 승강장']],walk:3,fare:3640,km:100}},
  tamako:{umeda:{t:[['지하철 미도스지선',4,'요도야바시역'],['게이한 본선',55,'데마치야나기역']],walk:5,fare:700,km:58},namba:{t:[['지하철 미도스지선',6,'요도야바시역'],['게이한 본선',55,'데마치야나기역']],walk:5,fare:700,km:58},kix:{t:[['JR 특급 하루카',75,'교토역'],['지하철 가라스마선',10,'이마데가와역']],walk:15,fare:3900,km:105}},
@@ -1693,7 +1726,7 @@ const STAMP={
  shelter:{sh:'diamond',c:'#f0503c',ic:'guitar',k:'SHELTER'},
  meguro:{sh:'star',c:'#8a4fd0',ic:'idol',k:'메구로'},
  keion:{sh:'circle',c:'#e8960a',ic:'note',k:'도요사토',ring:'TOYOSATO SCHOOL ★ DUKMOIT ★ '},
- seihantai:{sh:'shield',c:'#c43e6e',ic:'temple',k:'기요미즈데라'},
+ seihantai:{sh:'shield',c:'#c43e6e',ic:'temple',k:'도다이지'},
  gotoubun:{sh:'ticket',c:'#b5338a',ic:'curtain',k:'나카무라자'},
  yanineko:{sh:'hex',c:'#3a8a3a',ic:'cat',k:'교토역'},
  nagatoro:{sh:'scallop',c:'#e0607e',ic:'paw',k:'나가토로'},
@@ -1702,7 +1735,7 @@ const STAMP={
  dotonbori:{sh:'star',c:'#ff7a00',ic:'takoyaki',k:'도톤보리'},
  tsutenkaku:{sh:'shield',c:'#2a6fd6',ic:'tsuten',k:'츠텐카쿠'},
  kamakura_sd:{sh:'circle',c:'#c62828',ic:'ball',k:'가마쿠라',ring:'KAMAKURAKOKOMAE ★ DUKMOIT ★ '},
- kifune_cn:{sh:'diamond',c:'#1e3a8a',ic:'bowtie',k:'기후네'},
+ kifune_cn:{sh:'diamond',c:'#1e3a8a',ic:'bowtie',k:'USJ'},
 };
 const STAMP_IC={
  crossing:'<path d="M-14 -17L14 -3M14 -17L-14 -3M0 -10V17M-7 17H7"/><circle cx="-7" cy="4" r="3"/><circle cx="7" cy="4" r="3"/>',
@@ -1789,6 +1822,8 @@ function closeMission(now){clearTimeout(S._ms);const m=document.getElementById('
 function moveGuide(sp){const r=planRoute(sp),n=r.nodes,m=MODES.find(x=>x.id===S.planMode)||MODES[0];
  return`<div class="mg-route"><b>${planFrom(sp).name}</b><span class="mg-ar">→</span><b>${sp.name}</b></div>
  <div class="mg-meta"><span class="mg-mode">${I[m.icon]}${m.name}</span><span class="mg-left">소요시간 <b>약 ${fmtMin(r.total)}</b></span></div>`}
+/* 카메라 방향: 너의이름은(스가 신사)만 세로 촬영, 나머지는 가로 촬영 */
+const PORTRAIT_CAM=new Set(['suga']);
 SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
  const ch=work(sp).chars;
  return{dark:true,ar:true,html:`
@@ -1797,15 +1832,11 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
  <div class="hud"></div></div>
  <div class="ov cam-top">
   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
-  <div class="pill small" style="padding:6px 12px" id="cambadge">${camBadge()}</div>
+  <div class="pill mguide" id="mguide">${moveGuide(sp)}</div>
   <span></span>
  </div>
- <div class="ov cam-left">
-  <div class="pill mguide" id="mguide">${moveGuide(sp)}</div>
-  ${fxBar()}
- </div>
+ <div class="ov cam-left">${fxBar()}</div>
  ${fallbackCard()}
- <div class="ov cam-bl"><div class="cam-chips">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>`<span class="chip" style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff">${e.name}</span>`).join('')||'<span class="small" style="opacity:.6">AR 경험 꺼짐</span>'}</div></div>
  <div class="ov cam-rail">
   <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
   <button class="arb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i><span>경험 선택</span></button>
@@ -1824,13 +1855,10 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
  return{dark:true,ar:true,html:`${view}
  <div class="ov cam-top">
   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
-  <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
+  <div class="pill mguide"><div class="small" style="opacity:.7">${work(sp).title.replace(/\s*\(.*\)\s*$/,'')} · ${sp.ep} · ${pano?'360° 가상 장면':'장면 포인트 도착'}</div><b>${sp.name}</b></div>
   <span></span>
  </div>
- <div class="ov cam-left">
-  <div class="pill"><div class="small" style="opacity:.7">${work(sp).title} · ${sp.ep} · 장면 포인트 도착</div><b>${sp.name}</b></div>
-  ${pano?'':fxBar()}
- </div>
+ <div class="ov cam-left">${pano?'':fxBar()}</div>
  ${pano?'':fallbackCard()}
  <div class="ov cam-bl" style="z-index:8">
   ${S.siteMode==='overlay'?`<div class="pill" style="margin-bottom:8px;padding:8px 14px"><div class="row between small" style="opacity:.8"><span>카메라</span><span>장면 투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
@@ -1868,8 +1896,8 @@ SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버�
 /* ================= 성지 탐색: 등록된 애니 명소 + 실제 지도 ================= */
 const REG=AREAS.all.map(x=>x.s);   // 홈 '전체' 영역에 등록된 애니 명소만
 const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,141.4605],haboro:[44.3613,141.7006],meguro:[35.6339,139.7158],shelter:[35.6612,139.6680],
- onnazaka:[35.7066,139.7520],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[35.1219,135.7629],keion:[35.2054,136.2311],
- seihantai:[34.9949,135.7850],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[35.0306,135.7703]};
+ onnazaka:[35.7066,139.7520],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[34.6654,135.4323],keion:[35.2054,136.2311],
+ seihantai:[34.6857,135.8399],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[35.0306,135.7703]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
 const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'하라주쿠역',g:[35.6702,139.7027]},osaka:{name:'시조역',g:[35.0037,135.7595]}};
@@ -2049,7 +2077,7 @@ function render(mode='none',restore){closeMission(true);
  const old=curScreen();
  const keep=(mode==='none'&&!restore&&old&&old.dataset.screen===S.screen&&old.dataset.spot===S.spot)?snapScroll(old):null;
  const def=SCREENS[S.screen]();
- document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');ph.classList.toggle('land',!!def.ar);if(was!==!!def.ar&&window.fitPhone)fitPhone()}
+ document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');const L=!!def.ar&&!PORTRAIT_CAM.has(spot().id);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
  const el=buildScreen(def);
  if(old)stripIds(old);
  if((mode==='push'||mode==='pop')&&old){
@@ -2207,7 +2235,7 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
 /* ================= iPhone 14 FIT ================= */
 (function(){const ph=document.getElementById('phone');
  /* 카메라 화면은 가로 촬영: 프레임을 844×390으로 돌리고, 세로로 든 휴대폰에서는 90° 회전해 가득 채워요 */
- const fit=()=>{if(document.documentElement.classList.contains('native')){ph.style.setProperty('--fit','1');ph.style.setProperty('--rot','0deg');return}const land=ph.classList.contains('land'),W=land?868:414,H=land?414:868,rot=land&&innerWidth<innerHeight&&innerWidth<700;
+ const fit=()=>{if(document.documentElement.classList.contains('native')){ph.style.setProperty('--fit','1');ph.style.setProperty('--rot','0deg');return}const land=ph.classList.contains('land'),W=land?868:414,H=land?414:868,rot=false;
   const k=rot?Math.min(1,(innerHeight-24)/W,(innerWidth-24)/H):Math.min(1,(innerWidth-24)/W,(innerHeight-24)/H);
   ph.style.setProperty('--fit',k.toFixed(4));ph.style.setProperty('--rot',rot?'90deg':'0deg')};
  window.fitPhone=fit;fit();addEventListener('resize',fit);})();
