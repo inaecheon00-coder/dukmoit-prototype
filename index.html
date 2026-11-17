@@ -537,6 +537,9 @@ input,textarea{font-size:17px}
 .cntbox span{font-size:15px;font-weight:600;color:var(--mute)}
 .cnt-div{width:1px;align-self:stretch;margin:4px 0;background:var(--line)}
 .myar{margin:0 -16px}
+.srch-in{cursor:text}.srch-in input{flex:1;border:0;outline:0;background:none;font:inherit;font-size:17px;color:var(--text);min-width:0}
+.srch-chips{display:flex;flex-wrap:wrap;gap:8px}
+.srch-none{display:flex;flex-direction:column;gap:4px;padding:18px 16px;margin:4px 0 20px;border-radius:14px;background:#eef4fb;text-align:center}.srch-none b{font-size:17px;word-break:keep-all}.srch-none span{font-size:15px;color:var(--mute)}
 .sub-h{font-size:17px;font-weight:700;margin:0 0 12px}
 .atabs{display:grid;grid-template-columns:1.3fr 1.1fr 1fr 1.1fr .8fr;padding:6px 4px;gap:2px}
 .atabs button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 2px 10px;border-radius:12px;color:var(--mute);position:relative}
@@ -547,7 +550,7 @@ input,textarea{font-size:17px}
 .st3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px}
 .st3c{display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--mute);font-size:15px;line-height:1.3;text-align:center;word-break:keep-all}
 .st3c svg{width:96px;height:96px}.st3c.got{color:var(--text);font-weight:600}
-.ib.bkh.on{color:#ff4d6d}
+.ib.bkh.on{color:#f5b700}.ib.bkh.on svg path:first-child{fill:#ffd84d}
 
 /* ===== 깜짝 미션 팝업 (스플래시 배경 그래픽 재사용) ===== */
 .mission{position:absolute;inset:0;z-index:95;color:#fff;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .22s ease}
@@ -1051,7 +1054,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611182';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611183';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1059,7 +1062,7 @@ const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${(back=
 const catName=c=>(CATS.find(x=>x[0]===c)||CATS[0])[1];
 const TAIL='<svg class="tail" viewBox="0 0 44 30" aria-hidden="true"><path d="M0 3.5L27 .5 16.5 12.5 44 27 0 21.5z"/></svg>';
 const cb=(inner,{tail='r',cls='',attrs=''}={})=>`<div class="cb tail-${tail} ${cls}" ${attrs}><span class="fx"></span>${TAIL}<div class="in">${inner}</div></div>`;
-const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="scan"><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div>
+const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="search" role="button" aria-label="애니메이션 검색"><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div>
 </div>`;
 const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false,src=''}={})=>{const p=sp.pal;return`<div class="cart ${cls}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp,img==='thumb'?'thumbs':img==='area'?'area':img==='hero'?'hero':'posters',img==='area'?src:''):''}
  <div class="gr"></div><div class="kj">${sp.jp.slice(0,cls.includes('sm')?Math.max(2,Math.floor((h-14)/14)):Math.max(2,Math.min(8,Math.floor(((typeof h==='number'?h:220)-(cap?112:30))/24))))}</div>${cap?`<div class="sh"></div><div class="cap"><div class="w">${work(sp).title}</div><div class="n">${sp.name}</div></div>`:''}${bk?`<button class="bk ${S.saved&&S.saved[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="저장">${I.star}</button>`:''}</div>`};
@@ -1193,7 +1196,7 @@ SCREENS.scanresult=()=>{const top=spot('kamakura');const others=SPOTS.filter(s=>
  </div>`}};
 
 /* 명소 상세 상단: 원작 장면 이미지 (assets/hero) — 받은 명소만, 나머지는 기존 이미지 */
-const HERO_SCENE=new Set(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','suga','gotoubun','onnazaka','nagatoro']);
+const HERO_SCENE=new Set(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','suga','gotoubun','onnazaka','nagatoro','keion']);
 /* 비교 슬라이더 이미지 위치 (세로 이미지인 너의이름은은 계단이 보이도록 아래쪽 기준) */
 const CMP_POS={suga:'50% 100%'};
 /* 원작 비교 슬라이더: 하단 = 원본(애니 장면), 상단 = 비교(실제 장소, assets/real/<id>.jpg). 이미지는 고정, 노출 영역만 변경 */
@@ -1229,8 +1232,26 @@ function initCmp(id){const el=curScreen().querySelector('.cmp');if(!el)return;co
  if(!S._cmpHinted){S._cmpHinted=true;const t0=performance.now()+450,D=1700;
   const tick=t=>{const k=(t-t0)/D;if(k<0){raf=requestAnimationFrame(tick);return}if(k>=1){set(50);raf=0;return}
    set(50+Math.sin(k*Math.PI*4)*9*(1-k));raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick)}}
+/* 검색: 애니메이션 이름(한글·일본어), 명소, 캐릭터, 태그 */
+const norm=t=>String(t||'').toLowerCase().replace(/[\s·・,.!?()（）【】「」『』~\-]/g,'');
+function searchSpots(q){const n=norm(q);if(!n)return[];return SPOTS.filter(s=>REG.includes(s.id)).filter(s=>{const w=work(s);return[w.title,s.name,s.jp,...(w.chars||[]),...(s.tags||[])].some(v=>norm(v).includes(n))})}
+const wshort=w=>WORKS[w].title.replace(/\s*\(.*\)\s*$/,'');
+function searchBody(q){const img=s=>HERO_SCENE.has(s.id)?'hero':true;
+ if(!q.trim()){const ws=[...new Set(SPOTS.filter(s=>REG.includes(s.id)).map(s=>s.work))];
+  return`<div class="sub-h" style="margin-top:4px">등록된 애니메이션</div><div class="srch-chips">${ws.map(w=>`<button class="chip" data-act="srchset" data-v="${wshort(w)}">${wshort(w)}</button>`).join('')}</div>`}
+ const r=searchSpots(q);
+ if(r.length)return`<div class="small muted" style="margin:4px 0 10px">'${esc(q)}' 검색 결과 ${r.length}곳</div>${r.map(s=>spotRow(s,img(s))).join('')}`;
+ const rec=SPOTS.filter(s=>REG.includes(s.id)).sort((a,b)=>b.visits-a.visits).slice(0,4);
+ return`<div class="srch-none"><b>'${esc(q)}'에 맞는 명소를 아직 찾지 못했어요</b><span>대신 인기 명소를 골라 봤어요</span></div>
+  <div class="sub-h">이 애니메이션 보셨나요?</div>${rec.map(s=>spotRow(s,img(s))).join('')}`}
+SCREENS.search=()=>({html:`
+ ${hdr('검색')}
+ <div class="pad" style="margin-bottom:12px"><label class="search srch-in">${I.search}<input id="srchq" type="search" enterkeyhint="search" autocomplete="off" placeholder="애니메이션 이름을 입력하세요" value="${esc(S.srchQ||'')}"></label></div>
+ <div class="body"><div class="pad" id="srchres" style="padding-bottom:24px">${searchBody(S.srchQ||'')}</div></div>`,
+ after(){const i=document.getElementById('srchq');if(!i)return;const run=()=>{S.srchQ=i.value;document.getElementById('srchres').innerHTML=searchBody(i.value)};
+  i.addEventListener('input',run);i.addEventListener('keydown',e=>{if(e.key==='Enter')i.blur()});if(!S.srchQ)setTimeout(()=>i.focus(),350)}});
 SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
- ${hdr('',{right:`<button class="ib bkh ${(S.saved||{})[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="명소 저장">${I.heart}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
+ ${hdr('',{right:`<button class="ib bkh ${(S.saved||{})[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="명소 저장">${I.star}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
  <div class="body">
   ${cmpSlider(sp)}
   <div class="pad" style="margin-top:16px">
@@ -1305,6 +1326,8 @@ const money=(v,krw)=>v<=0?'무료':krw?`${v.toLocaleString()}원`:`¥${v.toLocal
 const planOrigins=sp=>ORIGINS[REGION_OF(sp)];
 const planFrom=sp=>{const os=planOrigins(sp);return os.find(o=>o.id===S.planFrom)||os[0]};
 /* 선택된 출발지·이동 방법의 경로: {total, cost, costNote, transfers, km, nodes:[{name, kind, seg}], warn} */
+/* 여행 플랫폼 예약 링크 */
+const BOOK=[['항공','https://flight.naver.com/'],['숙소','https://www.agoda.com/ko-kr/'],['현지 패스','https://www.klook.com/ko/?_currency=KRW']];
 function planRoute(sp){
  const o=planFrom(sp),reg=REGION_OF(sp),krw=reg==='seoul',d=(PROUTE[sp.id]||{})[o.id]||{t:[],walk:10,fare:0,km:5};
  const mode=S.planMode,dest={name:sp.name,kind:'dest'};
@@ -1407,7 +1430,7 @@ SCREENS.plan=()=>{const sp=spot();const os=planOrigins(sp);const from=planFrom(s
    </div>
   </details>
 
-  ${sp.abroad?`<div class="card" style="padding:14px;margin:10px 0 0"><b class="small">여행 플랫폼에서 예약하기</b><div class="row" style="margin-top:10px">${['항공','숙소','현지 패스'].map(t=>`<button class="btn out sm" data-toast="${t} 예약 → 제휴 여행 플랫폼 연결 (확장 기능)">${t}</button>`).join('')}</div></div>`:''}
+  ${sp.abroad?`<div class="card" style="padding:14px;margin:10px 0 0"><b class="small">여행 플랫폼에서 예약하기</b><div class="row" style="margin-top:10px">${BOOK.map(([t,u])=>`<a class="btn out sm" href="${u}" target="_blank" rel="noopener noreferrer" style="text-decoration:none">${t}</a>`).join('')}</div></div>`:''}
   <div style="height:24px"></div>
  </div></div>
  <div class="cta"><button class="btn sec2" style="flex:1" data-act="savetrip">여정 저장</button><button class="btn pri" style="flex:1.4" data-go="move">여정 시작</button></div>`}};
@@ -1584,7 +1607,7 @@ function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 $
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 /* 원작 비교 장면 이미지 (가운데 기준 세로 클로즈업) */
 /* 2단계 오버레이 원작 장면: 가로 촬영 기준 — 너의이름은은 제외 */
-const SCENE_IMG=Object.fromEntries(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','gotoubun','onnazaka','nagatoro'].map(id=>[id,'assets/hero/'+id+'.jpg']));const _sceneCache={};
+const SCENE_IMG=Object.fromEntries(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','gotoubun','onnazaka','nagatoro','keion'].map(id=>[id,'assets/hero/'+id+'.jpg']));const _sceneCache={};
 function sceneImg(id){const u=SCENE_IMG[id];if(!u)return null;let im=_sceneCache[id];if(!im){im=new Image();im.src=u+'?v='+ASSET_V;_sceneCache[id]=im}return im.complete&&im.naturalWidth?im:null}
 function drawScene(c,w,h,t,alpha){const im=sceneImg(spot().id);if(im){c.save();c.globalAlpha=alpha;const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);c.restore();return}const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
  const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
@@ -1835,7 +1858,7 @@ SCREENS.explore=()=>{if(!ECATS.some(([k])=>k===S.exploreCat))S.exploreCat='all';
  const img=s=>HERO_SCENE.has(s.id)?'hero':true;
  return{tab:'explore',html:`
  ${hdr('성지 탐색',{back:'auto',left:true})}
- <div class="pad" style="margin-bottom:10px"><div class="search" data-go="scan">${I.search}<span>작품, 장면, 장소 검색</span></div></div>
+ <div class="pad" style="margin-bottom:10px"><div class="search" data-go="search">${I.search}<span>애니메이션 이름으로 검색</span></div></div>
  <div class="chips" style="margin-bottom:12px">${ECATS.map(([k,n])=>`<button class="chip ${c===k?'on':''}" data-act="ecat" data-v="${k}">${n}</button>`).join('')}</div>
  <div class="body">
   ${near?`<div class="pad"><div class="near-h">${I.pin}<b>현재 위치와 가까운 곳</b><span class="muted">${h.name} 기준 (예시)</span></div>
@@ -2122,13 +2145,13 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'camsim':S.camMode='sim';render();break;
   case 'camflip':{if(S.camMode!=='live'){toast('실시간 카메라에서만 전환할 수 있어요');break}S.facing=S.facing==='user'?'environment':'user';stopCam();render();break}
   case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';S.stack=[];S.archTab='timeline';S.screen='archive';render('push');syncHist();toast('아카이브에 저장했어요');break}
+  case 'srchset':{const i=document.getElementById('srchq');if(i){i.value=t.dataset.v;i.dispatchEvent(new Event('input'))}break}
   case 'ework':S.exploreWork=t.dataset.v;render();break;
   case 'ecat':S.exploreCat=t.dataset.v;render();{const ch=document.querySelector('#app .screen:last-child .chips .chip.on');if(ch)ch.scrollIntoView({inline:'nearest',block:'nearest'})}break;
   case 'catmenu':{const m=t.closest('.topbar').querySelector('.catmenu');m.classList.toggle('on');break}
   case 'homecat':S.homeCat=t.dataset.v;render();toast(`${catName(S.homeCat)} 추천으로 바꿨어요`);break;
   case 'homeall':S.exploreCat='all';go('explore');break;
   case 'esel':S.exploreSel=t.dataset.v;render();break;
-  case 'ework':S.exploreWork=t.dataset.v;render();break;
   case 'ctab':S.commTab=t.dataset.v;render();break;
   case 'atab':S.archTab=t.dataset.v;render();break;
   case 'bk':{S.saved=S.saved||{};S.saved[t.dataset.v]=!S.saved[t.dataset.v];if(S.saved[t.dataset.v]){const d=new Date();S.savedAt=S.savedAt||{};S.savedAt[t.dataset.v]=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')}const on=S.saved[t.dataset.v];document.querySelectorAll(`[data-act="bk"][data-v="${t.dataset.v}"]`).forEach(b=>b.classList.toggle('on',on));toast(on?'저장한 명소에 추가했어요':'저장을 취소했어요');break}
