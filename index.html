@@ -216,7 +216,31 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .press{font-family:var(--f-press);font-weight:700;letter-spacing:-.02em}
 .wrap{background:#dfe8f2;height:100dvh;min-height:0;overflow:hidden}
 /* 아이폰 14 (390×844) 고정: 화면이 작으면 비율 그대로 축소만 */
-.phone{transform-origin:center center;transform:scale(var(--fit,1))}
+.phone{transform-origin:center center;transform:rotate(var(--rot,0deg)) scale(var(--fit,1))}
+.phone.land{width:844px!important;height:390px!important;--sat:0px;--sab:0px}
+.phone.land .sbar{display:none}
+.phone.land .tabbar{display:none}
+/* 가로 카메라 배치 */
+.cam-top{top:14px;left:60px;right:60px;display:flex;align-items:center;justify-content:space-between}
+.cam-top>span{width:44px}
+.cam-left{top:66px;left:60px;width:330px}
+.cam-left .fxbar{margin-top:8px}
+.cam-bl{bottom:14px;left:60px;width:360px}
+.cam-bl .seg{background:rgba(20,20,24,.6)}
+.cam-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cam-rail{right:28px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:10px}
+.cam-rail .arb{min-width:92px;height:62px;padding:6px 10px}
+.cam-rail .rb{width:66px;height:66px}
+.phone.land .camfb{left:50%;right:auto;width:420px;margin-left:-210px}
+.phone.land .sheet{left:50%;right:auto;width:560px;margin-left:-280px;max-height:94%;overflow-y:auto}
+/* 깜짝 미션 팝업 가로 배치 */
+.phone.land .ms-x{top:14px;right:24px}
+.phone.land .ms-body{display:grid;grid-template-columns:auto 1fr;column-gap:36px;align-items:center;text-align:left;max-width:680px;justify-items:start}
+.phone.land .ms-body>.ms-stamp,.phone.land .ms-body>.ms-load,.phone.land .ms-body>.ms-done{grid-column:1;grid-row:1/span 6;margin:0}
+.phone.land .ms-body>*:not(.ms-stamp):not(.ms-load):not(.ms-done){grid-column:2}
+.phone.land .ms-tag{margin-bottom:6px}
+.phone.land .ms-hint{margin-top:12px}
+.phone.land .ms-btn{margin-top:18px}
 .screen,.screen .body{background:var(--bg)}
 .screen.dark,.screen.dark .body{background:#0d0d10}
 
@@ -1025,7 +1049,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611171';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611181';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1167,14 +1191,16 @@ SCREENS.scanresult=()=>{const top=spot('kamakura');const others=SPOTS.filter(s=>
  </div>`}};
 
 /* 명소 상세 상단: 원작 장면 이미지 (assets/hero) — 받은 명소만, 나머지는 기존 이미지 */
-const HERO_SCENE=new Set(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter']);
+const HERO_SCENE=new Set(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','suga']);
+/* 비교 슬라이더 이미지 위치 (세로 이미지인 너의이름은은 계단이 보이도록 아래쪽 기준) */
+const CMP_POS={suga:'50% 100%'};
 /* 원작 비교 슬라이더: 하단 = 원본(애니 장면), 상단 = 비교(실제 장소, assets/real/<id>.jpg). 이미지는 고정, 노출 영역만 변경 */
 const CMP_ARR='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>';
 function cmpSlider(sp){const p=(S.cmpPos&&S.cmpPos[sp.id]!=null)?S.cmpPos[sp.id]:50;
  const orig=`assets/${HERO_SCENE.has(sp.id)?'hero':'posters'}/${sp.id}.jpg?v=${ASSET_V}`;
  return`<div class="cmp" style="--p:${p}%">
-  <img class="cmp-img" src="${orig}" alt="${work(sp).title} 원작 장면" draggable="false">
-  <div class="cmp-top"><div class="cmp-ph"><span>${I.cam}실제 장소 사진 준비 중</span></div><img class="cmp-img" src="assets/real/${sp.id}.jpg?v=${ASSET_V}" alt="${sp.name} 실제 모습" draggable="false" onerror="this.remove()"></div>
+  <img class="cmp-img" src="${orig}" alt="${work(sp).title} 원작 장면" draggable="false" style="object-position:${CMP_POS[sp.id]||'center'}">
+  <div class="cmp-top"><div class="cmp-ph"><span>${I.cam}실제 장소 사진 준비 중</span></div><img class="cmp-img" src="assets/real/${sp.id}.jpg?v=${ASSET_V}" alt="${sp.name} 실제 모습" draggable="false" style="object-position:${CMP_POS[sp.id]||'center'}" onerror="this.remove()"></div>
   <div class="cmp-line"></div>
   <button class="cmp-h" role="slider" aria-label="원작·실제 비교" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(p)}">${CMP_ARR}</button>
   <span class="cmp-tag l">원작</span><span class="cmp-tag r">실제</span>
@@ -1554,7 +1580,8 @@ function sparkles(c,w,h,t,n=22){for(let i=0;i<n;i++){const sp=(i%4+1)*.012;const
 function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 ${fs}px "Pretendard Variable",Pretendard,sans-serif`;const tw=c.measureText(text).width;const pw=tw+fs*1.4,ph=fs*2.1,x=(w-pw)/2;c.fillStyle='rgba(0,0,0,.55)';rr(c,x,y,pw,ph,ph/2);c.fill();c.fillStyle='#fff';c.textAlign='center';c.textBaseline='middle';c.fillText(text,w/2,y+ph/2+1);c.restore()}
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 /* 원작 비교 장면 이미지 (가운데 기준 세로 클로즈업) */
-const SCENE_IMG={shibuya:'assets/scene/shibuya.jpg'};const _sceneCache={};
+/* 2단계 오버레이 원작 장면: 가로 촬영 기준 — 너의이름은은 제외 */
+const SCENE_IMG=Object.fromEntries(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko'].map(id=>[id,'assets/hero/'+id+'.jpg']));const _sceneCache={};
 function sceneImg(id){const u=SCENE_IMG[id];if(!u)return null;let im=_sceneCache[id];if(!im){im=new Image();im.src=u+'?v='+ASSET_V;_sceneCache[id]=im}return im.complete&&im.naturalWidth?im:null}
 function drawScene(c,w,h,t,alpha){const im=sceneImg(spot().id);if(im){c.save();c.globalAlpha=alpha;const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);c.restore();return}const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
  const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
@@ -1717,23 +1744,22 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
  <div class="${S.moveExp.charfilter?'filter':''} ${S.moveExp.tone?'tone':''}" style="position:absolute;inset:0">
  ${camLayer(`<div class="camlb">카메라 시뮬레이션</div>${[[18,120],[40,150],[63,110],[80,135]].map((p,i)=>`<div class="person" style="left:${p[0]}%;height:${p[1]}px"><span class="tagp">${ch[i%ch.length]}</span></div>`).join('')}`)}
  <div class="hud"></div></div>
- <div class="ov" style="top:calc(var(--sat) + 12px);left:16px;right:16px">
-  <div class="row between">
-   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
-   <div class="pill small" style="padding:6px 12px" id="cambadge">${camBadge()}</div>
-   <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
-  </div>
-  <div class="pill mguide" id="mguide" style="margin-top:12px">${moveGuide(sp)}</div>
+ <div class="ov cam-top">
+  <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
+  <div class="pill small" style="padding:6px 12px" id="cambadge">${camBadge()}</div>
+  <span></span>
+ </div>
+ <div class="ov cam-left">
+  <div class="pill mguide" id="mguide">${moveGuide(sp)}</div>
   ${fxBar()}
  </div>
  ${fallbackCard()}
- <div class="ov" style="left:0;right:0;bottom:0;padding:0 16px max(var(--sab),24px)">
-  <div class="chips" style="padding:0 0 14px;justify-content:center">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>`<span class="chip" style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff">${e.name}</span>`).join('')||'<span class="small" style="opacity:.6">AR 경험 꺼짐</span>'}</div>
-  <div class="row between">
-   <button class="arb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i><span>경험 선택</span></button>
-   <button class="rb" data-act="capture" data-ctx="move" aria-label="촬영"><span></span></button>
-   <button class="arb" data-act="nextstep"><i>${I.map}</i><span>다음</span></button>
-  </div>
+ <div class="ov cam-bl"><div class="cam-chips">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>`<span class="chip" style="background:rgba(255,255,255,.15);border-color:transparent;color:#fff">${e.name}</span>`).join('')||'<span class="small" style="opacity:.6">AR 경험 꺼짐</span>'}</div></div>
+ <div class="ov cam-rail">
+  <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
+  <button class="arb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i><span>경험 선택</span></button>
+  <button class="rb" data-act="capture" data-ctx="move" aria-label="촬영"><span></span></button>
+  <button class="arb" data-act="nextstep"><i>${I.map}</i><span>다음</span></button>
  </div><div class="flash" id="flash"></div>`,after(){startCam();arLoop();
   /* 명소 근처 도착(시뮬레이션) → 깜짝 미션 팝업 */
   const id=sp.id;if(!hasStamp(id)&&!(S._missionSeen&&S._missionSeen[id])){clearTimeout(S._ms);S._ms=setTimeout(()=>{if(S.screen==='move'&&spot().id===id&&!document.getElementById('sheet').classList.contains('on'))openMission('intro')},1600)}}}};
@@ -1745,22 +1771,25 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
    view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div style="background:linear-gradient(${h[0]},${h[1]})">${h[2]}</div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
  else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
  return{dark:true,ar:true,html:`${view}
- <div class="ov" style="top:calc(var(--sat) + 12px);left:16px;right:16px">
-  <div class="row between"><button class="ib" data-act="back" style="background:rgba(0,0,0,.35)">${I.close}</button>
-   <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
-   <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button></div>
-  <div class="pill" style="margin-top:12px"><div class="small" style="opacity:.7">${work(sp).title} · ${sp.ep} · 장면 포인트 도착</div><b>${sp.name}</b></div>
+ <div class="ov cam-top">
+  <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
+  <div class="pill small" style="padding:6px 12px" id="cambadge">${pano?'360° 가상 장면':camBadge()}</div>
+  <span></span>
+ </div>
+ <div class="ov cam-left">
+  <div class="pill"><div class="small" style="opacity:.7">${work(sp).title} · ${sp.ep} · 장면 포인트 도착</div><b>${sp.name}</b></div>
   ${pano?'':fxBar()}
  </div>
  ${pano?'':fallbackCard()}
- <div class="ov" style="left:0;right:0;bottom:0;padding:0 16px max(var(--sab),24px);z-index:8">
-  ${S.siteMode==='overlay'?`<div class="pill" style="margin-bottom:12px;padding:10px 14px"><div class="row between small" style="opacity:.8"><span>카메라</span><span>장면 투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
-  <div class="seg" style="margin-bottom:16px">${modes.map(m=>`<button class="${m.id===S.siteMode?'on':''}" data-act="sitemode" data-v="${m.id}">${m.name.replace('장면 ','').replace(' 재현','')}</button>`).join('')}</div>
-  <div class="row between">
-   <button class="arb" data-act="sheet-exp" data-ctx="site"><i>${I.sparkle}</i><span>경험 추가</span></button>
-   <button class="rb" data-act="capture" data-ctx="site" aria-label="촬영"><span></span></button>
-   <button class="arb" data-act="back"><i>${I.close}</i><span>종료</span></button>
-  </div>
+ <div class="ov cam-bl" style="z-index:8">
+  ${S.siteMode==='overlay'?`<div class="pill" style="margin-bottom:8px;padding:8px 14px"><div class="row between small" style="opacity:.8"><span>카메라</span><span>장면 투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
+  <div class="seg">${modes.map(m=>`<button class="${m.id===S.siteMode?'on':''}" data-act="sitemode" data-v="${m.id}">${m.name.replace('장면 ','').replace(' 재현','')}</button>`).join('')}</div>
+ </div>
+ <div class="ov cam-rail" style="z-index:8">
+  <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
+  <button class="arb" data-act="sheet-exp" data-ctx="site"><i>${I.sparkle}</i><span>경험 추가</span></button>
+  <button class="rb" data-act="capture" data-ctx="site" aria-label="촬영"><span></span></button>
+  <button class="arb" data-act="back"><i>${I.close}</i><span>종료</span></button>
  </div><div class="flash" id="flash"></div>`,after(){
    const b=document.getElementById('blend');if(b)b.oninput=e=>{S.blend=+e.target.value;document.getElementById('blendv').textContent=S.blend};
    if(!pano){startCam();arLoop();if(!S.locked){clearTimeout(S._lock);S._lock=setTimeout(()=>{S.locked=true;S.lockAt=performance.now();const r=document.getElementById('reticle');if(r){r.classList.add('done');setTimeout(()=>r.remove(),500)}toast('장면 인식 완료 · 일치도 92%')},2600)}}
@@ -1969,7 +1998,7 @@ function render(mode='none',restore){closeMission(true);
  const old=curScreen();
  const keep=(mode==='none'&&!restore&&old&&old.dataset.screen===S.screen&&old.dataset.spot===S.spot)?snapScroll(old):null;
  const def=SCREENS[S.screen]();
- document.getElementById('phone').classList.toggle('dk',!!def.dark);
+ document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');ph.classList.toggle('land',!!def.ar);if(was!==!!def.ar&&window.fitPhone)fitPhone()}
  const el=buildScreen(def);
  if(old)stripIds(old);
  if((mode==='push'||mode==='pop')&&old){
@@ -2126,8 +2155,11 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
 
 /* ================= iPhone 14 FIT ================= */
 (function(){const ph=document.getElementById('phone');
- const fit=()=>{const k=Math.min(1,(innerWidth-24)/414,(innerHeight-24)/868);ph.style.setProperty('--fit',k.toFixed(4))};
- fit();addEventListener('resize',fit);})();
+ /* 카메라 화면은 가로 촬영: 프레임을 844×390으로 돌리고, 세로로 든 휴대폰에서는 90° 회전해 가득 채워요 */
+ const fit=()=>{const land=ph.classList.contains('land'),W=land?868:414,H=land?414:868,rot=land&&innerWidth<innerHeight&&innerWidth<700;
+  const k=rot?Math.min(1,(innerHeight-24)/W,(innerWidth-24)/H):Math.min(1,(innerWidth-24)/W,(innerHeight-24)/H);
+  ph.style.setProperty('--fit',k.toFixed(4));ph.style.setProperty('--rot',rot?'90deg':'0deg')};
+ window.fitPhone=fit;fit();addEventListener('resize',fit);})();
 
 /* ================= SPLASH ================= */
 (function(){const sp=document.getElementById('splash'),ph=document.getElementById('phone');
