@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" href="assets/icon-192.png">
 <title>덕모잇</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;900&family=Black+Han+Sans&family=Dela+Gothic+One&display=swap">
 <style>
 /* 산돌프레스: 라이선스 폰트라 CDN이 없어요. fonts/ 폴더에 파일을 넣으면 자동 적용, 없으면 기기에 설치된 폰트 → Pretendard Black 순으로 대체 */
 @font-face{font-family:"Sandoll Press";font-weight:400 900;font-display:swap;
@@ -32,14 +32,14 @@
   --ph:#e6eef7; --ph2:#d6e3f1;
   --bubble:radial-gradient(ellipse 95% 100% at 49% 50%,#6baeff 0%,#50a1fa 25%,#3693f4 50%,#1b86ef 75%,#0078e9 100%);
   --f-body:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Apple SD Gothic Neo","Pretendard Variable",Pretendard,sans-serif;
-  --f-press:"Sandoll Press","SandollPress","산돌프레스",var(--f-body);
+  --f-press:"Black Han Sans","Dela Gothic One",var(--f-body);   /* 산돌프레스 대체: 한글 Black Han Sans · 일본어 Dela Gothic One (무료 Google Fonts) */
   --r:16px;
   --sat:env(safe-area-inset-top,0px); --sab:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 html,body{overscroll-behavior:none}
-body{-webkit-tap-highlight-color:transparent;font-family:var(--f-body);letter-spacing:-.01em;background:var(--bg);color:var(--text);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+body{font-synthesis-weight:none;-webkit-tap-highlight-color:transparent;font-family:var(--f-body);letter-spacing:-.01em;background:var(--bg);color:var(--text);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 input,textarea,select{font:inherit;color:inherit}
 
