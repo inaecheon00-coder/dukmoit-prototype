@@ -9,7 +9,10 @@
 <meta name="apple-mobile-web-app-title" content="덕모잇">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
-<script>/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone){var d=document.documentElement;d.classList.add('native');var sz=function(){d.style.setProperty('--vw',window.innerWidth+'px');d.style.setProperty('--vh',window.innerHeight+'px')};sz();addEventListener('resize',sz);addEventListener('orientationchange',function(){setTimeout(sz,300)})}}catch(e){}})();</script>
+<script>/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone){var d=document.documentElement;d.classList.add('native');var ios=!!navigator.standalone;if(ios)d.classList.add('iospwa');var sz=function(){var w=window.innerWidth,h=window.innerHeight;
+ /* iOS 홈 화면 앱(상태바 투명)은 화면 높이가 상태바만큼 짧게 잡히는 버그가 있어 실제 화면 크기로 맞춰요 */
+ if(ios){var a=Math.max(screen.width,screen.height),b=Math.min(screen.width,screen.height);if(w<=h){w=b;h=a}else{w=a;h=b}}
+ d.style.setProperty('--vw',w+'px');d.style.setProperty('--vh',h+'px')};sz();addEventListener('resize',sz);addEventListener('orientationchange',function(){setTimeout(sz,300)})}}catch(e){}})();</script>
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="assets/icon-192.png">
 <title>덕모잇</title>
@@ -840,7 +843,10 @@ html.native,html.native body{height:100%;min-height:100%}
 html.native .phone{position:fixed!important;left:0!important;top:0!important;right:0!important;bottom:0!important;width:auto!important;height:auto!important;border-radius:0!important;box-shadow:none!important;transform:none!important;margin:0!important;
   --sat:env(safe-area-inset-top,0px)!important;--sab:env(safe-area-inset-bottom,0px)!important}
 html.native .sbar,html.native .phone::after{display:none!important}
+html.iospwa .phone{bottom:auto!important;right:auto!important;width:var(--vw)!important;height:var(--vh)!important}
+html.iospwa,html.iospwa body{height:var(--vh)}
 html.native .phone.land{width:auto!important;height:auto!important;--sat:0px!important;--sab:0px!important}
+html.iospwa .phone.land{width:var(--vw)!important;height:var(--vh)!important}
 @media (orientation: portrait){html.native .phone.land{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:var(--vh,100vh)!important;height:var(--vw,100vw)!important;transform:translate(-50%,-50%) rotate(90deg)!important}}
 </style>
 </head>
