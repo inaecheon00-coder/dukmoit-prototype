@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="덕모잇">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
-<script>/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone)document.documentElement.classList.add('native')}catch(e){}})();</script>
+<script>/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone){var d=document.documentElement;d.classList.add('native');var sz=function(){d.style.setProperty('--vw',window.innerWidth+'px');d.style.setProperty('--vh',window.innerHeight+'px')};sz();addEventListener('resize',sz);addEventListener('orientationchange',function(){setTimeout(sz,300)})}}catch(e){}})();</script>
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="assets/icon-192.png">
 <title>덕모잇</title>
@@ -836,11 +836,12 @@ input,textarea{font-size:17px}
 /* 실제 폰(브라우저·홈 화면 앱 모두)에서 열면: 아이폰 프레임 없이 앱처럼 화면을 꽉 채워요. PC에서만 프레임 표시 */
 html.native,html.native body{background:var(--surface);overflow:hidden}
 html.native body{display:block!important;padding:0!important;margin:0!important}
-html.native .phone{position:fixed!important;left:0;top:0;width:100vw!important;height:100dvh!important;border-radius:0!important;box-shadow:none!important;transform:none!important;margin:0!important;
+html.native,html.native body{height:100%;min-height:100%}
+html.native .phone{position:fixed!important;left:0!important;top:0!important;right:0!important;bottom:0!important;width:auto!important;height:auto!important;border-radius:0!important;box-shadow:none!important;transform:none!important;margin:0!important;
   --sat:env(safe-area-inset-top,0px)!important;--sab:env(safe-area-inset-bottom,0px)!important}
 html.native .sbar,html.native .phone::after{display:none!important}
-html.native .phone.land{width:100vw!important;height:100dvh!important;--sat:0px!important;--sab:0px!important}
-@media (orientation: portrait){html.native .phone.land{left:50%;top:50%;width:100dvh!important;height:100vw!important;transform:translate(-50%,-50%) rotate(90deg)!important}}
+html.native .phone.land{width:auto!important;height:auto!important;--sat:0px!important;--sab:0px!important}
+@media (orientation: portrait){html.native .phone.land{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;width:var(--vh,100vh)!important;height:var(--vw,100vw)!important;transform:translate(-50%,-50%) rotate(90deg)!important}}
 </style>
 </head>
 <body>
