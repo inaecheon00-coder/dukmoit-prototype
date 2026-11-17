@@ -492,7 +492,7 @@ input,textarea{font-size:17px}
 .spotrow .dist{color:var(--b);font-weight:700}
 .evgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;margin-top:4px}
 .ev{display:flex;flex-direction:column;gap:2px;color:inherit;text-decoration:none}
-.ev .ph .lb{display:none}.ev .ph .x{font-size:19px;font-weight:800;padding:0 12px;text-align:center;word-break:keep-all}
+.evimg{width:100%;height:260px;object-fit:cover;border-radius:14px;display:block;background:var(--line)}.ev .ph .lb{display:none}.ev .ph .x{font-size:19px;font-weight:800;padding:0 12px;text-align:center;word-break:keep-all}
 .ev b{font-size:15px;font-weight:700;margin-top:8px;line-height:1.3;word-break:keep-all}.ev span{font-size:15px;color:var(--mute)}
 .av.me{background:var(--b)}
 .rmap{height:360px;background:#e9eef2;touch-action:none;cursor:grab}
@@ -1815,10 +1815,10 @@ SCREENS.explore=()=>{if(!ECATS.some(([k])=>k===S.exploreCat))S.exploreCat='all';
  </div>`}};
 
 const EVENTS=[
- {n:'MAPPA EXPO 15th Anniversary',d:'2026.09.16 – 12.07',u:'https://expo.mappa.co.jp/en'},
- {n:'점프 페스타 2027',d:'2026.12.19 – 12.20',u:'https://www.jumpfesta.com/'},
- {n:'코믹마켓 109',d:'2026.12.29 – 12.31',u:'https://www.comiket.co.jp/'},
- {n:'AnimeJapan 2027',d:'2027.03.26 – 03.28',u:'https://www.anime-japan.jp/'},
+ {n:'MAPPA EXPO 15th Anniversary',d:'2026.09.16 – 12.07',u:'https://expo.mappa.co.jp/en',img:'mappa'},
+ {n:'치이카와 파크 스토어 오사카',d:'2026.11.24 오픈',u:'https://www.lucua.jp/special/south-open/',img:'chiikawa'},
+ {n:'점프 페스타 2027',d:'2026.12.19 – 12.20',u:'https://www.jumpfesta.com/',img:'jumpfesta'},
+ {n:'AnimeJapan 2027',d:'2027.03.27 – 03.28',u:'https://www.anime-japan.jp/',img:'animejapan'},
 ];
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;border-bottom:8px solid var(--bg)">
@@ -1830,7 +1830,7 @@ const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;bo
 SCREENS.community=()=>({tab:'community',html:`
  ${hdr('커뮤니티',{back:'auto',left:true,right:S.commTab==='feed'?`<button class="btn pri sm" style="width:auto;padding:0 14px" data-go="post">${I.plus||'+'} 등록하기</button>`:''})}
  <div class="pad" style="margin-bottom:10px"><div class="seg"><button class="${S.commTab==='feed'?'on':''}" data-act="ctab" data-v="feed">AR 기록 피드</button><button class="${S.commTab==='goods'?'on':''}" data-act="ctab" data-v="goods">행사 안내</button></div></div>
- <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer">${ph(e.n,260,'border-radius:14px',e.n)}<b>${e.n}</b><span>${e.d}</span></a>`).join('')}</div><div style="height:24px"></div></div>`}
+ <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer"><img class="evimg" src="assets/events/${e.img}.jpg?v=${ASSET_V}" alt="${e.n}" loading="lazy"><b>${e.n}</b><span>${e.d}</span></a>`).join('')}</div><div style="height:24px"></div></div>`}
  </div>`});
 /* 커뮤니티 등록하기: 명소 장면 + 텍스트 */
 SCREENS.post=()=>{const reg=SPOTS.filter(s=>REG.includes(s.id));if(!REG.includes(S.postSpot))S.postSpot=reg[0].id;const sp=spot(S.postSpot);return{html:`
