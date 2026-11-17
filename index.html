@@ -233,6 +233,22 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 /* 가로 카메라 배치 */
 .cam-top{top:14px;left:60px;right:60px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .cam-top .mguide{max-width:380px;flex:0 1 auto;text-align:left}
+.cam-head{display:flex;align-items:stretch;gap:8px}
+.fxbar.fxcol{flex-direction:column;align-items:stretch;justify-content:center;gap:6px;margin:0;flex-wrap:nowrap}
+.fxbar.fxcol>*{margin:0!important;justify-content:center;white-space:nowrap}
+.phone.land .cam-left{display:none}
+.phone:not(.land) .fxbar.fxcol{display:none}
+.phone:not(.land) .cam-head{display:contents}
+.phone:not(.land) .ctl-grab{display:none}
+.phone.land .cam-rail{top:14px;bottom:20px;transform:none;justify-content:space-between}
+.phone.land .cam-rail .rb{margin:auto 0}
+.phone.land .cam-rail .arb-end{margin-top:0}
+.cam-ctl{transition:transform .28s ease,opacity .28s ease}
+.phone.land .cam-ctl{left:50%!important;right:auto;width:400px;bottom:10px;transform:translateX(-50%);touch-action:none;display:flex;flex-direction:column;align-items:stretch}
+.phone.land .cam-ctl.hid{transform:translate(-50%,calc(100% - 22px))}
+.phone.land .cam-ctl.hid>*:not(.ctl-grab){opacity:0;pointer-events:none}
+.ctl-grab{align-self:center;width:72px;height:22px;display:grid;place-items:center;margin-bottom:2px}
+.ctl-grab i{display:block;width:44px;height:5px;border-radius:3px;background:rgba(255,255,255,.75);box-shadow:0 1px 3px rgba(0,0,0,.4)}
 .cam-top .mguide .mg-route{justify-content:center}
 .cam-top>span{width:44px}
 .cam-left{top:66px;left:60px;width:330px}
@@ -1499,7 +1515,7 @@ function planUpdate(){const el=curScreen();if(!el||S.screen!=='plan')return;cons
 
 /* ================= AR 카메라 (이동 · 현장) ================= */
 /* 카메라 레이어: 실시간(getUserMedia) → 사진(capture) → 시뮬레이션 순으로 대체 */
-const camLayer=(extra='')=>`<div class="camwrap ${S.camMode==='sim'||!S.camMode?'sim':''}" id="camwrap">
+const camLayer=(extra='')=>`<div class="camwrap ${S.camMode==='sim'?'sim':''}" id="camwrap">
  <video id="camv" playsinline muted autoplay ${S.camMode==='live'?'':'hidden'}></video>
  <img id="camimg" class="bg" alt="" ${S.camMode==='photo'&&S.photo?`src="${S.photo}"`:'hidden'}>
  <div class="cam" id="camsim"><div class="grid"></div>${extra}</div>
@@ -1529,7 +1545,7 @@ async function startCam(){
  }catch(e){S.camErr=e&&e.name;S.camMode='denied';if(['move','arrive'].includes(S.screen))render()}
 }
 function stopCam(){if(S.stream){S.stream.getTracks().forEach(t=>t.stop());S.stream=null}if(S.camMode==='live')S.camMode=null}
-function syncCamUI(){const w=document.getElementById('camwrap');if(!w)return;w.classList.toggle('sim',!(S.camMode==='live'||S.camMode==='photo'));
+function syncCamUI(){const w=document.getElementById('camwrap');if(!w)return;w.classList.toggle('sim',S.camMode==='sim');
  const b=document.getElementById('cambadge');if(b)b.textContent=camBadge();
  const f=camFilter();['camv','camimg'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.filter=f});}
 
@@ -1650,9 +1666,9 @@ function fxFrame(){const cv=document.getElementById('glcv');if(!cv)return;const 
  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
  cv.style.display='block';if(w)w.classList.add('fx');
 }
-const fxBar=()=>{const o=fxOpts();const on=!!(o.toon||o.grade||o.sky);return`<div class="fxbar">
+const fxBar=(cls='')=>{const o=fxOpts();const on=!!(o.toon||o.grade||o.sky);return`<div class="fxbar ${cls}">
  <button class="pill small ${on?'fxon':''}" data-act="fxtoggle" style="padding:6px 12px">${on?'애니 화풍 ON':'애니 화풍 OFF'}</button>
- <button class="stampbtn ${hasStamp(spot().id)?'got':''}" data-act="stampmission">${I.star}<span>${hasStamp(spot().id)?'스탬프 획득 완료':'스탬프 획득'}</span></button></div>`};
+ <button class="stampbtn ${hasStamp(spot().id)?'got':''}" data-act="stampmission"><span>${hasStamp(spot().id)?'스탬프 획득 완료':'스탬프 획득'}</span></button></div>`};
 
 /* AR 오버레이 그리기 (화면·촬영 공용) */
 const SCENE_FEAT={kamakura:'cross',shichiri:'sea',enoshima:'sea',hida:'bridge',ihwa:'stairs',kifune:'snow'};
@@ -1832,16 +1848,15 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
  <div class="hud"></div></div>
  <div class="ov cam-top">
   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
-  <div class="pill mguide" id="mguide">${moveGuide(sp)}</div>
+  <div class="cam-head"><div class="pill mguide" id="mguide">${moveGuide(sp)}</div>${fxBar('fxcol')}</div>
   <span></span>
  </div>
  <div class="ov cam-left">${fxBar()}</div>
  ${fallbackCard()}
  <div class="ov cam-rail">
   <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
-  <button class="arb" data-act="sheet-exp" data-ctx="move"><i>${I.sparkle}</i><span>경험 선택</span></button>
   <button class="rb" data-act="capture" data-ctx="move" aria-label="촬영"><span></span></button>
-  <button class="arb" data-act="nextstep"><i>${I.map}</i><span>다음</span></button>
+  <button class="arb arb-end" data-act="nextstep"><i><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 5.5v13a.6.6 0 0 0 .9.5l10.2-6.5a.6.6 0 0 0 0-1L8.9 5a.6.6 0 0 0-.9.5Z"/></svg></i><span>다음</span></button>
  </div><div class="flash" id="flash"></div>`,after(){startCam();arLoop();
   /* 명소 근처 도착(시뮬레이션) → 깜짝 미션 팝업 */
   const id=sp.id;if(!hasStamp(id)&&!(S._missionSeen&&S._missionSeen[id])){clearTimeout(S._ms);S._ms=setTimeout(()=>{if(S.screen==='move'&&spot().id===id&&!document.getElementById('sheet').classList.contains('on'))openMission('intro')},1600)}}}};
@@ -1855,21 +1870,24 @@ SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.i
  return{dark:true,ar:true,html:`${view}
  <div class="ov cam-top">
   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
-  <div class="pill mguide"><div class="small" style="opacity:.7">${work(sp).title.replace(/\s*\(.*\)\s*$/,'')} · ${sp.ep} · ${pano?'360° 가상 장면':'장면 포인트 도착'}</div><b>${sp.name}</b></div>
+  <div class="cam-head"><div class="pill mguide"><div class="small" style="opacity:.7">${work(sp).title.replace(/\s*\(.*\)\s*$/,'')} · ${sp.ep} · ${pano?'360° 가상 장면':'장면 포인트 도착'}</div><b>${sp.name}</b></div>${pano?'':fxBar('fxcol')}</div>
   <span></span>
  </div>
  <div class="ov cam-left">${pano?'':fxBar()}</div>
  ${pano?'':fallbackCard()}
- <div class="ov cam-bl" style="z-index:8">
+ <div class="ov cam-bl cam-ctl ${S.ctlHidden?'hid':''}" id="camctl" style="z-index:8">
+  <button class="ctl-grab" data-act="ctltoggle" aria-label="조절 패널 숨기기/보이기"><i></i></button>
   ${S.siteMode==='overlay'?`<div class="pill" style="margin-bottom:8px;padding:8px 14px"><div class="row between small" style="opacity:.8"><span>카메라</span><span>장면 투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
   <div class="seg">${modes.map(m=>`<button class="${m.id===S.siteMode?'on':''}" data-act="sitemode" data-v="${m.id}">${m.name.replace('장면 ','').replace(' 재현','')}</button>`).join('')}</div>
  </div>
  <div class="ov cam-rail" style="z-index:8">
   <button class="ib" data-act="camflip" style="background:rgba(0,0,0,.35)" aria-label="카메라 전환">${I.flip}</button>
-  <button class="arb" data-act="sheet-exp" data-ctx="site"><i>${I.sparkle}</i><span>경험 추가</span></button>
   <button class="rb" data-act="capture" data-ctx="site" aria-label="촬영"><span></span></button>
-  <button class="arb" data-act="back"><i>${I.close}</i><span>종료</span></button>
+  <button class="arb arb-end" data-act="back"><i>${I.close}</i><span>종료</span></button>
  </div><div class="flash" id="flash"></div>`,after(){
+   {const c=document.getElementById('camctl');if(c){let y0=null;c.addEventListener('pointerdown',e=>{if(e.target.closest('input,.seg button'))return;y0=e.clientY});
+     c.addEventListener('pointerup',e=>{if(y0==null)return;const dy=e.clientY-y0;y0=null;if(dy>24){S.ctlHidden=true;c.classList.add('hid')}else if(dy<-24){S.ctlHidden=false;c.classList.remove('hid')}});
+     c.addEventListener('pointercancel',()=>{y0=null})}}
    const b=document.getElementById('blend');if(b)b.oninput=e=>{S.blend=+e.target.value;document.getElementById('blendv').textContent=S.blend};
    if(!pano){startCam();arLoop();if(!S.locked){clearTimeout(S._lock);S._lock=setTimeout(()=>{S.locked=true;S.lockAt=performance.now();const r=document.getElementById('reticle');if(r){r.classList.add('done');setTimeout(()=>r.remove(),500)}toast('장면 인식 완료 · 일치도 92%')},2600)}}
    else{stopCam();const p=document.getElementById('pano');const strip=document.getElementById('strip');let sx=0,start=0,drag=false;const W=strip.firstElementChild.offsetWidth*4;
@@ -2194,6 +2212,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'fxtoggle':{const tgt=S.screen==='move'?S.moveExp:S.siteFx;const keys=['anime','tone','sky'];const on=keys.some(k=>tgt[k]);const key=S.screen==='move'?'_fxm':'_fxs';if(on){S[key]=keys.reduce((a,k)=>(a[k]=tgt[k],a),{});keys.forEach(k=>tgt[k]=false)}else{const prev=S[key]||(S.screen==='move'?{anime:true,tone:true,sky:true}:{anime:true,tone:true,sky:false});keys.forEach(k=>tgt[k]=prev[k])}render();break}
   case 'camretry':S.camMode=null;render();break;
   case 'camsim':S.camMode='sim';render();break;
+  case 'ctltoggle':{S.ctlHidden=!S.ctlHidden;document.getElementById('camctl')?.classList.toggle('hid',S.ctlHidden);break}
   case 'camflip':{if(S.camMode!=='live'){toast('실시간 카메라에서만 전환할 수 있어요');break}S.facing=S.facing==='user'?'environment':'user';stopCam();render();break}
   case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';S.stack=[];S.archTab='timeline';S.screen='archive';render('push');syncHist();toast('아카이브에 저장했어요');break}
   case 'srchset':{const i=document.getElementById('srchq');if(i){i.value=t.dataset.v;i.dispatchEvent(new Event('input'))}break}
