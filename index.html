@@ -470,10 +470,25 @@ input,textarea{font-size:17px}
 .hero-ret{inset:38px 30px 30px}
 .hero+.btn+.row .btn svg{width:18px;height:18px}
 
+/* 원작 비교 슬라이더 */
+.cmp{position:relative;height:300px;overflow:hidden;background:#111;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:ew-resize;--p:50%}
+.cmp-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;-webkit-user-drag:none}
+.cmp-top{position:absolute;inset:0;clip-path:inset(0 0 0 var(--p));-webkit-clip-path:inset(0 0 0 var(--p))}
+.cmp-ph{position:absolute;inset:0;background:#2a3140;display:flex;align-items:center;justify-content:flex-end;padding-right:16px}
+.cmp-ph span{display:inline-flex;align-items:center;gap:6px;font-size:15px;color:rgba(255,255,255,.75)}.cmp-ph svg{width:18px;height:18px}
+.cmp-line{position:absolute;top:0;bottom:0;left:var(--p);width:2px;margin-left:-1px;background:#fff;box-shadow:0 0 6px rgba(0,0,0,.35);pointer-events:none}
+.cmp-h{position:absolute;top:50%;left:var(--p);width:48px;height:48px;margin:-24px 0 0 -24px;padding:0;border-radius:50%;display:grid;place-items:center;color:#fff;
+ background:rgba(255,255,255,.28);border:2px solid #fff;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 2px 10px rgba(0,0,0,.35);touch-action:none;cursor:ew-resize;transition:transform .15s}
+.cmp.dragging .cmp-h{transform:scale(1.08)}
+.cmp-tag{position:absolute;bottom:10px;font-size:15px;font-weight:600;color:#fff;background:rgba(0,0,0,.38);padding:3px 8px;border-radius:999px;pointer-events:none}
+.cmp-tag.l{left:12px}.cmp-tag.r{right:12px}
+/* 홈 포스터 스크롤 연동 */
+.mason .cart .poster{transform:scale(1.14);transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform}
+
 /* ===== 깜짝 미션 팝업 (스플래시 배경 그래픽 재사용) ===== */
 .mission{position:absolute;inset:0;z-index:95;color:#fff;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .22s ease}
 .mission.on{opacity:1}.mission.off{opacity:0}
-.ms-bg{position:absolute;inset:0;background:#0078e9;overflow:hidden}
+.ms-bg{position:absolute;inset:0;background:rgba(0,0,0,.72);overflow:hidden}
 .ms-bg::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 50%,rgba(255,255,255,.28) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side,transparent 34%,#000 80%);mask:radial-gradient(closest-side,transparent 34%,#000 80%);animation:spin 40s linear infinite}
 .ms-bg::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 46%,rgba(255,255,255,.28),transparent 46%)}
 .ms-x{position:absolute;top:54px;right:16px;z-index:3;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.8);color:#fff}
@@ -482,7 +497,7 @@ input,textarea{font-size:17px}
 .mission.on .ms-body{animation:msPop .62s cubic-bezier(.2,1.6,.4,1) both}
 @keyframes msPop{0%{transform:scale(.3) rotate(-8deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
 .ms-tag{font-size:15px;font-weight:600;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.8);padding:5px 12px;border-radius:999px;margin-bottom:14px}
-.ms-t{font-family:var(--f-press,inherit);font-size:30px;font-weight:700;letter-spacing:-.01em;margin:0;text-shadow:0 3px 0 rgba(0,50,120,.35)}
+.ms-t{font-family:var(--f-press,inherit);font-size:30px;font-weight:700;letter-spacing:-.01em;margin:0;text-shadow:0 3px 0 rgba(0,0,0,.35)}
 .ms-s{font-size:17px;font-weight:500;margin:8px 0 0;opacity:.95}
 .ms-stamp{position:relative;margin:30px 0 18px;width:220px;height:220px;display:grid;place-items:center;border-radius:50%;cursor:pointer;animation:msBob 1.6s ease-in-out .7s infinite}
 @keyframes msBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
@@ -996,6 +1011,15 @@ const spotCard=(sp,w=220)=>`<div style="width:${w}px;flex:none;cursor:pointer" d
 /* ================= SCREENS ================= */
 const SCREENS={};
 
+/* 홈 '떠나고싶은 애니속으로': 스크롤하는 동안 포스터가 카드 안에서 함께 움직이고, 손을 떼면 원위치 */
+function homeParallax(){const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body)return;
+ const imgs=()=>sc.querySelectorAll('.mason .cart .poster');let base=null,touching=false,wheeling=false,wt=0;
+ const move=()=>{if(base==null)base=body.scrollTop;const d=body.scrollTop-base,off=Math.max(-26,Math.min(26,-d*.16));imgs().forEach(i=>{i.style.transition='none';i.style.transform=`translate3d(0,${off.toFixed(1)}px,0) scale(1.14)`})};
+ const home=()=>{base=null;imgs().forEach(i=>{i.style.transition='';i.style.transform=''})};
+ body.addEventListener('touchstart',()=>{touching=true;base=body.scrollTop},{passive:true});
+ const end=()=>{touching=false;home()};body.addEventListener('touchend',end,{passive:true});body.addEventListener('touchcancel',end,{passive:true});
+ body.addEventListener('wheel',()=>{if(!wheeling){wheeling=true;base=body.scrollTop}clearTimeout(wt);wt=setTimeout(()=>{wheeling=false;home()},160)},{passive:true});
+ body.addEventListener('scroll',()=>{if(touching||wheeling)move()},{passive:true})}
 SCREENS.home=()=>({tab:'home',html:`
  ${topbar()}
  <div class="body">
@@ -1024,7 +1048,7 @@ SCREENS.home=()=>({tab:'home',html:`
    <div class="sec-h"><h3>지금 뜨는 명소</h3><a>11월 기준</a></div>
    <div style="padding:0 16px 24px">${[['onnazaka'],['suga',{name:'스가신사',jp:'東京須賀神社'}]].map(([id,ov])=>spotRow({...spot(id),...(ov||{})},'thumb')).join('')}</div>
   </div>
- </div>`});
+ </div>`,after(){homeParallax()}});
 
 SCREENS.scan=()=>({html:`
  ${hdr('장면 검색')}
@@ -1093,12 +1117,43 @@ SCREENS.scanresult=()=>{const top=spot('kamakura');const others=SPOTS.filter(s=>
 
 /* 명소 상세 상단: 원작 장면 이미지 (assets/hero) — 받은 명소만, 나머지는 기존 이미지 */
 const HERO_SCENE=new Set(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter']);
+/* 원작 비교 슬라이더: 하단 = 원본(애니 장면), 상단 = 비교(실제 장소, assets/real/<id>.jpg). 이미지는 고정, 노출 영역만 변경 */
+const CMP_ARR='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>';
+function cmpSlider(sp){const p=(S.cmpPos&&S.cmpPos[sp.id]!=null)?S.cmpPos[sp.id]:50;
+ const orig=`assets/${HERO_SCENE.has(sp.id)?'hero':'posters'}/${sp.id}.jpg?v=${ASSET_V}`;
+ return`<div class="cmp" style="--p:${p}%">
+  <img class="cmp-img" src="${orig}" alt="${work(sp).title} 원작 장면" draggable="false">
+  <div class="cmp-top"><div class="cmp-ph"><span>${I.cam}실제 장소 사진 준비 중</span></div><img class="cmp-img" src="assets/real/${sp.id}.jpg?v=${ASSET_V}" alt="${sp.name} 실제 모습" draggable="false" onerror="this.remove()"></div>
+  <div class="cmp-line"></div>
+  <button class="cmp-h" role="slider" aria-label="원작·실제 비교" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(p)}">${CMP_ARR}</button>
+  <span class="cmp-tag l">원작</span><span class="cmp-tag r">실제</span>
+ </div>`}
+function initCmp(id){const el=curScreen().querySelector('.cmp');if(!el)return;const h=el.querySelector('.cmp-h');S.cmpPos=S.cmpPos||{};
+ let pos=S.cmpPos[id]!=null?S.cmpPos[id]:50,raf=0,drag=null;
+ const set=v=>{pos=Math.max(0,Math.min(100,v));el.style.setProperty('--p',pos+'%');h.setAttribute('aria-valuenow',Math.round(pos))};
+ const at=x=>{const r=el.getBoundingClientRect();return (x-r.left)/r.width*100};
+ const stopHint=()=>{if(raf){cancelAnimationFrame(raf);raf=0}};
+ const finish=()=>{drag=null;el.classList.remove('dragging');S.cmpPos[id]=pos};
+ el.addEventListener('pointerdown',e=>{if(e.button>0)return;stopHint();
+  drag={id:e.pointerId,x:e.clientX,y:e.clientY,on:!!e.target.closest('.cmp-h')||e.pointerType==='mouse'};
+  try{el.setPointerCapture(e.pointerId)}catch(_){}
+  if(drag.on){el.classList.add('dragging');set(at(e.clientX))}});
+ el.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;
+  if(!drag.on){const dx=Math.abs(e.clientX-drag.x),dy=Math.abs(e.clientY-drag.y);if(dx>6&&dx>dy){drag.on=true;el.classList.add('dragging')}else return}
+  e.preventDefault();set(at(e.clientX))});
+ el.addEventListener('pointerup',e=>{if(!drag||e.pointerId!==drag.id)return;if(!drag.on)set(at(e.clientX));finish()});
+ el.addEventListener('pointercancel',e=>{if(drag&&e.pointerId===drag.id)finish()});
+ el.addEventListener('lostpointercapture',e=>{if(drag&&e.pointerId===drag.id)finish()});
+ h.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();stopHint();set(pos+(e.key==='ArrowLeft'?-5:5));S.cmpPos[id]=pos}});
+ set(pos);
+ /* 첫 진입 시에만 좌우 안내 애니메이션 — 직접 만지면 즉시 종료 */
+ if(!S._cmpHinted){S._cmpHinted=true;const t0=performance.now()+450,D=1700;
+  const tick=t=>{const k=(t-t0)/D;if(k<0){raf=requestAnimationFrame(tick);return}if(k>=1){set(50);raf=0;return}
+   set(50+Math.sin(k*Math.PI*4)*9*(1-k));raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick)}}
 SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
  ${hdr('',{right:`<button class="ib" data-toast="저장했어요">${I.heart}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
  <div class="body">
-  <div style="position:relative">
-   ${art(sp,300,{cap:false,bk:false,img:HERO_SCENE.has(sp.id)?'hero':true,cls:'scene',st:'border-radius:0;'})}
-  </div>
+  ${cmpSlider(sp)}
   <div class="pad" style="margin-top:16px">
    <div style="font-size:15px;color:var(--b-ink)">${w.title}</div>
    <div style="font-size:22px;font-weight:700;color:var(--navy);margin:4px 0 0">${sp.name}</div><div style="font-size:17px;font-weight:500;color:var(--slate);margin-bottom:8px">${sp.jp}</div>
@@ -1123,7 +1178,7 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
    <div class="pad">${rvList(sp).slice(0,3).map(rvItem).join('')}
     <button class="btn out sm" style="width:100%;margin-top:12px" data-go="reviews">후기 더보기</button></div></div>
  </div>
- <div class="cta"><button class="btn out ar360" style="width:56px;flex:none" data-act="sheet-exp" data-ctx="site" aria-label="AR 경험 선택">${I.p360}</button><button class="btn pri" data-go="plan">방문 계획하기</button></div>`}};
+ <div class="cta"><button class="btn pri" data-go="plan">방문 계획하기</button></div>`,after(){initCmp(sp.id)}}};
 
 /* ================= 방문 계획: 출발지 × 이동 방법 경로 =================
    ※ 실제 경로/지도 API 미연동 — 아래 수치는 모두 '예시 데이터'이며 화면에도 그렇게 표시해요.
@@ -1273,10 +1328,7 @@ SCREENS.plan=()=>{const sp=spot();const os=planOrigins(sp);const from=planFrom(s
   </details>
 
   ${sp.abroad?`<div class="card" style="padding:14px;margin:10px 0 0"><b class="small">여행 플랫폼에서 예약하기</b><div class="row" style="margin-top:10px">${['항공','숙소','현지 패스'].map(t=>`<button class="btn out sm" data-toast="${t} 예약 → 제휴 여행 플랫폼 연결 (확장 기능)">${t}</button>`).join('')}</div></div>`:''}
-  <div class="card" style="padding:14px;margin:10px 0 24px;cursor:pointer" data-act="sheet-exp" data-ctx="move">
-   <div class="row between"><b class="small">이동 중 AR 경험</b><span class="small muted">변경 ›</span></div>
-   <div class="small muted" style="margin-top:4px">${MOVE_EXP.filter(e=>S.moveExp[e.id]).map(e=>e.name).join(' · ')||'선택 안 함'}</div>
-  </div>
+  <div style="height:24px"></div>
  </div></div>
  <div class="cta"><button class="btn sec2" style="flex:1" data-act="savetrip">여정 저장</button><button class="btn pri" style="flex:1.4" data-go="move">여정 시작</button></div>`}};
 const planOptSummary=()=>{const d=S.planDate?S.planDate.replace(/^(\d+)-(\d+)-(\d+)$/,(m,y,mo,da)=>`${+mo}월 ${+da}일`):'';const t=S.planArr?S.planArr+' 도착':'';return(d||t)?[d,t].filter(Boolean).join(' · '):'날짜·도착 시간 미설정 (설정하지 않아도 저장할 수 있어요)'};
