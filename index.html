@@ -153,6 +153,12 @@ button{touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .scene-layer .cross{position:absolute;left:0;right:0;top:52%;height:14px;background:repeating-linear-gradient(90deg,#fff 0 18px,#222 18px 36px);opacity:.6}
 .pano{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none}
 .pano-strip{position:absolute;top:0;bottom:0;left:0;display:flex;will-change:transform}
+.pano-strip div.pv{background:#1a1d26 center/cover no-repeat;align-items:end;padding-bottom:70px}
+.pano-strip div.pv.right{background-position:right center}.pano-strip div.pv.left{background-position:left center}
+.pano-strip div.pv.flip{transform:scaleX(-1);filter:brightness(.75)}.pano-strip div.pv.flip span{transform:scaleX(-1)}
+.pano-strip div.pv span{background:rgba(0,0,0,.45);padding:4px 12px;border-radius:999px}
+.phone.land .pano-strip div{width:844px}
+html.native .phone.land .pano-strip div{width:var(--vw,100vw)}
 .pano-strip div{width:390px;flex:none;position:relative;display:grid;place-items:center;color:rgba(255,255,255,.85);font-size:15px;text-align:center}
 .compass{position:absolute;top:calc(var(--sat) + 130px);left:50%;transform:translateX(-50%);font-size:15px;color:#fff;background:rgba(0,0,0,.4);padding:4px 10px;border-radius:10px;z-index:6}
 input[type=range]{width:100%;accent-color:#fff}
@@ -1162,7 +1168,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611186';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611187';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1244,9 +1250,13 @@ SCREENS.home=()=>({tab:'home',html:`
 const HOTKW=[{k:'주술회전',m:2},{k:'너의 이름은',m:0},{k:'체인소맨',m:'new'},{k:'슬램덩크',m:-2},{k:'봇치 더 록',m:3},{k:'최애의 아이',m:-1},{k:'하이큐',m:1},{k:'푸른 상자',m:'new'},{k:'케이온',m:-3},{k:'명탐정 코난',m:0}];
 const rkMv=x=>x.m==='new'?'<em class="mv new">NEW</em>':x.m>0?`<em class="mv up">▲${x.m}</em>`:x.m<0?`<em class="mv dn">▼${-x.m}</em>`:'<em class="mv eq">–</em>';
 const rkTime=()=>{const d=new Date();return`${d.getMonth()+1}월 ${d.getDate()}일 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};
-SCREENS.scan=()=>({after(){const r=document.getElementById('rkroll'),tk=r&&r.parentElement;if(!r)return;let i=0;clearInterval(S._rk);
+const rkCard=(mt=24)=>`<div class="card lg rank" style="margin-top:${mt}px"><div class="hd"><b>실시간 인기 검색어</b><span id="rkclock">${rkTime()} 기준</span></div>
+   <div class="rk-tick" data-act="qchip" data-q="${HOTKW[0].k}"><div class="rk-roll" id="rkroll">${HOTKW.map((x,i)=>`<div class="rk-row"><i>${i+1}</i><b>${x.k}</b>${rkMv(x)}</div>`).join('')}</div></div>
+   <ol id="rkol">${HOTKW.map((x,i)=>`<li class="${i<3?'hot':''}" style="--d:${i*60}ms" data-act="qchip" data-q="${x.k}"><i>${i+1}</i><span class="rk-k">${x.k}</span>${rkMv(x)}</li>`).join('')}</ol></div>`;
+function rkStart(){const r=document.getElementById('rkroll'),tk=r&&r.parentElement;if(!r)return;let i=0;clearInterval(S._rk);
   S._rk=setInterval(()=>{if(!document.body.contains(r)){clearInterval(S._rk);return}i=(i+1)%HOTKW.length;r.style.top=(-i*40)+'px';tk.dataset.q=HOTKW[i].k;
-   const li=document.querySelectorAll('#rkol li')[i];if(li){li.classList.remove('rkfl');void li.offsetWidth;li.classList.add('rkfl')}},2200)},
+   const li=document.querySelectorAll('#rkol li')[i];if(li){li.classList.remove('rkfl');void li.offsetWidth;li.classList.add('rkfl')}},2200)}
+SCREENS.scan=()=>({after(){rkStart()},
  html:`
  ${hdr('장면 검색')}
  <div class="body"><div class="pad">
@@ -1255,9 +1265,7 @@ SCREENS.scan=()=>({after(){const r=document.getElementById('rkroll'),tk=r&&r.par
   <div class="search tsearch"><input id="q" placeholder="오늘의 추천) 체인소맨" value="${S.scanQuery}" enterkeyhint="search">
    <button data-act="qsearch" aria-label="검색">${I.search}</button></div>
 
-  <div class="card lg rank" style="margin-top:24px"><div class="hd"><b>실시간 인기 검색어</b><span id="rkclock">${rkTime()} 기준</span></div>
-   <div class="rk-tick" data-act="qchip" data-q="${HOTKW[0].k}"><div class="rk-roll" id="rkroll">${HOTKW.map((x,i)=>`<div class="rk-row"><i>${i+1}</i><b>${x.k}</b>${rkMv(x)}</div>`).join('')}</div></div>
-   <ol id="rkol">${HOTKW.map((x,i)=>`<li class="${i<3?'hot':''}" style="--d:${i*60}ms" data-act="qchip" data-q="${x.k}"><i>${i+1}</i><span class="rk-k">${x.k}</span>${rkMv(x)}</li>`).join('')}</ol></div>
+  ${rkCard()}
 
   <p style="font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.02em;margin:28px 0 6px">어떤 장면이 기억나나요?</p>
   <p class="muted small" style="margin-bottom:14px">지명을 몰라도 괜찮아요. 사진 한 장이면 충분해요.</p>
@@ -1370,7 +1378,7 @@ function searchSpots(q){const n=norm(q);if(!n)return[];return SPOTS.filter(s=>RE
 const wshort=w=>WORKS[w].title.replace(/\s*\(.*\)\s*$/,'');
 function searchBody(q){const img=s=>HERO_SCENE.has(s.id)?'hero':true;
  if(!q.trim()){const ws=[...new Set(SPOTS.filter(s=>REG.includes(s.id)).map(s=>s.work))];
-  return`<div class="sub-h" style="margin-top:4px">등록된 애니메이션</div><div class="srch-chips">${ws.map(w=>`<button class="chip" data-act="srchset" data-v="${wshort(w)}">${wshort(w)}</button>`).join('')}</div>`}
+  return`${rkCard(0)}<div class="sub-h" style="margin-top:24px">등록된 애니메이션</div><div class="srch-chips">${ws.map(w=>`<button class="chip" data-act="srchset" data-v="${wshort(w)}">${wshort(w)}</button>`).join('')}</div>`}
  const r=searchSpots(q);
  if(r.length)return`<div class="small muted" style="margin:4px 0 10px">'${esc(q)}' 검색 결과 ${r.length}곳</div>${r.map(s=>spotRow(s,img(s))).join('')}`;
  const rec=SPOTS.filter(s=>REG.includes(s.id)).sort((a,b)=>b.visits-a.visits).slice(0,4);
@@ -1380,7 +1388,7 @@ SCREENS.search=()=>({html:`
  ${hdr('검색')}
  <div class="pad" style="margin-bottom:12px"><label class="search srch-in">${I.search}<input id="srchq" type="search" enterkeyhint="search" autocomplete="off" placeholder="애니메이션 이름을 입력하세요" value="${esc(S.srchQ||'')}"></label></div>
  <div class="body"><div class="pad" id="srchres" style="padding-bottom:24px">${searchBody(S.srchQ||'')}</div></div>`,
- after(){const i=document.getElementById('srchq');if(!i)return;const run=()=>{S.srchQ=i.value;document.getElementById('srchres').innerHTML=searchBody(i.value)};
+ after(){const i=document.getElementById('srchq');if(!i)return;const run=()=>{S.srchQ=i.value;document.getElementById('srchres').innerHTML=searchBody(i.value);if(!i.value.trim())rkStart();else clearInterval(S._rk)};if(!(S.srchQ||'').trim())rkStart();
   i.addEventListener('input',run);i.addEventListener('keydown',e=>{if(e.key==='Enter')i.blur()});if(!S.srchQ)setTimeout(()=>i.focus(),350)}});
 SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
  ${hdr('',{right:`<button class="ib bkh ${(S.saved||{})[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="명소 저장">${I.star}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
@@ -1740,7 +1748,7 @@ function subtitle(c,w,h,text,y){c.save();const fs=Math.round(w/22);c.font=`700 $
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 /* 원작 비교 장면 이미지 (가운데 기준 세로 클로즈업) */
 /* 2단계 오버레이 원작 장면: 가로 촬영 기준 — 너의이름은은 제외 */
-const SCENE_IMG=Object.fromEntries(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','gotoubun','onnazaka','nagatoro','keion'].map(id=>[id,'assets/hero/'+id+'.jpg']));const _sceneCache={};
+const SCENE_IMG=Object.fromEntries(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','gotoubun','onnazaka','nagatoro','keion','suga'].map(id=>[id,'assets/hero/'+id+'.jpg']));const _sceneCache={};
 function sceneImg(id){const u=SCENE_IMG[id];if(!u)return null;let im=_sceneCache[id];if(!im){im=new Image();im.src=u+'?v='+ASSET_V;_sceneCache[id]=im}return im.complete&&im.naturalWidth?im:null}
 function drawScene(c,w,h,t,alpha){const im=sceneImg(spot().id);if(im){c.save();c.globalAlpha=alpha;const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);c.restore();return}const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
  const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
@@ -1926,8 +1934,9 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 SCREENS.arrive=()=>{const sp=spot();const modes=SITE_EXP.filter(e=>S.siteExp[e.id]);if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
  const pano=S.siteMode==='pano';
  let view='';
- if(pano){const hues=[['#e76f51','#2a2438','정면 · 원작 장면'],['#6d597a','#1d1a2a','오른쪽 · 원작에 없던 선로 끝'],['#355070','#151a26','뒤쪽 · 바다 방향'],['#b56576','#2a1c24','왼쪽 · 역 플랫폼']];
-   view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div style="background:linear-gradient(${h[0]},${h[1]})">${h[2]}</div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
+ if(pano){/* 360°: 정면은 원작 장면, 옆·뒤는 실제 장소 사진으로 둘러보기 */const hs=`assets/hero/${sp.id}.jpg?v=${ASSET_V}`,rs=`assets/real/${sp.id}.jpg?v=${ASSET_V}`;
+   const hues=[[hs,'정면 · 원작 장면',''],[rs,'오른쪽 · 실제 모습','right'],[hs,'뒤쪽 · 원작 장면 뒤편','flip'],[rs,'왼쪽 · 실제 모습','left']];
+   view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div class="pv ${h[2]}" style="background-image:url('${h[0]}')"><span>${h[1]}</span></div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
  else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
  return{dark:true,ar:true,html:`${view}
  <div class="ov cam-top">
@@ -2256,7 +2265,7 @@ document.getElementById('app').addEventListener('click',e=>{
  switch(a){
   case 'back':back();break;
   case 'sample':S.upload=null;S.scanQuery='';go('scanning');break;
-  case 'qchip':document.getElementById('q').value=t.dataset.q;S.scanQuery=t.dataset.q;S.upload=null;go('scanning');break;
+  case 'qchip':{const si=document.getElementById('srchq');if(si){si.value=t.dataset.q;si.dispatchEvent(new Event('input'));break}}{const qi=document.getElementById('q');if(qi)qi.value=t.dataset.q}S.scanQuery=t.dataset.q;S.upload=null;go('scanning');break;
   case 'qsearch':{const v=document.getElementById('q').value.trim();if(!v){toast('기억나는 장면을 적어주세요');break}S.scanQuery=v;S.upload=null;go('scanning');break}
   case 'route':S.route=+t.dataset.i;render();break;
   case 'rvwrite':openReviewSheet();break;
