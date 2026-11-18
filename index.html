@@ -291,11 +291,12 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .phone.land .sheet{left:50%;right:auto;width:560px;margin-left:-280px;max-height:94%;overflow-y:auto}
 /* 깜짝 미션 팝업 가로 배치 */
 .phone.land .ms-x{top:14px;right:24px}
-.phone.land .ms-body{display:grid;grid-template-columns:auto 1fr;column-gap:36px;align-items:center;text-align:left;max-width:680px;justify-items:start}
+.phone.land .mission{align-items:center;justify-content:center}
+.phone.land .ms-body{display:grid;grid-template-columns:auto auto;column-gap:40px;align-items:center;align-content:center;justify-content:center;justify-items:center;text-align:center;width:auto;max-width:720px;margin:0 auto;padding:0}
 .phone.land .ms-body>.ms-stamp,.phone.land .ms-body>.ms-load,.phone.land .ms-body>.ms-done{grid-column:1;grid-row:1/span 6;margin:0}
 .phone.land .ms-body>*:not(.ms-stamp):not(.ms-load):not(.ms-done){grid-column:2}
 .phone.land .ms-tag{margin-bottom:6px}
-.phone.land .ms-hint{margin-top:12px}
+.phone.land .ms-hint{margin-top:12px;justify-content:center}
 .phone.land .ms-btn{margin-top:18px}
 .screen,.screen .body{background:var(--bg)}
 .screen.dark,.screen.dark .body{background:#0d0d10}
