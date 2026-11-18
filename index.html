@@ -1886,8 +1886,7 @@ function openMission(state){const sp=spot();closeMission(true);S._missionSeen=S.
   m.innerHTML=`<div class="ms-bg"></div>
   <button class="ms-x" data-ms="x" aria-label="닫기">${I.close}</button>
   <div class="ms-body">
-   ${st==='intro'?`<div class="ms-tag">${sp.name}</div>
-    <h2 class="ms-t">깜짝 미션 등장</h2><p class="ms-s">뱃지를 눌러서 획득해 보세요!</p>
+   ${st==='intro'?`<h2 class="ms-t">깜짝 미션 등장</h2><p class="ms-s">뱃지를 눌러서 획득해 보세요!</p>
     <button class="ms-stamp" data-ms="go" aria-label="뱃지 획득하기"><span class="ms-ring"></span><span class="ms-card">${stampSVG(sp.id,{size:168,locked:true})}</span><span class="ms-tap">TAP!</span></button>
     <p class="ms-hint">${I.pin}위치 인증 후 뱃지를 받을 수 있어요</p>`
    :st==='loading'?`<h2 class="ms-t">위치 인증 중…</h2><p class="ms-s">GPS로 ${sp.name} 도착을 확인하고 있어요</p>
