@@ -265,6 +265,10 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .phone:not(.land) .cam-rail{display:grid!important;grid-template-columns:1fr auto 1fr;align-items:center}
 .phone:not(.land) .cam-rail>:first-child{justify-self:start}
 .phone:not(.land) .cam-rail>:last-child{justify-self:end}
+.arth{position:relative;height:70px;border-radius:10px;overflow:hidden;background:#2a3140 center/cover no-repeat}
+.arth-ov{position:absolute;inset:0;background:center/cover no-repeat;opacity:.6}
+.arth-ch{position:absolute;left:14%;bottom:-6px;height:118%;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
+.arth span{position:absolute;right:6px;bottom:6px;font-size:12px;font-weight:700;color:#fff;background:rgba(0,0,0,.5);padding:2px 7px;border-radius:999px}
 .jjk-ctl{left:60px;bottom:16px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 html.native .phone.land .jjk-ctl{left:calc(env(safe-area-inset-left,0px) + 16px)}
 .jjk-modes{display:flex;flex-direction:column;gap:8px}
@@ -1183,7 +1187,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611189';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611190';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1405,6 +1409,12 @@ SCREENS.search=()=>({html:`
  <div class="body"><div class="pad" id="srchres" style="padding-bottom:24px">${searchBody(S.srchQ||'')}</div></div>`,
  after(){const i=document.getElementById('srchq');if(!i)return;const run=()=>{S.srchQ=i.value;document.getElementById('srchres').innerHTML=searchBody(i.value);if(!i.value.trim())rkStart();else clearInterval(S._rk)};if(!(S.srchQ||'').trim())rkStart();
   i.addEventListener('input',run);i.addEventListener('keydown',e=>{if(e.key==='Enter')i.blur()});if(!S.srchQ)setTimeout(()=>i.focus(),350)}});
+/* AR 경험 썸네일: 실제 적용된 화면 구성으로 (오버레이 = 실사 위 원작, 360° = 360 영상/실사, 투샷 = 실사 위 캐릭터) */
+function arThumb(sp,id){const v=ASSET_V,hero=HERO_SCENE.has(sp.id)?`assets/hero/${sp.id}.jpg?v=${v}`:`assets/posters/${sp.id}.jpg?v=${v}`,real=`assets/real/${sp.id}.jpg?v=${v}`;
+ const base=`url('${real}'),url('${hero}')`;
+ if(id==='overlay')return`<div class="arth" style="background-image:${base}"><div class="arth-ov" style="background-image:url('${hero}')"></div><span>오버레이</span></div>`;
+ if(id==='pano')return`<div class="arth" style="background-image:${sp.id==='shibuya'?`url('assets/360/shibuya.jpg?v=${v}')`:base}"><span>360°</span></div>`;
+ return`<div class="arth" style="background-image:${base}">${sp.id==='shibuya'?`<img class="arth-ch" src="assets/char/shibuya.png?v=${v}" alt="">`:''}<span>투샷</span></div>`}
 SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
  ${hdr('',{right:`<button class="ib bkh ${(S.saved||{})[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="명소 저장">${I.star}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
  <div class="body">
@@ -1425,7 +1435,7 @@ SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.
   </div>
   <div class="sec">
    <div class="sec-h"><h3>여기서 할 수 있는 AR 경험</h3></div>
-   <div class="hscroll">${SITE_EXP.map(e=>`<div class="card" style="width:150px;flex:none;padding:12px">${ph('',70)}<div style="font-weight:700;margin-top:8px;font-size:15px">${e.name}</div><div class="small muted" style="font-size:15px">${e.desc}</div></div>`).join('')}</div>
+   <div class="hscroll">${SITE_EXP.map(e=>`<div class="card" style="width:150px;flex:none;padding:12px">${arThumb(sp,e.id)}<div style="font-weight:700;margin-top:8px;font-size:15px">${e.name}</div><div class="small muted" style="font-size:15px">${e.desc}</div></div>`).join('')}</div>
   </div>
   <div class="pad sec"><div class="card" style="padding:14px;background:var(--bg);border:0"><b class="small">순례 팁</b><div class="small muted" style="margin-top:4px">${sp.tip}</div></div></div>
   ${near.length?`<div class="sec"><div class="sec-h"><h3>같은 작품의 다른 장면</h3></div><div class="hscroll">${near.map(s=>spotCard(s,160)).join('')}</div></div>`:''}
