@@ -282,6 +282,7 @@ html.native .phone.land .jjk-ctl{left:calc(env(safe-area-inset-left,0px) + 16px)
 .charlayer img{max-height:100%;max-width:90%;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
 .charlayer .char-ph{width:46%;height:78%;border:2px dashed rgba(255,255,255,.75);border-radius:999px 999px 18px 18px;display:grid;place-items:center;text-align:center;color:#fff;font-size:15px;font-weight:600;background:rgba(0,0,0,.18)}
 .charlayer.ok .char-ph{display:none}
+.phone:not(.land) .charlayer{left:0;right:40%;top:26%;bottom:0}
 .phone:not(.land) .jjk-ctl{left:16px;bottom:calc(max(var(--sab),20px) + 96px)}
 .cam-ctl{transition:transform .28s ease,opacity .28s ease}
 .phone.land .cam-ctl{left:50%!important;right:auto;width:400px;bottom:10px;transform:translateX(-50%);touch-action:none;display:flex;flex-direction:column;align-items:stretch}
@@ -1187,7 +1188,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611190';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611191';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1414,7 +1415,7 @@ function arThumb(sp,id){const v=ASSET_V,hero=HERO_SCENE.has(sp.id)?`assets/hero/
  const base=`url('${real}'),url('${hero}')`;
  if(id==='overlay')return`<div class="arth" style="background-image:${base}"><div class="arth-ov" style="background-image:url('${hero}')"></div><span>오버레이</span></div>`;
  if(id==='pano')return`<div class="arth" style="background-image:${sp.id==='shibuya'?`url('assets/360/shibuya.jpg?v=${v}')`:base}"><span>360°</span></div>`;
- return`<div class="arth" style="background-image:${base}">${sp.id==='shibuya'?`<img class="arth-ch" src="assets/char/shibuya.png?v=${v}" alt="">`:''}<span>투샷</span></div>`}
+ return`<div class="arth" style="background-image:${base}">${CHAR.has(sp.id)?`<img class="arth-ch" src="assets/char/${sp.id}.png?v=${v}" alt="">`:''}<span>투샷</span></div>`}
 SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
  ${hdr('',{right:`<button class="ib bkh ${(S.saved||{})[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="명소 저장">${I.star}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
  <div class="body">
@@ -1803,7 +1804,7 @@ function drawOverlay(c,w,h,t){
  if(S.screen==='move'){sparkles(c,w,h,t,S.moveExp.charfilter?26:12)}
  else if(S.screen==='arrive'){if(!S.locked)return;const k=Math.min(1,(t-S.lockAt)/700);
   if(S.siteMode==='overlay'){c.save();const sc=1.08-.08*k;c.translate(w/2,h/2);c.scale(sc,sc);c.translate(-w/2,-h/2);drawScene(c,w,h,t,(S.blend/100)*k);c.restore();sparkles(c,w,h,t,14)}
-  else if(S.siteMode==='duo'){c.globalAlpha=k;drawChar(c,w,h,t);c.globalAlpha=1;sparkles(c,w,h,t,10)}
+  else if(S.siteMode==='duo'&&!CHAR.has(spot().id)){c.globalAlpha=k;drawChar(c,w,h,t);c.globalAlpha=1;sparkles(c,w,h,t,10)}
   }}
 function arLoop(){const cv=document.getElementById('arcv');if(!cv)return;fxFrame();const dpr=Math.min(2,window.devicePixelRatio||1);const W=cv.clientWidth*dpr,H=cv.clientHeight*dpr;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
  const c=cv.getContext('2d');c.clearRect(0,0,W,H);drawOverlay(c,W,H,performance.now());S._raf=requestAnimationFrame(arLoop)}
@@ -1956,8 +1957,10 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
   const id=sp.id;if(!hasStamp(id)&&!(S._missionSeen&&S._missionSeen[id])){clearTimeout(S._ms);S._ms=setTimeout(()=>{if(S.screen==='move'&&spot().id===id&&!document.getElementById('sheet').classList.contains('on'))openMission('intro')},1600)}}}};
 
 /* 주술회전(시부야) 전용 2단계: 캐릭터 · 360° · 오버레이 세로 버튼 (같은 버튼 다시 누르면 꺼짐) */
+/* 캐릭터 투샷 이미지가 있는 명소 */
+const CHAR=new Set(['nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-SCREENS.arrive=()=>{const sp=spot();const JJK=sp.id==='shibuya';const modes=SITE_EXP.filter(e=>S.siteExp[e.id]);
+SCREENS.arrive=()=>{const sp=spot();const JJK=sp.id==='shibuya';const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
  const pano=JJK?S.jjkMode==='pano':S.siteMode==='pano';
@@ -1966,7 +1969,7 @@ SCREENS.arrive=()=>{const sp=spot();const JJK=sp.id==='shibuya';const modes=SITE
  else if(pano){/* 360°: 정면은 원작 장면, 옆·뒤는 실제 장소 사진으로 둘러보기 */const hs=`assets/hero/${sp.id}.jpg?v=${ASSET_V}`,rs=`assets/real/${sp.id}.jpg?v=${ASSET_V}`;
    const hues=[[hs,'정면 · 원작 장면',''],[rs,'오른쪽 · 실제 모습','right'],[hs,'뒤쪽 · 원작 장면 뒤편','flip'],[rs,'왼쪽 · 실제 모습','left']];
    view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div class="pv ${h[2]}" style="background-image:url('${h[0]}')"><span>${h[1]}</span></div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
- else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+(JJK&&S.jjkMode==='char'?`<div class="charlayer"><img src="assets/char/${sp.id}.png?v=${ASSET_V}" alt="${work(sp).chars[0]}" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"><div class="char-ph">캐릭터 이미지<br>준비 중</div></div>`:'')+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
+ else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+((JJK&&S.jjkMode==='char')||(!JJK&&S.siteMode==='duo'&&CHAR.has(sp.id))?`<div class="charlayer"><img src="assets/char/${sp.id}.png?v=${ASSET_V}" alt="${work(sp).chars[0]}" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"><div class="char-ph">캐릭터 이미지<br>준비 중</div></div>`:'')+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
  return{dark:true,ar:true,html:`${view}
  <div class="ov cam-top">
   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
