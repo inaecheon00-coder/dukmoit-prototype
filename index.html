@@ -283,7 +283,8 @@ html.native .phone.land .jjk-ctl{left:calc(env(safe-area-inset-left,0px) + 16px)
 .charlayer .char-ph{width:46%;height:78%;border:2px dashed rgba(255,255,255,.75);border-radius:999px 999px 18px 18px;display:grid;place-items:center;text-align:center;color:#fff;font-size:15px;font-weight:600;background:rgba(0,0,0,.18)}
 .charlayer.ok .char-ph{display:none}
 .phone:not(.land) .charlayer{left:0;right:40%;top:26%;bottom:0}
-.phone:not(.land) .jjk-ctl{left:16px;bottom:calc(max(var(--sab),20px) + 96px)}
+.phone:not(.land) .jjk-ctl{left:auto;right:16px;align-items:flex-end;bottom:calc(max(var(--sab),20px) + 96px)}
+.phone:not(.land) .jjk-modes button{min-width:92px}
 .cam-ctl{transition:transform .28s ease,opacity .28s ease}
 .phone.land .cam-ctl{left:50%!important;right:auto;width:400px;bottom:10px;transform:translateX(-50%);touch-action:none;display:flex;flex-direction:column;align-items:stretch}
 .phone.land .cam-ctl.hid{transform:translate(-50%,calc(100% - 22px))}
@@ -311,12 +312,12 @@ html.native .phone.land .jjk-ctl{left:calc(env(safe-area-inset-left,0px) + 16px)
 /* 깜짝 미션 팝업 가로 배치 */
 .phone.land .ms-x{top:14px;right:24px}
 .phone.land .mission{align-items:center;justify-content:center}
-.phone.land .ms-body{display:grid;grid-template-columns:auto auto;column-gap:40px;align-items:center;align-content:center;justify-content:center;justify-items:center;text-align:center;width:auto;max-width:720px;margin:0 auto;padding:0}
-.phone.land .ms-body>.ms-stamp,.phone.land .ms-body>.ms-load,.phone.land .ms-body>.ms-done{grid-column:1;grid-row:1/span 6;margin:0}
-.phone.land .ms-body>*:not(.ms-stamp):not(.ms-load):not(.ms-done){grid-column:2}
+
+
+
 .phone.land .ms-tag{margin-bottom:6px}
 .phone.land .ms-hint{margin-top:12px;justify-content:center}
-.phone.land .ms-btn{margin-top:18px}
+
 .screen,.screen .body{background:var(--bg)}
 .screen.dark,.screen.dark .body{background:#0d0d10}
 
@@ -537,7 +538,7 @@ input,textarea{font-size:17px}
 /* ===== v4: 타이틀 정돈 · 별 아이콘 · 플로팅 탭바 ===== */
 .hdr .t.left{font-family:var(--f-body);font-weight:700;font-size:22px;color:var(--navy);letter-spacing:-.02em;margin-left:8px}
 .hdr .t{font-weight:600;font-size:17px}
-.burst-h h3,.sec-h h3{font-family:var(--f-body);font-weight:700;font-size:19px;color:var(--b);letter-spacing:-.01em}
+.burst-h h3,.sec-h h3,.sub-h,.near-h b,.rank .hd b{font-family:var(--f-press);font-weight:400;font-size:19px;color:var(--b);letter-spacing:-.01em}
 .rank .hd b{font-size:19px}
 /* 썸네일 별: 원 없이 별만, 크기 키움 */
 .cart .bk{width:40px;height:40px;right:6px;top:6px;background:none;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,30,70,.45))}
@@ -683,6 +684,32 @@ input,textarea{font-size:17px}
 .ms-conf{position:absolute;left:50%;top:50%;width:0;height:0}
 .ms-conf i{position:absolute;width:9px;height:14px;border-radius:3px;background:var(--c);transform:rotate(var(--a)) translateY(0);opacity:0;animation:msBurst .9s ease-out var(--t) forwards}
 @keyframes msBurst{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(.6)}100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1*var(--d) - 60px)) scale(1)}}
+.pick3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 10px;padding-bottom:28px}
+.pk{display:flex;flex-direction:column;gap:3px;text-align:left;min-width:0}
+.pk-i{display:block;aspect-ratio:1;border-radius:12px;background:#e9eef5 center/cover no-repeat;margin-bottom:4px}
+.pk b{font-size:14px;font-weight:700;line-height:1.3;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pk span{font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feed-img{width:100%;height:300px;object-fit:cover;border-radius:14px;display:block;background:#e9eef5}
+.fab-plus{width:40px;height:40px;border-radius:50%;background:var(--b);color:#fff;font-size:26px;font-weight:400;line-height:1;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,120,233,.3)}
+.echips{transition:none;will-change:margin-top}
+.near .cart .poster{transform-origin:50% 45%}
+.near.anim-all .cart .poster{animation:nearWalk 3s ease-out forwards}
+@keyframes nearWalk{from{transform:scale(1)}to{transform:scale(1.2) translateY(-3%)}}
+.near.anim-tokyo .cart .poster{animation:nearClimb 3s ease-in-out forwards}
+@keyframes nearClimb{from{transform:scale(1.18) translateY(7%)}to{transform:scale(1.18) translateY(-7%)}}
+.near.anim-osaka .cart .poster{animation:nearShout 3s ease-out forwards}
+@keyframes nearShout{0%{transform:scale(1.25)}60%{transform:scale(1.05)}70%{transform:scale(1.07) rotate(-.6deg)}80%{transform:scale(1.05) rotate(.6deg)}90%{transform:scale(1.07)}100%{transform:scale(1.05)}}
+.jjk-modes button.wait{opacity:.55}
+.aseg{background:transparent!important;padding:0;gap:6px}
+.aseg button{border-radius:14px;height:44px}
+.aseg button.on{color:#fff!important;font-weight:800;box-shadow:none!important;background:url(assets/bubble/body.png?v=2611152) center/100% 100% no-repeat!important;text-shadow:0 1px 2px rgba(0,40,110,.25)}
+.ms-link{display:inline-flex;align-items:center;gap:8px;color:#fff;font-size:17px;font-weight:700;padding:8px 6px;background:none}
+.ms-link i{width:0;height:0;border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.ms-body{justify-content:center}
+.phone.land .ms-body{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:none}
+.phone.land .ms-t{font-size:24px}.phone.land .ms-s{margin-top:4px;font-size:15px}
+.phone.land .ms-stamp,.phone.land .ms-load,.phone.land .ms-done{width:190px;height:190px;margin:12px 0 6px}
+.phone.land .ms-card{width:170px;height:170px}.phone.land .ms-card .badge-img{width:160px!important;height:160px!important}
 .ms-btn{width:100%;max-width:300px;height:56px;border-radius:16px;background:#fff;color:#0078e9;font-size:17px;font-weight:700;box-shadow:0 6px 0 rgba(0,40,110,.25)}
 .ms-btn:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,40,110,.25)}
 /* 카메라 화면: 애니 화풍 라인 오른쪽 끝 뱃지 버튼 */
@@ -774,7 +801,7 @@ input,textarea{font-size:17px}
 
 /* ===== 명대사 말풍선 (Figma 그래픽 그대로) ===== */
 .qbub{position:relative;z-index:4;aspect-ratio:520/232;background:url(assets/bubble/body.png?v=2611152) center/100% 100% no-repeat;display:grid;place-items:center;text-align:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.qbub .qx{position:relative;color:#fff;font-size:16px;font-weight:500;line-height:1.3;letter-spacing:-.01em;white-space:nowrap;text-shadow:0 1px 2px rgba(0,40,110,.18)}
+.qbub .qx{position:relative;color:#fff;font-size:16px;font-weight:800;line-height:1.3;letter-spacing:-.01em;white-space:nowrap;text-shadow:0 1px 2px rgba(0,40,110,.18)}
 .qbub .qt{position:absolute;width:21.7%;aspect-ratio:113/68;background:url(assets/bubble/tail.png?v=2611152) center/100% 100% no-repeat;pointer-events:none}
 .qbub .qt.r{left:calc(100% - 2px)}
 .qbub .qt.l{right:calc(100% - 2px);transform:scaleX(-1)}
@@ -1188,7 +1215,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611191';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611192';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1196,7 +1223,7 @@ const hdr=(title,{back=true,right='',left=false}={})=>`<div class="hdr">${(back=
 const catName=c=>(CATS.find(x=>x[0]===c)||CATS[0])[1];
 const TAIL='<svg class="tail" viewBox="0 0 44 30" aria-hidden="true"><path d="M0 3.5L27 .5 16.5 12.5 44 27 0 21.5z"/></svg>';
 const cb=(inner,{tail='r',cls='',attrs=''}={})=>`<div class="cb tail-${tail} ${cls}" ${attrs}><span class="fx"></span>${TAIL}<div class="in">${inner}</div></div>`;
-const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="search" role="button" aria-label="애니메이션 검색"><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div><button class="me" data-tab="archive" aria-label="내 기록">${I.face}</button></div>
+const topbar=()=>`<div class="topbar"><div class="row" style="gap:10px"><div class="qpill" data-go="search" role="button" aria-label="애니메이션 검색"><span class="ph-t">떠나고 싶은 애니 속으로</span>${I.search}</div></div>
 </div>`;
 const art=(sp,h,{cap=true,bk=true,cls='',st='',img=false,go=false,src=''}={})=>{const p=sp.pal;return`<div class="cart ${cls} ${img?'has-img':''}" ${cap||go?`data-go="spot" data-id="${sp.id}"`:''} style="${st}height:${typeof h==='number'?h+'px':h};--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]}">${img?poster(sp,img==='thumb'?'thumbs':img==='area'?'area':img==='hero'?'hero':'posters',img==='area'?src:''):''}
  <div class="gr"></div><div class="kj">${sp.jp.slice(0,cls.includes('sm')?Math.max(2,Math.floor((h-14)/14)):Math.max(2,Math.min(8,Math.floor(((typeof h==='number'?h:220)-(cap?112:30))/24))))}</div>${cap?`<div class="sh"></div><div class="cap"><div class="w">${work(sp).title}</div><div class="n">${sp.name}</div></div>`:''}${bk?`<button class="bk ${S.saved&&S.saved[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="저장">${I.star}</button>`:''}</div>`};
@@ -1217,7 +1244,7 @@ const tabbar=on=>`<nav class="tabbar">
  <button data-tab="explore" class="${on==='explore'?'on':''}" aria-label="성지 탐색"><span class="ti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.8L9 4.5l6 2.5 5.5-2.3v12.5L15 19.5l-6-2.5-5.5 2.3Z"/><path d="M9 4.5V17M15 7v12.5"/></svg></span></button>
  <button data-tab="scan" class="scan" aria-label="장면 검색"><span class="c">${I.scan}</span></button>
  <button data-tab="community" class="${on==='community'?'on':''}" aria-label="커뮤니티"><span class="ti">${I.people}</span></button>
- <button data-tab="archive" class="${on==='archive'?'on':''}" aria-label="기록"><span class="ti">${I.book}</span></button>
+ <button data-tab="archive" class="${on==='archive'?'on':''}" aria-label="마이페이지"><span class="ti">${I.face}</span></button>
 </nav>`;
 const spotCard=(sp,w=220)=>`<div style="width:${w}px;flex:none;cursor:pointer" data-go="spot" data-id="${sp.id}">
  ${art(sp,Math.round(w*0.7),{cap:false,bk:false})}
@@ -1229,13 +1256,14 @@ const SCREENS={};
 
 /* 홈 '떠나고싶은 애니속으로': 스크롤하는 동안 포스터가 카드 안에서 함께 움직이고, 손을 떼면 원위치 */
 function homeParallax(){const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body)return;
- const imgs=()=>sc.querySelectorAll('.mason .cart .poster');let base=null,touching=false,wheeling=false,wt=0;
- const move=()=>{if(base==null)base=body.scrollTop;const d=body.scrollTop-base,off=Math.max(-26,Math.min(26,-d*.16));imgs().forEach(i=>{i.style.transition='none';i.style.transform=`translate3d(0,${off.toFixed(1)}px,0) scale(1.14)`})};
- const home=()=>{base=null;imgs().forEach(i=>{i.style.transition='';i.style.transform=''})};
+ /* 스크롤하는 동안 포스터가 따라 움직이고, 손을 떼고 스크롤이 멈추면 크게 튕기듯 원위치 */
+ const imgs=()=>sc.querySelectorAll('.mason .cart .poster');let base=null,touching=false,st=0;
+ const move=()=>{if(base==null)base=body.scrollTop;const d=body.scrollTop-base,off=Math.max(-40,Math.min(40,-d*.22));imgs().forEach(i=>{i.style.transition='none';i.style.transform=`translate3d(0,${off.toFixed(1)}px,0) scale(1.18)`})};
+ const home=()=>{base=null;imgs().forEach(i=>{i.style.transition='transform .9s cubic-bezier(.25,1.9,.45,1)';i.style.transform=''})};
+ const settle=()=>{clearTimeout(st);st=setTimeout(()=>{if(!touching)home()},140)};
  body.addEventListener('touchstart',()=>{touching=true;base=body.scrollTop},{passive:true});
- const end=()=>{touching=false;home()};body.addEventListener('touchend',end,{passive:true});body.addEventListener('touchcancel',end,{passive:true});
- body.addEventListener('wheel',()=>{if(!wheeling){wheeling=true;base=body.scrollTop}clearTimeout(wt);wt=setTimeout(()=>{wheeling=false;home()},160)},{passive:true});
- body.addEventListener('scroll',()=>{if(touching||wheeling)move()},{passive:true})}
+ const end=()=>{touching=false;settle()};body.addEventListener('touchend',end,{passive:true});body.addEventListener('touchcancel',end,{passive:true});
+ body.addEventListener('scroll',()=>{move();settle()},{passive:true})}
 SCREENS.home=()=>({tab:'home',html:`
  ${topbar()}
  <div class="body">
@@ -1398,7 +1426,8 @@ function searchSpots(q){const n=norm(q);if(!n)return[];return SPOTS.filter(s=>RE
 const wshort=w=>WORKS[w].title.replace(/\s*\(.*\)\s*$/,'');
 function searchBody(q){const img=s=>HERO_SCENE.has(s.id)?'hero':true;
  if(!q.trim()){const ws=[...new Set(SPOTS.filter(s=>REG.includes(s.id)).map(s=>s.work))];
-  return`${rkCard(0)}<div class="sub-h" style="margin-top:24px">등록된 애니메이션</div><div class="srch-chips">${ws.map(w=>`<button class="chip" data-act="srchset" data-v="${wshort(w)}">${wshort(w)}</button>`).join('')}</div>`}
+  const pick=SPOTS.filter(s=>REG.includes(s.id)&&HERO_SCENE.has(s.id)).sort((a,b)=>((a.visits*7+new Date().getDate())%13)-((b.visits*7+new Date().getDate())%13)).slice(0,6);
+  return`${rkCard(0)}<div class="sub-h" style="margin-top:24px">오늘의 추천 명소</div><div class="pick3">${pick.map(s=>`<button class="pk" data-go="spot" data-id="${s.id}"><span class="pk-i" style="background-image:url('assets/hero/${s.id}.jpg?v=${ASSET_V}')"></span><b>${s.name}</b><span>${wshort(s.work)}</span></button>`).join('')}</div>`}
  const r=searchSpots(q);
  if(r.length)return`<div class="small muted" style="margin:4px 0 10px">'${esc(q)}' 검색 결과 ${r.length}곳</div>${r.map(s=>spotRow(s,img(s))).join('')}`;
  const rec=SPOTS.filter(s=>REG.includes(s.id)).sort((a,b)=>b.visits-a.visits).slice(0,4);
@@ -1912,13 +1941,12 @@ function openMission(state){const sp=spot();closeMission(true);S._missionSeen=S.
   <button class="ms-x" data-ms="x" aria-label="닫기">${I.close}</button>
   <div class="ms-body">
    ${st==='intro'?`<h2 class="ms-t">깜짝 미션 등장</h2><p class="ms-s">뱃지를 눌러서 획득해 보세요!</p>
-    <button class="ms-stamp" data-ms="go" aria-label="뱃지 획득하기"><span class="ms-ring"></span><span class="ms-card">${stampSVG(sp.id,{size:168,locked:true})}</span><span class="ms-tap">TAP!</span></button>
-    <p class="ms-hint">${I.pin}위치 인증 후 뱃지를 받을 수 있어요</p>`
+    <button class="ms-stamp" data-ms="go" aria-label="뱃지 획득하기"><span class="ms-ring"></span><span class="ms-card">${stampSVG(sp.id,{size:168,locked:true})}</span><span class="ms-tap">TAP!</span></button>`
    :st==='loading'?`<h2 class="ms-t">위치 인증 중…</h2><p class="ms-s">GPS로 ${sp.name} 도착을 확인하고 있어요</p>
     <div class="ms-load"><span class="ms-spin"></span><span class="ms-card dim">${stampSVG(sp.id,{size:150,locked:true})}</span></div>`
    :`<h2 class="ms-t">뱃지 획득 완료</h2><p class="ms-s">더 친밀해진 우리의 관계에 가까이!</p>
     <div class="ms-done">${conf()}<span class="ms-card slam">${stampSVG(sp.id,{size:180,date:S.stamps[sp.id]||today()})}</span></div>
-    <button class="ms-btn" data-ms="see">뱃지 보러가기</button>`}
+    <button class="ms-link" data-ms="see">뱃지 보러가기<i></i></button>`}
   </div>`};
  draw(state||(hasStamp(sp.id)?'done':'intro'));
  requestAnimationFrame(()=>m.classList.add('on'));
@@ -1960,16 +1988,17 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-SCREENS.arrive=()=>{const sp=spot();const JJK=sp.id==='shibuya';const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
+const HAS360=new Set(['shibuya']);
+SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
  const pano=JJK?S.jjkMode==='pano':S.siteMode==='pano';
  let view='';
- if(pano&&JJK){view=`<div class="pano v360" id="pano"><video id="v360" src="assets/360/shibuya.mp4?v=${ASSET_V}" muted loop playsinline autoplay preload="auto"></video></div><div class="compass" id="compass">드래그해서 둘러보기</div>`}
+ if(pano&&JJK){view=`<div class="pano v360" id="pano"><video id="v360" src="assets/360/${sp.id}.mp4?v=${ASSET_V}" muted loop playsinline autoplay preload="auto"></video></div><div class="compass" id="compass">드래그해서 둘러보기</div>`}
  else if(pano){/* 360°: 정면은 원작 장면, 옆·뒤는 실제 장소 사진으로 둘러보기 */const hs=`assets/hero/${sp.id}.jpg?v=${ASSET_V}`,rs=`assets/real/${sp.id}.jpg?v=${ASSET_V}`;
    const hues=[[hs,'정면 · 원작 장면',''],[rs,'오른쪽 · 실제 모습','right'],[hs,'뒤쪽 · 원작 장면 뒤편','flip'],[rs,'왼쪽 · 실제 모습','left']];
    view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div class="pv ${h[2]}" style="background-image:url('${h[0]}')"><span>${h[1]}</span></div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
- else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+((JJK&&S.jjkMode==='char')||(!JJK&&S.siteMode==='duo'&&CHAR.has(sp.id))?`<div class="charlayer"><img src="assets/char/${sp.id}.png?v=${ASSET_V}" alt="${work(sp).chars[0]}" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"><div class="char-ph">캐릭터 이미지<br>준비 중</div></div>`:'')+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
+ else view=camLayer(`<div class="camlb">카메라 시뮬레이션</div>`)+((JJK&&S.jjkMode==='char'&&CHAR.has(sp.id))||(!JJK&&S.siteMode==='duo'&&CHAR.has(sp.id))?`<div class="charlayer"><img src="assets/char/${sp.id}.png?v=${ASSET_V}" alt="${work(sp).chars[0]}" onload="this.parentNode.classList.add('ok')" onerror="this.remove()"><div class="char-ph">캐릭터 이미지<br>준비 중</div></div>`:'')+(S.locked?'':`<div class="reticle" id="reticle"><i></i><i></i><i></i><i></i><div class="rt">장면 포인트를 화면 가운데에 비춰주세요<br><b>장면 인식 중…</b></div></div>`);
  return{dark:true,ar:true,html:`${view}
  <div class="ov cam-top">
   <button class="ib" data-act="back" style="background:rgba(0,0,0,.35)" aria-label="닫기">${I.close}</button>
@@ -1979,7 +2008,7 @@ SCREENS.arrive=()=>{const sp=spot();const JJK=sp.id==='shibuya';const modes=SITE
  <div class="ov cam-left">${pano?'':fxBar()}</div>
  ${pano?'':fallbackCard()}
  ${JJK?`<div class="ov jjk-ctl" id="jjkctl" style="z-index:8">
-  <div class="jjk-modes">${JJK_MODES.map(([k,n])=>`<button class="${S.jjkMode===k?'on':''}" data-act="jjkmode" data-v="${k}">${n}</button>`).join('')}</div>
+  <div class="jjk-modes">${JJK_MODES.filter(([k])=>k!=='char'||CHAR.has(sp.id)).map(([k,n])=>`<button class="${S.jjkMode===k?'on':''} ${k==='pano'&&!HAS360.has(sp.id)?'wait':''}" data-act="jjkmode" data-v="${k}">${n}</button>`).join('')}</div>
   ${S.jjkMode==='overlay'&&S.jjkSlider?`<div class="pill jjk-slider"><div class="row between small" style="opacity:.85"><span>카메라</span><span>투명도 <b id="blendv">${S.blend}</b>%</span><span>원작</span></div><input type="range" min="0" max="100" value="${S.blend}" id="blend"></div>`:''}
  </div>`:`
  <div class="ov cam-bl cam-ctl ${S.ctlHidden?'hid':''}" id="camctl" style="z-index:8">
@@ -2034,27 +2063,30 @@ const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,1
  seihantai:[34.6857,135.8399],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[35.0306,135.7703]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
-const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'스이도바시역',g:[35.7020,139.7536]},osaka:{name:'시조역',g:[35.0037,135.7595]}};
+const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'스이도바시역',g:[35.7020,139.7536]},osaka:{name:'교토역 하치조 출구',g:[34.9846,135.7590]}};
 const km=(a,b)=>{const R=6371,t=x=>x*Math.PI/180,d1=t(b[0]-a[0]),d2=t(b[1]-a[1]),h=Math.sin(d1/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
 const fmtKm=d=>d<1?Math.round(d*1000)+'m':d<10?d.toFixed(1)+'km':Math.round(d)+'km';
 const ECATS=[['all','전체'],['tokyo','도쿄'],['osaka','오사카']];
+/* 위로 스크롤하면 카테고리 칩이 스크롤 위치에 맞춰 자연스럽게 사라짐 */
+function exploreChips(){const sc=curScreen(),b=sc&&sc.querySelector('.body'),ch=sc&&sc.querySelector('.echips');if(!b||!ch)return;const H=ch.offsetHeight+12;
+ const h0=ch.offsetHeight;ch.style.overflowY='hidden';const f=()=>{const y=Math.min(H,Math.max(0,b.scrollTop));ch.style.height=Math.max(0,h0-y)+'px';ch.style.marginBottom=Math.max(0,12-Math.max(0,y-h0))+'px';ch.style.opacity=(1-y/H).toFixed(2)};b.addEventListener('scroll',f,{passive:true});f()}
 SCREENS.explore=()=>{if(!ECATS.some(([k])=>k===S.exploreCat))S.exploreCat='all';const c=S.exploreCat,h=HERE[c];
  const list=regList(c).map(s=>({s,d:km(h.g,GEO[s.id])})).sort((a,b)=>a.d-b.d);const near=list[0],rest=list.slice(1);
  const img=s=>HERO_SCENE.has(s.id)?'hero':true;
  return{tab:'explore',html:`
  ${hdr('성지 탐색',{back:'auto',left:true})}
  <div class="pad" style="margin-bottom:10px"><div class="search" data-go="search">${I.search}<span>애니메이션 이름으로 검색</span></div></div>
- <div class="chips" style="margin-bottom:12px">${ECATS.map(([k,n])=>`<button class="chip ${c===k?'on':''}" data-act="ecat" data-v="${k}">${n}</button>`).join('')}</div>
+ <div class="chips echips" style="margin-bottom:12px">${ECATS.map(([k,n])=>`<button class="chip ${c===k?'on':''}" data-act="ecat" data-v="${k}">${n}</button>`).join('')}</div>
  <div class="body">
   ${near?`<div class="pad"><div class="near-h">${I.pin}<b>현재 위치와 가까운 곳</b><span class="muted">${h.name} 기준 (예시)</span></div>
-   <div class="near card" data-go="spot" data-id="${near.s.id}">
+   <div class="near card anim-${c}" data-go="spot" data-id="${near.s.id}">
     ${art(near.s,210,{cap:false,bk:false,img:img(near.s),st:'border-radius:16px 16px 0 0;'})}
     <span class="near-d">${I.pin}${fmtKm(near.d)}</span>
     <div style="padding:12px 14px 14px"><div class="small" style="color:var(--b);font-weight:600">${work(near.s).title}</div><div style="font-size:19px;font-weight:700;margin-top:2px">${near.s.name}</div><div class="small muted">${near.s.jp} · ${near.s.st}</div></div>
    </div></div>`:''}
   <div class="sec-h" style="margin-top:22px"><h3>${c==='all'?'전체':catName(c)} ${list.length}곳</h3><a>가까운 순</a></div>
   <div style="padding:0 16px 20px">${rest.map(({s,d})=>spotRow(s,img(s)).replace('<div class="s">',`<div class="s"><b class="dist">${fmtKm(d)}</b> · `)).join('')}</div>
- </div>`}};
+ </div>`,after(){exploreChips()}}};
 
 const EVENTS=[
  {n:'MAPPA EXPO 15th Anniversary',d:'2026.09.16 – 12.07',u:'https://expo.mappa.co.jp/en',img:'mappa'},
@@ -2065,12 +2097,12 @@ const EVENTS=[
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;border-bottom:8px solid var(--bg)">
    <div class="row"><div class="av ${p.mine?'me':''}"></div><div style="flex:1"><b class="small">@${p.u}</b><div class="small muted">${sp.name} · ${p.t}</div></div><button class="ib">${I.more}</button></div>
-   <div style="margin:10px 0">${art(sp,300,{cap:false,bk:false,img:HERO_SCENE.has(sp.id)?'hero':true})}</div>
+   <div style="margin:10px 0"><img class="feed-img" src="assets/real/${sp.id}.jpg?v=${ASSET_V}" alt="${sp.name}에서 찍은 사진" loading="lazy" onerror="this.src='assets/hero/${sp.id}.jpg?v=${ASSET_V}'"></div>
    <div class="small" style="white-space:pre-wrap">${esc(p.txt)}</div>
    <div class="row" style="margin-top:10px;gap:16px"><button class="row small" style="gap:4px;${S.liked[p.id]?'color:var(--accent)':''}" data-act="like" data-i="${p.id}">${I.heart.replace('<svg','<svg width="18" height="18"')} ${fmt(p.like+(S.liked[p.id]?1:0))}</button><span class="small muted">댓글 ${p.c}</span><span style="flex:1"></span><button class="tag ac" data-go="spot" data-id="${p.spot}">이 장소 가기 ›</button></div>
   </div>`};
 SCREENS.community=()=>({tab:'community',html:`
- ${hdr('커뮤니티',{back:'auto',left:true,right:S.commTab==='feed'?`<button class="btn pri sm" style="width:auto;padding:0 14px" data-go="post">${I.plus||'+'} 등록하기</button>`:''})}
+ ${hdr('커뮤니티',{back:'auto',left:true,right:S.commTab==='feed'?`<button class="fab-plus" data-go="post" aria-label="등록하기">+</button>`:''})}
  <div class="pad" style="margin-bottom:10px"><div class="seg"><button class="${S.commTab==='feed'?'on':''}" data-act="ctab" data-v="feed">AR 기록 피드</button><button class="${S.commTab==='goods'?'on':''}" data-act="ctab" data-v="goods">행사 안내</button></div></div>
  <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer"><img class="evimg" src="assets/events/${e.img}.jpg?v=${ASSET_V}" alt="${e.n}" loading="lazy"><b>${e.n}</b><span>${e.d}</span></a>`).join('')}</div><div style="height:24px"></div></div>`}
  </div>`});
@@ -2113,8 +2145,7 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
  return{tab:'archive',html:`
  ${hdr('나의 덕질 기록',{back:'auto',left:true})}
  <div class="body">
-  <div class="pad"><div class="card cntbox"><button data-act="atab" data-v="stamp"><b>${got.size}</b><span>뱃지</span></button><i class="cnt-div" aria-hidden="true"></i><button data-act="atab" data-v="review"><b>${reviews.length}</b><span>작성 후기</span></button></div></div>
-  <div class="pad" style="margin-top:14px"><div class="seg" role="tablist">${tabs.map(([k,l])=>`<button class="${T===k?'on':''}" data-act="atab" data-v="${k}" role="tab" aria-selected="${T===k}">${l}</button>`).join('')}</div></div>
+  <div class="pad" style="margin-top:8px"><div class="seg aseg" role="tablist">${tabs.map(([k,l])=>`<button class="${T===k?'on':''}" data-act="atab" data-v="${k}" role="tab" aria-selected="${T===k}">${l}</button>`).join('')}</div></div>
   <div class="pad" style="margin-top:18px;padding-bottom:24px">${body}</div>
  </div>`}};
 
@@ -2324,7 +2355,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'stampmission':openMission();break;
   case 'nextstep':{S.locked=false;replace('arrive');toast('장면 포인트에 도착했어요!');break}
   case 'sitemode':S.siteMode=t.dataset.v;render();break;
-  case 'jjkmode':{const v=t.dataset.v;if(S.jjkMode===v){S.jjkMode=null}else{S.jjkMode=v;if(v==='overlay')S.jjkSlider=true}render();break}
+  case 'jjkmode':{const v=t.dataset.v;if(v==='pano'&&!HAS360.has(spot().id)){toast('360° 영상은 준비 중이에요');break}if(S.jjkMode===v){S.jjkMode=null}else{S.jjkMode=v;if(v==='overlay')S.jjkSlider=true}render();break}
   case 'capture':{const ctx=t.dataset.ctx;if(ctx==='site'&&S.siteMode!=='pano'&&!S.locked){toast('장면을 인식하는 중이에요. 잠시만요');break}const exp=ctx==='move'?MOVE_EXP.filter(x=>S.moveExp[x.id]).map(x=>x.name):[SITE_EXP.find(x=>x.id===S.siteMode).name];const fl=document.getElementById('flash');if(fl){fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on')}let img=null;try{img=captureAR(ctx)}catch(e){}S.lastCapture={ctx,exp:exp.length?exp:['일반 촬영'],img,src:{live:'실시간 카메라',photo:'사진',sim:'시뮬레이션'}[S.camMode]||''};setTimeout(()=>go('record'),180);break}
   case 'fxtoggle':{const tgt=S.screen==='move'?S.moveExp:S.siteFx;const keys=['anime','tone','sky'];const on=keys.some(k=>tgt[k]);const key=S.screen==='move'?'_fxm':'_fxs';if(on){S[key]=keys.reduce((a,k)=>(a[k]=tgt[k],a),{});keys.forEach(k=>tgt[k]=false)}else{const prev=S[key]||(S.screen==='move'?{anime:true,tone:true,sky:true}:{anime:true,tone:true,sky:false});keys.forEach(k=>tgt[k]=prev[k])}render();break}
   case 'camretry':S.camMode=null;render();break;
