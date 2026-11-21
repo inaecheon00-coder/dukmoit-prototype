@@ -716,12 +716,15 @@ input,textarea{font-size:17px}
 .sh-spark{position:absolute;left:50%;top:52%;width:8px;height:8px;margin:-4px;border-radius:50%;background:#ffd34d;opacity:0;animation:shSpark .8s ease-out var(--t) both}
 .sh-spark:nth-child(even){background:#6baeff}
 @keyframes shSpark{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(.4)}100%{opacity:0;transform:rotate(var(--a)) translateY(-120px) scale(1)}}
-.pstack{position:relative;display:block;height:400px;overflow:visible;margin:8px 0 14px;cursor:pointer}
-.pp{position:absolute;left:50%;top:50%;width:150px;height:190px;margin:-95px 0 0 -75px;border-radius:8px;background:#e9eef5 no-repeat;border:6px solid #fff;box-shadow:0 6px 18px rgba(0,40,100,.18);transform:translate(var(--x),var(--y)) rotate(var(--r));animation:ppIn .5s cubic-bezier(.2,1.4,.4,1) var(--d) both}
+.pstack{position:relative;display:block;height:560px;overflow:visible;margin:8px 0 14px;cursor:pointer}
+.pp{position:absolute;left:50%;top:50%;width:132px;height:166px;margin:-83px 0 0 -66px;border-width:5px!important;border-radius:8px;background:#e9eef5 no-repeat;border:6px solid #fff;box-shadow:0 6px 18px rgba(0,40,100,.18);transform:translate(var(--x),var(--y)) rotate(var(--r));animation:ppIn .5s cubic-bezier(.2,1.4,.4,1) var(--d) both}
 @keyframes ppIn{from{opacity:0;transform:translate(0,30px) rotate(0) scale(.9)}to{opacity:1;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
-.pp.top{width:190px;height:236px;margin:-118px 0 0 -95px;--r:-2deg;--x:0px;--y:0px;--d:450ms;background:#fff;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--navy);box-shadow:0 10px 26px rgba(0,40,100,.22)}
+.pp.top{width:196px;height:244px;margin:-122px 0 0 -98px;--r:-2deg;--x:0px;--y:0px;--d:450ms;background:#fff;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--navy);box-shadow:0 10px 26px rgba(0,40,100,.22)}
 .pp.top b{font-size:19px;font-weight:800}.pp.top .small{font-size:12px;text-align:center;padding:0 10px;word-break:keep-all}.pt-i{color:var(--b);display:flex}
 .pstack:active .pp.top{transform:rotate(-2deg) scale(.97)}
+.pmenu{position:absolute;right:0;top:40px;z-index:20;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,30,80,.18);overflow:hidden;min-width:120px;animation:jjkIn .15s ease}
+.pmenu button{display:block;width:100%;padding:12px 16px;text-align:left;font-size:15px;font-weight:600;color:#e5484d}
+.st3c{will-change:transform}
 .trip-del{width:34px;height:34px;flex:none;border-radius:50%;background:var(--b-weak);color:var(--b);font-size:22px;font-weight:700;line-height:1;display:grid;place-items:center}
 .pick3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 10px;padding-bottom:28px}
 .pk{display:flex;flex-direction:column;gap:3px;text-align:left;min-width:0}
@@ -1352,19 +1355,19 @@ function rkStart(){const r=document.getElementById('rkroll'),tk=r&&r.parentEleme
    const li=document.querySelectorAll('#rkol li')[i];if(li){li.classList.remove('rkfl');void li.offsetWidth;li.classList.add('rkfl')}},2200)}
 SCREENS.scan=()=>({
  html:`
- ${hdr('장면 검색')}
+ ${hdr('')}
  <div class="body"><div class="pad">
-  <p style="font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.02em;margin:28px 0 6px">어떤 장면이 기억나나요?</p>
-  <p class="muted small" style="margin-bottom:14px">지명을 몰라도 괜찮아요. 사진 한 장이면 충분해요.</p>
+  <p style="font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.02em;margin:4px 0 6px">어떤 장면이 기억나나요?</p>
+  <p class="muted small" style="margin-bottom:8px">지명을 몰라도 괜찮아요. 사진 한 장이면 충분해요.</p>
   <label class="pstack">
    <input type="file" accept="image/*" id="upl" hidden>
-   <span class="pp" style="background-image:url(assets/hero/nagatoro.jpg?v=${ASSET_V});background-position:82% 25%;background-size:260%;--r:-14deg;--x:-100px;--y:-70px;--d:0ms"></span><span class="pp" style="background-image:url(assets/hero/shibuya.jpg?v=${ASSET_V});background-position:52% 40%;background-size:260%;--r:10deg;--x:100px;--y:-62px;--d:70ms"></span><span class="pp" style="background-image:url(assets/hero/meguro.jpg?v=${ASSET_V});background-position:72% 50%;background-size:240%;--r:-8deg;--x:-108px;--y:58px;--d:140ms"></span><span class="pp" style="background-image:url(assets/hero/sunshine.jpg?v=${ASSET_V});background-position:30% 68%;background-size:280%;--r:13deg;--x:104px;--y:64px;--d:210ms"></span><span class="pp" style="background-image:url(assets/hero/haboro.jpg?v=${ASSET_V});background-position:76% 40%;background-size:260%;--r:6deg;--x:28px;--y:110px;--d:280ms"></span><span class="pp" style="background-image:url(assets/hero/onnazaka.jpg?v=${ASSET_V});background-position:47% 14%;background-size:480%;--r:-4deg;--x:-20px;--y:-112px;--d:350ms"></span>
+   <span class="pp" style="background-image:url(assets/hero/nagatoro.jpg?v=${ASSET_V});background-position:82% 25%;background-size:260%;--r:-14deg;--x:-108px;--y:-150px;--d:0ms"></span><span class="pp" style="background-image:url(assets/hero/shibuya.jpg?v=${ASSET_V});background-position:52% 40%;background-size:260%;--r:9deg;--x:104px;--y:-160px;--d:50ms"></span><span class="pp" style="background-image:url(assets/hero/onnazaka.jpg?v=${ASSET_V});background-position:47% 14%;background-size:480%;--r:-5deg;--x:-6px;--y:-196px;--d:100ms"></span><span class="pp" style="background-image:url(assets/hero/meguro.jpg?v=${ASSET_V});background-position:72% 50%;background-size:240%;--r:-9deg;--x:-118px;--y:-20px;--d:150ms"></span><span class="pp" style="background-image:url(assets/hero/sunshine.jpg?v=${ASSET_V});background-position:30% 68%;background-size:280%;--r:12deg;--x:116px;--y:-36px;--d:200ms"></span><span class="pp" style="background-image:url(assets/hero/keion.jpg?v=${ASSET_V});background-position:47% 55%;background-size:320%;--r:-3deg;--x:0px;--y:-90px;--d:250ms"></span><span class="pp" style="background-image:url(assets/hero/haboro.jpg?v=${ASSET_V});background-position:76% 40%;background-size:260%;--r:8deg;--x:-112px;--y:112px;--d:300ms"></span><span class="pp" style="background-image:url(assets/hero/gotoubun.jpg?v=${ASSET_V});background-position:52% 72%;background-size:280%;--r:-12deg;--x:112px;--y:104px;--d:350ms"></span><span class="pp" style="background-image:url(assets/hero/tamako.jpg?v=${ASSET_V});background-position:42% 72%;background-size:300%;--r:4deg;--x:-14px;--y:156px;--d:400ms"></span><span class="pp" style="background-image:url(assets/hero/yanineko.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:-7deg;--x:-60px;--y:190px;--d:450ms"></span><span class="pp" style="background-image:url(assets/hero/karumai.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:10deg;--x:74px;--y:184px;--d:500ms"></span><span class="pp" style="background-image:url(assets/hero/seihantai.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:-2deg;--x:96px;--y:40px;--d:550ms"></span>
    <span class="pp top"><span class="pt-i">${I.img.replace('<svg','<svg width="34" height="34"')}</span><b>이미지 올리기</b><span class="small muted">애니 캡처 · 만화책 사진 · 굿즈 사진</span></span>
   </label>
-  <div class="row" style="margin:10px 0 28px">
-   <button class="btn out sm" data-toast="카메라는 실제 앱에서 열려요 (프로토타입에선 샘플 사용)">${I.cam.replace('<svg','<svg width="16" height="16"')} 만화책 촬영</button>
-   <button class="btn sec2 sm" data-act="sample">샘플 캡처로 체험</button>
-  </div>
+ </div></div>
+ <div class="cta"><div class="row" style="gap:10px;width:100%">
+   <button class="btn out" data-toast="카메라는 실제 앱에서 열려요 (프로토타입에선 샘플 사용)">${I.cam.replace('<svg','<svg width="18" height="18"')} 만화책 촬영</button>
+   <button class="btn sec2" data-act="sample">샘플 캡처로 체험</button>
  </div></div>`});
 
 SCREENS.scanning=()=>({html:`
@@ -2135,7 +2138,7 @@ const EVENTS=[
 const FEED_IMG=new Set(['shibuya','haboro','shelter','suga','sunshine','karumai']);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;border-bottom:8px solid var(--bg)">
-   <div class="row"><div class="av ${p.mine?'me':''}"></div><div style="flex:1"><b class="small">@${p.u}</b><div class="small muted">${sp.name} · ${p.t}</div></div><button class="ib">${I.more}</button></div>
+   <div class="row"><div class="av ${p.mine?'me':''}"></div><div style="flex:1"><b class="small">@${p.u}</b><div class="small muted">${sp.name} · ${p.t}</div></div><button class="ib" data-act="postmenu" data-i="${p.id}" aria-label="더보기">${I.more}</button></div>
    <div style="margin:10px 0"><img class="feed-img" src="${p.img||`assets/${FEED_IMG.has(sp.id)?'feed':'real'}/${sp.id}.jpg?v=${ASSET_V}`}" alt="${sp.name}에서 찍은 사진" loading="lazy" onerror="this.src='assets/hero/${sp.id}.jpg?v=${ASSET_V}'"></div>
    <div class="small" style="white-space:pre-wrap">${esc(p.txt)}</div>
    <div class="row" style="margin-top:10px;gap:16px"><button class="row small" style="gap:4px;${S.liked[p.id]?'color:var(--accent)':''}" data-act="like" data-i="${p.id}">${I.heart.replace('<svg','<svg width="18" height="18"')} ${fmt(p.like+(S.liked[p.id]?1:0))}</button><span class="small muted">댓글 ${p.c}</span><span style="flex:1"></span><button class="tag ac" data-go="spot" data-id="${p.spot}">이 장소 가기 ›</button></div>
@@ -2180,9 +2183,11 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
  else if(T==='stamp'){const last=stamps[stamps.length-1];
   body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><span class="sh-rays"></span><div class="small muted" style="margin-bottom:6px;position:relative">최근 획득한 뱃지</div><div class="sh-flip">${stampSVG(last[0],{size:168,date:last[1]})}<i class="sh-glint" style="-webkit-mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat;mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat"></i></div>${Array.from({length:8},(_,i)=>`<i class="sh-spark" style="--a:${i*45}deg;--t:${1.0+i*.03}s"></i>`).join('')}<b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
   <div class="row between" style="margin:20px 0 10px"><b class="small">전체 뱃지</b><span class="small muted">${got.size}/${REG.length}</span></div>
-  <div class="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}</button>`).join('')}</div>`}
+  <div class="st3" id="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}</button>`).join('')}</div>`}
  else body=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
- return{tab:'archive',html:`
+ return{tab:'archive',after(){if(T!=='stamp')return;const g=document.getElementById('st3');if(!g)return;const cells=[...g.children],src=g.querySelector('[data-id=gotoubun]')||cells[0];const r0=src.getBoundingClientRect();
+   cells.forEach((c,i)=>{const r=c.getBoundingClientRect();c.style.transition='none';c.style.transform=`translate(${r0.left-r.left}px,${r0.top-r.top}px) rotate(${(i%5-2)*8}deg) scale(.9)`;c.style.zIndex=c===src?5:1});
+   requestAnimationFrame(()=>requestAnimationFrame(()=>cells.forEach((c,i)=>{c.style.transition=`transform .6s cubic-bezier(.2,1.25,.4,1) ${600+i*45}ms`;c.style.transform=''})));},html:`
  ${hdr('나의 덕질 기록',{back:'auto',left:true})}
  <div class="body">
   <div class="pad" style="margin-top:8px"><div class="seg aseg" role="tablist">${tabs.map(([k,l])=>`<button class="${T===k?'on':''}" data-act="atab" data-v="${k}" role="tab" aria-selected="${T===k}">${l}</button>`).join('')}</div></div>
@@ -2405,6 +2410,10 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';S.stack=[];S.archTab='timeline';S.screen='archive';render('push');syncHist();toast('아카이브에 저장했어요');break}
   case 'srchset':{const i=document.getElementById('srchq');if(i){i.value=t.dataset.v;i.dispatchEvent(new Event('input'))}break}
   case 'tripdel':{S.trips.splice(+t.dataset.i,1);render();toast('여정을 삭제했어요');break}
+  case 'postmenu':{document.querySelector('.pmenu')?.remove();const p=POSTS.find(x=>x.id===t.dataset.i);if(!p)break;
+   const m=document.createElement('div');m.className='pmenu';m.innerHTML=p.mine?`<button data-act="postdel" data-i="${p.id}">삭제하기</button>`:`<button data-act="postmenu-x" data-toast="신고가 접수됐어요">신고하기</button>`;
+   t.parentNode.style.position='relative';t.parentNode.appendChild(m);setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)){m.remove();document.removeEventListener('click',h,true)}},true),0);break}
+  case 'postdel':{const i=POSTS.findIndex(x=>x.id===t.dataset.i);if(i>=0)POSTS.splice(i,1);document.querySelector('.pmenu')?.remove();render();toast('게시물을 삭제했어요');break}
   case 'ework':S.exploreWork=t.dataset.v;render();break;
   case 'ecat':{S.exploreCat=t.dataset.v;const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body){render();break}
    sc.querySelectorAll('.chips .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===S.exploreCat));
