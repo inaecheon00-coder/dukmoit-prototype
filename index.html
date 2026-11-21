@@ -1265,7 +1265,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611217';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611218';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -2133,6 +2133,7 @@ const EVENTS=[
  {n:'치이카와 파크 스토어 오사카',d:'2026.11.24 오픈',u:'https://www.lucua.jp/special/south-open/',img:'chiikawa'},
  {n:'점프 페스타 2027',d:'2026.12.19 – 12.20',u:'https://www.jumpfesta.com/',img:'jumpfesta'},
  {n:'히로아카 TV애니 10주년 기념전 OUR HERO',d:'2027.01.08 – 02.07',u:'https://heroaca-anime-10th-ex.com/',img:'heroaca'},
+ {n:'우베 마치쥬 에반게리온 2026',d:'2026.10.29 – 2027.03.14',u:'https://contents-tourism.com/',img:'ube-eva',pos:'58% 40%'},
  {n:'AnimeJapan 2027',d:'2027.03.27 – 03.28',u:'https://www.anime-japan.jp/',img:'animejapan'},
 ];
 const FEED_IMG=new Set(['shibuya','haboro','shelter','suga','sunshine','karumai']);
@@ -2146,7 +2147,7 @@ const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;bo
 SCREENS.community=()=>({tab:'community',html:`
  ${hdr('커뮤니티',{back:'auto',left:true,right:S.commTab==='feed'?`<button class="fab-plus" data-go="post" aria-label="등록하기"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>`:''})}
  <div class="pad" style="margin-bottom:10px"><div class="seg aseg"><button class="${S.commTab==='feed'?'on':''}" data-act="ctab" data-v="feed">AR 기록 피드</button><button class="${S.commTab==='goods'?'on':''}" data-act="ctab" data-v="goods">행사 안내</button></div></div>
- <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer" aria-label="${e.n} (${e.d})"><span class="evw"><img class="evimg" src="assets/events/${e.img}.jpg?v=${ASSET_V}" alt="${e.n}" loading="lazy"></span></a>`).join('')}</div><div style="height:24px"></div></div>`}
+ <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer" aria-label="${e.n} (${e.d})"><span class="evw"><img class="evimg" src="assets/events/${e.img}.jpg?v=${ASSET_V}" alt="${e.n}" loading="lazy" style="object-position:${e.pos||'center'}"></span></a>`).join('')}</div><div style="height:24px"></div></div>`}
  </div>`,after(){if(S.commTab==='goods')homeParallax('.evw img')}});
 /* 커뮤니티 등록하기: 명소 장면 + 텍스트 */
 SCREENS.post=()=>{const reg=SPOTS.filter(s=>REG.includes(s.id));if(!REG.includes(S.postSpot))S.postSpot=reg[0].id;const sp=spot(S.postSpot);return{html:`
