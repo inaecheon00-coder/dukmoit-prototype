@@ -616,7 +616,7 @@ input,textarea{font-size:17px}
 .cmp-tag{position:absolute;bottom:10px;font-size:15px;font-weight:600;color:#fff;background:rgba(0,0,0,.38);padding:3px 8px;border-radius:999px;pointer-events:none}
 .cmp-tag.l{left:12px}.cmp-tag.r{right:12px}
 /* 홈 포스터 스크롤 연동 */
-.mason .cart .poster{transform:scale(1.14);transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.mason .cart .poster{transform:scale(1.2);will-change:transform}
 
 /* 성지 탐색 실제 지도 */
 .near-h{display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:17px}.near-h svg{width:18px;height:18px;color:var(--b)}.near-h .muted{font-size:15px;margin-left:auto}
@@ -627,7 +627,7 @@ input,textarea{font-size:17px}
 .spotrow .dist{color:var(--b);font-weight:700}
 .evgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
 .evw{display:block;height:260px;border-radius:14px;overflow:hidden;background:var(--line)}
-.evw .evimg{height:100%;border-radius:0;transform:scale(1.18);transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.evw .evimg{height:100%;border-radius:0;transform:scale(1.2);will-change:transform}
 .ev{display:flex;flex-direction:column;gap:2px;color:inherit;text-decoration:none}
 .evimg{width:100%;height:260px;object-fit:cover;border-radius:14px;display:block;background:var(--line)}.ev .ph .lb{display:none}.ev .ph .x{font-size:19px;font-weight:800;padding:0 12px;text-align:center;word-break:keep-all}
 .ev b{font-size:15px;font-weight:700;margin-top:8px;line-height:1.3;word-break:keep-all}.ev span{font-size:15px;color:var(--mute)}
@@ -1265,7 +1265,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611216';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611217';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1306,14 +1306,13 @@ const SCREENS={};
 
 /* 홈 '떠나고싶은 애니속으로': 스크롤하는 동안 포스터가 카드 안에서 함께 움직이고, 손을 떼면 원위치 */
 function homeParallax(sel='.mason .cart .poster'){const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body)return;
- /* 스크롤하는 동안 포스터가 따라 움직이고, 손을 떼고 스크롤이 멈추면 크게 튕기듯 원위치 */
- const imgs=()=>sc.querySelectorAll(sel);let base=null,touching=false,st=0;
- const move=()=>{if(base==null)base=body.scrollTop;const d=body.scrollTop-base,off=Math.max(-40,Math.min(40,-d*.22));imgs().forEach(i=>{i.style.transition='none';i.style.transform=`translate3d(0,${off.toFixed(1)}px,0) scale(1.18)`})};
- const home=()=>{base=null;imgs().forEach(i=>{i.style.transition='transform .9s cubic-bezier(.25,1.9,.45,1)';i.style.transform=''})};
- const settle=()=>{clearTimeout(st);st=setTimeout(()=>{if(!touching)home()},140)};
- body.addEventListener('touchstart',()=>{touching=true;base=body.scrollTop},{passive:true});
- const end=()=>{touching=false;settle()};body.addEventListener('touchend',end,{passive:true});body.addEventListener('touchcancel',end,{passive:true});
- body.addEventListener('scroll',()=>{move();settle()},{passive:true})}
+ /* 스크롤에 맞춰 포스터가 칸 안에서 부드럽게 따라 움직이고, 멈추면 천천히 원위치. 이동 폭은 확대 여유만큼으로 제한해 위아래 빈틈이 보이지 않게 */
+ const K=1.2,imgs=()=>[...sc.querySelectorAll(sel)];let base=null,cur=0,tgt=0,raf=0,st=0;
+ const apply=()=>{imgs().forEach(i=>{const lim=Math.max(0,i.offsetHeight*(K-1)/2-2),o=Math.max(-lim,Math.min(lim,cur));i.style.transition='none';i.style.transform=`translate3d(0,${o.toFixed(2)}px,0) scale(${K})`})};
+ const loop=()=>{cur+=(tgt-cur)*.12;apply();if(Math.abs(tgt-cur)>.2&&document.body.contains(body))raf=requestAnimationFrame(loop);else{cur=tgt;apply();raf=0}};
+ const kick=()=>{if(!raf)raf=requestAnimationFrame(loop)};
+ body.addEventListener('scroll',()=>{if(base==null)base=body.scrollTop;tgt=-(body.scrollTop-base)*.35;kick();clearTimeout(st);st=setTimeout(()=>{base=null;tgt=0;kick()},160)},{passive:true});
+ apply()}
 SCREENS.home=()=>({tab:'home',html:`
  ${topbar()}
  <div class="body">
@@ -2029,7 +2028,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['meguro','shelter','kamakura_sd','haboro','sunshine','nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-const HAS360=new Set(['shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn']);
+const HAS360=new Set(['shelter','sunshine','shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
