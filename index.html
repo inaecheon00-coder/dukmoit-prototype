@@ -744,8 +744,8 @@ input,textarea{font-size:17px}
 .near .cart .poster{transform-origin:50% 45%}
 .near.anim-all .cart .poster{animation:nearWalk 3s ease-out forwards}
 @keyframes nearWalk{from{transform:scale(1)}to{transform:scale(1.2) translateY(-3%)}}
-.near.anim-tokyo .cart .poster{transform-origin:47% 22%;animation:nearClose 3s ease-out forwards}
-@keyframes nearClose{from{transform:scale(2.3) translateY(4%)}to{transform:scale(2.5) translateY(0)}}
+.near.anim-tokyo .cart .poster{transform-origin:55% 42%;animation:nearClose 3s ease-out forwards}
+@keyframes nearClose{from{transform:scale(1.35) translateY(3%)}to{transform:scale(1.55) translateY(0)}}
 @keyframes nearClimb{from{transform:scale(1.18) translateY(7%)}to{transform:scale(1.18) translateY(-7%)}}
 .near.anim-osaka .cart .poster{animation:nearShout 3s ease-out forwards}
 @keyframes nearShout{0%{transform:scale(1.25)}60%{transform:scale(1.05)}70%{transform:scale(1.07) rotate(-.6deg)}80%{transform:scale(1.05) rotate(.6deg)}90%{transform:scale(1.07)}100%{transform:scale(1.05)}}
@@ -1089,7 +1089,7 @@ const WORKS={
  haikyu:{title:'하이큐!! (ハイキュー!!)',genre:'스포츠 · 청춘',year:2014,eps:85,chars:['히나타 쇼요','카게야마 토비오']},
  todoke:{title:'너에게 닿기를 (君に届け)',genre:'로맨스 · 청춘',year:2009,eps:62,chars:['쿠로누마 사와코','카제하야 쇼타']},
  bocchi:{title:'봇치 더 록! (ぼっち・ざ・ろっく!)',genre:'음악 · 코미디',year:2022,eps:12,chars:['고토 히토리','이지치 니지카']},
- csm:{title:'체인소맨 (チェンソーマン)',genre:'액션 · 다크 판타지',year:2022,eps:12,chars:['덴지','파워']},
+ csm:{title:'체인소맨 (チェンソーマン)',genre:'액션 · 다크 판타지',year:2022,eps:12,chars:['레제','덴지']},
  kiminona:{title:'너의이름은 (君の名は)',genre:'로맨스 · 판타지',year:2016,eps:1,chars:['타키','미츠하']},
 };
 const SPOTS=[
@@ -1101,7 +1101,7 @@ const SPOTS=[
  {id:'kifune',line:'雪の鳥居を\nくぐったら…',cat:'osaka',air:'간사이',hub:'교토',pal:['#eef5ff','#9fbde6','#c94a4a','rgba(60,20,30,.55)'],jp:'貴船神社参道',st:'기부네구치역 30분',work:'yuki',name:'기후네 신사 참배길',region:'일본 교토부 교토',abroad:true,ep:'5화',time:'15:22',scene:'눈 덮인 붉은 등롱 계단에서 신령과 처음 만나는 장면',dist:'830km',visits:17800,tags:['신사','등롱','눈'],tip:'겨울에는 미끄럼 방지 신발을 챙기세요.',map:{x:40,y:60},cmap:{x:58,y:20},match:52},
  {id:'shibuya',line:'大丈夫,\n僕, 最強だから',cat:'tokyo',air:'하네다',hub:'시부야',pal:['#d9e8ff','#7b8cff','#2b2f8f','rgba(15,15,50,.6)'],jp:'渋谷スクランブル交差点',st:'시부야역 1분',work:'jjk',name:'시부야 스크램블 교차로',region:'일본 도쿄도 시부야구',abroad:true,ep:'2기 시부야 사변',time:'',scene:'할로윈 밤, 시부야 사변이 시작되는 교차로 장면',dist:'1,150km',visits:15600,tags:['교차로','도심','야경'],tip:'역 2층 연결통로에서 원작과 같은 부감 구도를 찍을 수 있어요.',map:{x:69,y:44},cmap:{x:56,y:46},match:66},
  {id:'suga',line:'君の名前は...！',cat:'tokyo',air:'하네다',hub:'요쓰야',pal:['#ffe9c7','#ffb88a','#d0566c','rgba(70,25,35,.55)'],jp:'須賀神社男坂',st:'요쓰야산초메역 9분',work:'kiminona',name:'스가 신사 계단',region:'일본 도쿄도 신주쿠구',abroad:true,ep:'극장판',time:'',scene:'계단 위와 아래에서 엇갈리던 두 사람이 마침내 서로를 알아보는 마지막 장면',dist:'1,151km',visits:14200,tags:['계단','신사','엇갈림'],tip:'주택가 계단이에요. 계단을 막고 오래 촬영하지 말아 주세요.',map:{x:70,y:42},cmap:{x:68,y:30},match:61},
- {id:'onnazaka',line:'',cat:'tokyo',air:'하네다',hub:'스이도바시',pal:['#e6ecef','#a9b8bf','#4d5b62','rgba(20,28,32,.55)'],jp:'東京女坂',st:'스이도바시역 7분',work:'csm',name:'온나자카',region:'일본 도쿄도 분쿄구',abroad:true,ep:'1화',time:'03:12',scene:'나무 그늘이 드리운 언덕길 계단을 오르며 새로운 일상을 시작하는 장면',dist:'1,152km',visits:16200,tags:['언덕길','계단','일상'],tip:'주택가 언덕길이에요. 이른 아침엔 통학하는 학생이 많아요.',map:{x:70,y:43},cmap:{x:62,y:38},match:58},
+ {id:'onnazaka',line:'',cat:'tokyo',air:'하네다',hub:'진보초',pal:['#e6ecef','#a9b8bf','#4d5b62','rgba(20,28,32,.55)'],jp:'神田神保町1丁目',st:'진보초역 3분',work:'csm',name:'간다 진보초 1초메',region:'일본 도쿄도 지요다구 간다진보초 1초메',abroad:true,ep:'레제편',time:'03:12',scene:'레제가 카페로 출근하는 길',dist:'1,152km',visits:16200,tags:['진보초','레제','거리'],tip:'고서점 거리 옆 큰길이에요. 비 온 뒤 젖은 보도에서 원작 분위기가 가장 잘 나요.',map:{x:70,y:43},cmap:{x:62,y:38},match:58},
  {id:'karumai',line:'',cat:'',air:'하네다',hub:'니노헤',pal:['#fff1dc','#ffb15c','#2f2f35','rgba(25,20,15,.55)'],jp:'軽米町民体育館',st:'니노헤역에서 버스 이용',work:'haikyu',name:'카루마이 주민 체육관',region:'일본 이와테현 카루마이초',abroad:true,ep:'1기',time:'',scene:'히나타와 카게야마가 처음으로 이야기를 나눈 체육관의 모델',dist:'1,330km',visits:11800,tags:['체육관','배구','청춘'],tip:'실제 운영 중인 주민 체육관이에요. 이용 시간(9:00~21:00)을 지켜 주세요.',map:{x:74,y:30},cmap:{x:50,y:50},match:62},
  {id:'haboro',line:'',cat:'',air:'신치토세',hub:'루모이',pal:['#eef8ff','#9fd3e8','#3f86a8','rgba(15,45,60,.5)'],jp:'羽幌神社',st:'하보로 터미널 도보 6분',work:'todoke',name:'하보로 신사',region:'일본 홋카이도 하보로초',abroad:true,ep:'원작자 고향',time:'',scene:'원작자 시이나 카루호의 고향 하보로에 있는 신사',dist:'1,520km',visits:6900,tags:['신사','홋카이도','원작자 고향'],tip:'루모이에서 연안버스로 하보로 터미널까지 가요.',map:{x:77,y:8},cmap:{x:30,y:40},match:48},
  {id:'shelter',line:'ひとりなら\nロックをやれ！',cat:'tokyo',air:'하네다',hub:'시모키타자와',pal:['#ffe2c2','#f08a5d','#3a2a4a','rgba(30,15,35,.6)'],jp:'下北沢SHELTER',st:'시모키타자와역 3분',work:'bocchi',name:'라이브 하우스 SHELTER',region:'일본 도쿄도 세타가야구',abroad:true,ep:'1기',time:'',scene:'결속밴드가 공연하는 라이브 하우스 STARRY의 모델',dist:'1,148km',visits:13400,tags:['라이브하우스','밴드','시모키타자와'],tip:'지하 1층 공연장이에요. 공연이 없는 시간엔 입구 촬영만 가능해요.',map:{x:69,y:45},cmap:{x:46,y:52},match:57},
@@ -1265,7 +1265,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611218';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611219';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1361,7 +1361,7 @@ SCREENS.scan=()=>({
   <p class="muted small" style="margin-bottom:8px">지명을 몰라도 괜찮아요. 사진 한 장이면 충분해요.</p>
   <label class="pstack">
    <input type="file" accept="image/*" id="upl" hidden>
-   <span class="pp" style="background-image:url(assets/hero/nagatoro.jpg?v=${ASSET_V});background-position:82% 25%;background-size:260%;--r:-14deg;--x:-108px;--y:-150px;--d:0ms"></span><span class="pp" style="background-image:url(assets/hero/shibuya.jpg?v=${ASSET_V});background-position:52% 40%;background-size:260%;--r:9deg;--x:104px;--y:-160px;--d:50ms"></span><span class="pp" style="background-image:url(assets/hero/onnazaka.jpg?v=${ASSET_V});background-position:47% 14%;background-size:480%;--r:-5deg;--x:-6px;--y:-196px;--d:100ms"></span><span class="pp" style="background-image:url(assets/hero/meguro.jpg?v=${ASSET_V});background-position:72% 50%;background-size:240%;--r:-9deg;--x:-118px;--y:-20px;--d:150ms"></span><span class="pp" style="background-image:url(assets/hero/sunshine.jpg?v=${ASSET_V});background-position:30% 68%;background-size:280%;--r:12deg;--x:116px;--y:-36px;--d:200ms"></span><span class="pp" style="background-image:url(assets/hero/keion.jpg?v=${ASSET_V});background-position:47% 55%;background-size:320%;--r:-3deg;--x:0px;--y:-90px;--d:250ms"></span><span class="pp" style="background-image:url(assets/hero/haboro.jpg?v=${ASSET_V});background-position:76% 40%;background-size:260%;--r:8deg;--x:-112px;--y:112px;--d:300ms"></span><span class="pp" style="background-image:url(assets/hero/gotoubun.jpg?v=${ASSET_V});background-position:52% 72%;background-size:280%;--r:-12deg;--x:112px;--y:104px;--d:350ms"></span><span class="pp" style="background-image:url(assets/hero/tamako.jpg?v=${ASSET_V});background-position:42% 72%;background-size:300%;--r:4deg;--x:-14px;--y:156px;--d:400ms"></span><span class="pp" style="background-image:url(assets/hero/yanineko.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:-7deg;--x:-60px;--y:190px;--d:450ms"></span><span class="pp" style="background-image:url(assets/hero/karumai.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:10deg;--x:74px;--y:184px;--d:500ms"></span><span class="pp" style="background-image:url(assets/hero/seihantai.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:-2deg;--x:96px;--y:40px;--d:550ms"></span>
+   <span class="pp" style="background-image:url(assets/hero/nagatoro.jpg?v=${ASSET_V});background-position:82% 25%;background-size:260%;--r:-14deg;--x:-108px;--y:-150px;--d:0ms"></span><span class="pp" style="background-image:url(assets/hero/shibuya.jpg?v=${ASSET_V});background-position:52% 40%;background-size:260%;--r:9deg;--x:104px;--y:-160px;--d:50ms"></span><span class="pp" style="background-image:url(assets/hero/onnazaka.jpg?v=${ASSET_V});background-position:56% 40%;background-size:240%;--r:-5deg;--x:-6px;--y:-196px;--d:100ms"></span><span class="pp" style="background-image:url(assets/hero/meguro.jpg?v=${ASSET_V});background-position:72% 50%;background-size:240%;--r:-9deg;--x:-118px;--y:-20px;--d:150ms"></span><span class="pp" style="background-image:url(assets/hero/sunshine.jpg?v=${ASSET_V});background-position:30% 68%;background-size:280%;--r:12deg;--x:116px;--y:-36px;--d:200ms"></span><span class="pp" style="background-image:url(assets/hero/keion.jpg?v=${ASSET_V});background-position:47% 55%;background-size:320%;--r:-3deg;--x:0px;--y:-90px;--d:250ms"></span><span class="pp" style="background-image:url(assets/hero/haboro.jpg?v=${ASSET_V});background-position:76% 40%;background-size:260%;--r:8deg;--x:-112px;--y:112px;--d:300ms"></span><span class="pp" style="background-image:url(assets/hero/gotoubun.jpg?v=${ASSET_V});background-position:52% 72%;background-size:280%;--r:-12deg;--x:112px;--y:104px;--d:350ms"></span><span class="pp" style="background-image:url(assets/hero/tamako.jpg?v=${ASSET_V});background-position:42% 72%;background-size:300%;--r:4deg;--x:-14px;--y:156px;--d:400ms"></span><span class="pp" style="background-image:url(assets/hero/yanineko.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:-7deg;--x:-60px;--y:190px;--d:450ms"></span><span class="pp" style="background-image:url(assets/hero/karumai.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:10deg;--x:74px;--y:184px;--d:500ms"></span><span class="pp" style="background-image:url(assets/hero/seihantai.jpg?v=${ASSET_V});background-position:50% 55%;background-size:240%;--r:-2deg;--x:96px;--y:40px;--d:550ms"></span>
    <span class="pp top"><span class="pt-i">${I.img.replace('<svg','<svg width="34" height="34"')}</span><b>이미지 올리기</b><span class="small muted">애니 캡처 · 만화책 사진 · 굿즈 사진</span></span>
   </label>
  </div></div>
@@ -1534,7 +1534,7 @@ const haboroBus=[['고속버스',190,'루모이'],['연안버스',60,'하보로 
 const PROUTE={
  suga:{tokyo:{t:[['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:210,km:6},shibuya:{t:[['지하철 긴자선',9,'아카사카미쓰케역'],['지하철 마루노우치선',5,'요쓰야산초메역']],walk:9,fare:180,km:6},narita:{t:[NEX,['지하철 마루노우치선',12,'요쓰야산초메역']],walk:9,fare:3280,km:72}},
  shibuya:{tokyo:{t:[['JR 야마노테선',24,'시부야역']],walk:1,fare:210,km:8},shibuya:{t:[],walk:2,fare:0,km:.2},narita:{t:[NEXS],walk:1,fare:3250,km:78}},
- onnazaka:{tokyo:{t:[['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:150,km:3},shibuya:{t:[['JR 야마노테선',13,'신주쿠역'],['JR 주오·소부선',12,'스이도바시역']],walk:7,fare:210,km:9},narita:{t:[NEX,['JR 주오선 쾌속',4,'오차노미즈역'],['JR 주오·소부선',2,'스이도바시역']],walk:7,fare:3220,km:68}},
+ onnazaka:{tokyo:{t:[['도쿄메트로 마루노우치선',2,'오테마치역'],['도에이 미타선',3,'진보초역']],walk:3,fare:180,km:3},shibuya:{t:[['도쿄메트로 한조몬선',14,'진보초역']],walk:3,fare:180,km:7},narita:{t:[NEX,['도쿄메트로 마루노우치선',2,'오테마치역'],['도에이 미타선',3,'진보초역']],walk:3,fare:3250,km:68}},
  kamakura_sd:null,kifune_cn:null,
  sunshine:{tokyo:{t:[['지하철 마루노우치선',16,'이케부쿠로역']],walk:10,fare:210,km:9},shibuya:{t:[['JR 야마노테선',16,'이케부쿠로역']],walk:10,fare:180,km:8},narita:{t:[['게이세이 스카이라이너',41,'닛포리역'],['JR 야마노테선',10,'이케부쿠로역']],walk:10,fare:2730,km:75}},
  meguro:{tokyo:{t:[['JR 야마노테선',20,'에비스역'],['지하철 히비야선',2,'나카메구로역']],walk:5,fare:360,km:10},shibuya:{t:[['도큐 도요코선',3,'나카메구로역']],walk:5,fare:140,km:3},narita:{t:[NEXS,['도큐 도요코선',3,'나카메구로역']],walk:5,fare:3390,km:80}},
@@ -1900,7 +1900,7 @@ const STAMP={
  kifune:{sh:'shield',c:'#c0392b',ic:'torii',k:'기후네 신사'},
  shibuya:{sh:'circle',c:'#2d4bd8',ic:'tower',k:'시부야',ring:'SHIBUYA SCRAMBLE ★ DUKMOIT ★ '},
  suga:{sh:'flower',c:'#e0567a',ic:'stairs',k:'스가 신사'},
- onnazaka:{sh:'diamond',c:'#4d5b62',ic:'slope',k:'온나자카'},
+ onnazaka:{sh:'diamond',c:'#4d5b62',ic:'slope',k:'진보초'},
  karumai:{sh:'oct',c:'#ef7d1a',ic:'volley',k:'카루마이'},
  haboro:{sh:'scallop',c:'#e86a92',ic:'heart',k:'하보로 신사'},
  shelter:{sh:'diamond',c:'#f0503c',ic:'guitar',k:'SHELTER'},
@@ -2028,7 +2028,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['meguro','shelter','kamakura_sd','haboro','sunshine','nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-const HAS360=new Set(['shelter','sunshine','shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn']);
+const HAS360=new Set(['onnazaka','shelter','sunshine','shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
@@ -2099,7 +2099,7 @@ SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버�
 /* ================= 성지 탐색: 등록된 애니 명소 + 실제 지도 ================= */
 const REG=AREAS.all.map(x=>x.s);   // 홈 '전체' 영역에 등록된 애니 명소만
 const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,141.4605],haboro:[44.3613,141.7006],meguro:[35.6339,139.7158],shelter:[35.6612,139.6680],
- onnazaka:[35.7066,139.7520],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[34.6654,135.4323],keion:[35.2054,136.2311],
+ onnazaka:[35.6958,139.7580],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[34.6654,135.4323],keion:[35.2054,136.2311],
  seihantai:[34.6857,135.8399],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[35.0306,135.7703]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
