@@ -167,7 +167,8 @@ input[type=range]{width:100%;accent-color:#fff}
 /* AR camera */
 .camwrap{position:absolute;inset:0;overflow:hidden;background:#000}
 .camwrap video,.camwrap img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.camwrap .cam{display:none}.camwrap.sim .cam{display:block}
+.camwrap{background:#000}
+.camwrap .cam{display:none}.camwrap.sim .cam{display:none}
 .camwrap.sim video,.camwrap.sim img.bg{display:none}
 #arcv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
 #glcv{position:absolute;inset:0;width:100%;height:100%;z-index:1;display:none}
@@ -267,7 +268,7 @@ textarea{width:100%;border:1px solid var(--line2);border-radius:10px;padding:12p
 .phone:not(.land) .cam-rail>:last-child{justify-self:end}
 .arth{position:relative;height:70px;border-radius:10px;overflow:hidden;background:#2a3140 center/cover no-repeat}
 .arth-ov{position:absolute;inset:0;background:center/cover no-repeat;opacity:.6}
-.arth-ch{position:absolute;left:14%;bottom:-6px;height:118%;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4))}
+.arth-ch{position:absolute;left:14%;bottom:-6px;height:118%}
 .arth span{position:absolute;right:6px;bottom:6px;font-size:12px;font-weight:700;color:#fff;background:rgba(0,0,0,.5);padding:2px 7px;border-radius:999px}
 .jjk-ctl{left:60px;bottom:16px;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
 html.native .phone.land .jjk-ctl{left:calc(env(safe-area-inset-left,0px) + 16px)}
@@ -279,7 +280,7 @@ html.native .phone.land .jjk-ctl{left:calc(env(safe-area-inset-left,0px) + 16px)
 .phone.land .v360~.compass{top:auto;bottom:22px}
 .v360 video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .charlayer{position:absolute;left:20%;right:50%;bottom:0;top:16%;display:flex;align-items:flex-end;justify-content:center;pointer-events:none;z-index:3}
-.charlayer img{max-height:100%;max-width:90%;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.charlayer img{max-height:100%;max-width:90%;object-fit:contain}
 .charlayer .char-ph{width:46%;height:78%;border:2px dashed rgba(255,255,255,.75);border-radius:999px 999px 18px 18px;display:grid;place-items:center;text-align:center;color:#fff;font-size:15px;font-weight:600;background:rgba(0,0,0,.18)}
 .charlayer.ok .char-ph{display:none}
 .phone:not(.land) .charlayer{left:0;right:40%;top:26%;bottom:0}
@@ -624,7 +625,9 @@ input,textarea{font-size:17px}
 .near{padding:0;overflow:hidden;position:relative;cursor:pointer}
 .near-d{position:absolute;right:12px;top:12px;display:inline-flex;align-items:center;gap:3px;background:rgba(0,0,0,.55);color:#fff;font-size:15px;font-weight:600;padding:4px 10px;border-radius:999px}.near-d svg{width:15px;height:15px}
 .spotrow .dist{color:var(--b);font-weight:700}
-.evgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px 12px;margin-top:4px}
+.evgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}
+.evw{display:block;height:260px;border-radius:14px;overflow:hidden;background:var(--line)}
+.evw .evimg{height:100%;border-radius:0;transform:scale(1.18);transition:transform .45s cubic-bezier(.2,.8,.2,1);will-change:transform}
 .ev{display:flex;flex-direction:column;gap:2px;color:inherit;text-decoration:none}
 .evimg{width:100%;height:260px;object-fit:cover;border-radius:14px;display:block;background:var(--line)}.ev .ph .lb{display:none}.ev .ph .x{font-size:19px;font-weight:800;padding:0 12px;text-align:center;word-break:keep-all}
 .ev b{font-size:15px;font-weight:700;margin-top:8px;line-height:1.3;word-break:keep-all}.ev span{font-size:15px;color:var(--mute)}
@@ -1242,7 +1245,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611192';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611211';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1282,9 +1285,9 @@ const spotCard=(sp,w=220)=>`<div style="width:${w}px;flex:none;cursor:pointer" d
 const SCREENS={};
 
 /* 홈 '떠나고싶은 애니속으로': 스크롤하는 동안 포스터가 카드 안에서 함께 움직이고, 손을 떼면 원위치 */
-function homeParallax(){const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body)return;
+function homeParallax(sel='.mason .cart .poster'){const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body)return;
  /* 스크롤하는 동안 포스터가 따라 움직이고, 손을 떼고 스크롤이 멈추면 크게 튕기듯 원위치 */
- const imgs=()=>sc.querySelectorAll('.mason .cart .poster');let base=null,touching=false,st=0;
+ const imgs=()=>sc.querySelectorAll(sel);let base=null,touching=false,st=0;
  const move=()=>{if(base==null)base=body.scrollTop;const d=body.scrollTop-base,off=Math.max(-40,Math.min(40,-d*.22));imgs().forEach(i=>{i.style.transition='none';i.style.transform=`translate3d(0,${off.toFixed(1)}px,0) scale(1.18)`})};
  const home=()=>{base=null;imgs().forEach(i=>{i.style.transition='transform .9s cubic-bezier(.25,1.9,.45,1)';i.style.transform=''})};
  const settle=()=>{clearTimeout(st);st=setTimeout(()=>{if(!touching)home()},140)};
@@ -1801,12 +1804,11 @@ const fxActive=()=>{const o=fxOpts();return !!(o.toon||o.grade||o.sky)};
 function fxSource(){const v=document.getElementById('camv'),img=document.getElementById('camimg');
  if(S.camMode==='live'&&v&&v.readyState>=2&&v.videoWidth)return[v,v.videoWidth,v.videoHeight];
  if(S.camMode==='photo'&&img&&img.naturalWidth)return[img,img.naturalWidth,img.naturalHeight];
- if(S.camMode==='sim'||S.camMode==='denied'||!S.camMode){const s=simPhoto();return[s,s.width,s.height]}
- return null}
+ return null}   /* 카메라 대기 중: 그래픽 없이 검은 화면 */
 function fxFrame(){const cv=document.getElementById('glcv');if(!cv)return;const w=document.getElementById('camwrap');
  const on=!(S.screen==='arrive'&&S.siteMode==='pano');
  if(!on||!fxInit(cv)){cv.style.display='none';if(w)w.classList.remove('fx');return}
- const src=fxSource();if(!src){return}
+ const src=fxSource();if(!src){cv.style.display='none';if(w)w.classList.remove('fx');return}
  const dpr=Math.min(1.5,window.devicePixelRatio||1);const box=(w||cv.parentElement).getBoundingClientRect();const W=Math.round(box.width*dpr),H=Math.round(box.height*dpr);if(!W||!H)return;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
  const {gl,U}=FX;gl.viewport(0,0,W,H);
  try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,src[0])}catch(e){return}
@@ -2015,13 +2017,13 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-const HAS360=new Set(['shibuya']);
+const HAS360=new Set(['shibuya','suga']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
  const pano=JJK?S.jjkMode==='pano':S.siteMode==='pano';
  let view='';
- if(pano&&JJK){view=`<div class="pano v360" id="pano"><video id="v360" src="assets/360/${sp.id}.mp4?v=${ASSET_V}" muted loop playsinline autoplay preload="auto"></video></div><div class="compass" id="compass">드래그해서 둘러보기</div>`}
+ if(pano&&JJK){view=`<div class="pano v360" id="pano"><video id="v360" src="assets/360/${sp.id}.mp4?v=${ASSET_V}" muted loop playsinline autoplay preload="auto"></video></div><div class="compass" id="compass">본 장면은 참고 영상입니다.</div>`}
  else if(pano){/* 360°: 정면은 원작 장면, 옆·뒤는 실제 장소 사진으로 둘러보기 */const hs=`assets/hero/${sp.id}.jpg?v=${ASSET_V}`,rs=`assets/real/${sp.id}.jpg?v=${ASSET_V}`;
    const hues=[[hs,'정면 · 원작 장면',''],[rs,'오른쪽 · 실제 모습','right'],[hs,'뒤쪽 · 원작 장면 뒤편','flip'],[rs,'왼쪽 · 실제 모습','left']];
    view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div class="pv ${h[2]}" style="background-image:url('${h[0]}')"><span>${h[1]}</span></div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
@@ -2063,7 +2065,7 @@ SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e
     p.onpointerup=p.onpointercancel=()=>{if(dr){dr=null;v.play().catch(()=>{})}};return}
    if(!pano){startCam();arLoop();if(!S.locked){clearTimeout(S._lock);S._lock=setTimeout(()=>{S.locked=true;S.lockAt=performance.now();const r=document.getElementById('reticle');if(r){r.classList.add('done');setTimeout(()=>r.remove(),500)}toast('장면 인식 완료 · 일치도 92%')},2600)}}
    else{stopCam();const p=document.getElementById('pano');const strip=document.getElementById('strip');let sx=0,start=0,drag=false;const W=strip.firstElementChild.offsetWidth*4;
-    const apply=()=>{let v=((S.pan%W)-W)%W;strip.style.transform=`translateX(${v}px)`;document.getElementById('compass').textContent=Math.round(((-S.pan%W)+W)%W/W*360)+'° · 드래그해서 둘러보기'};apply();
+    const apply=()=>{let v=((S.pan%W)-W)%W;strip.style.transform=`translateX(${v}px)`;document.getElementById('compass').textContent='본 장면은 참고 영상입니다.'};apply();
     p.onpointerdown=e=>{drag=true;sx=e.clientX;start=S.pan;p.setPointerCapture(e.pointerId)};p.onpointermove=e=>{if(!drag)return;S.pan=start+(e.clientX-sx);apply()};p.onpointerup=()=>{drag=false}}
  }}};
 
@@ -2119,6 +2121,7 @@ const EVENTS=[
  {n:'MAPPA EXPO 15th Anniversary',d:'2026.09.16 – 12.07',u:'https://expo.mappa.co.jp/en',img:'mappa'},
  {n:'치이카와 파크 스토어 오사카',d:'2026.11.24 오픈',u:'https://www.lucua.jp/special/south-open/',img:'chiikawa'},
  {n:'점프 페스타 2027',d:'2026.12.19 – 12.20',u:'https://www.jumpfesta.com/',img:'jumpfesta'},
+ {n:'히로아카 TV애니 10주년 기념전 OUR HERO',d:'2027.01.08 – 02.07',u:'https://heroaca-anime-10th-ex.com/',img:'heroaca'},
  {n:'AnimeJapan 2027',d:'2027.03.27 – 03.28',u:'https://www.anime-japan.jp/',img:'animejapan'},
 ];
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -2129,10 +2132,10 @@ const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;bo
    <div class="row" style="margin-top:10px;gap:16px"><button class="row small" style="gap:4px;${S.liked[p.id]?'color:var(--accent)':''}" data-act="like" data-i="${p.id}">${I.heart.replace('<svg','<svg width="18" height="18"')} ${fmt(p.like+(S.liked[p.id]?1:0))}</button><span class="small muted">댓글 ${p.c}</span><span style="flex:1"></span><button class="tag ac" data-go="spot" data-id="${p.spot}">이 장소 가기 ›</button></div>
   </div>`};
 SCREENS.community=()=>({tab:'community',html:`
- ${hdr('커뮤니티',{back:'auto',left:true,right:S.commTab==='feed'?`<button class="fab-plus" data-go="post" aria-label="등록하기">+</button>`:''})}
+ ${hdr('커뮤니티',{back:'auto',left:true,right:S.commTab==='feed'?`<button class="fab-plus" data-go="post" aria-label="등록하기"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>`:''})}
  <div class="pad" style="margin-bottom:10px"><div class="seg aseg"><button class="${S.commTab==='feed'?'on':''}" data-act="ctab" data-v="feed">AR 기록 피드</button><button class="${S.commTab==='goods'?'on':''}" data-act="ctab" data-v="goods">행사 안내</button></div></div>
- <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer"><img class="evimg" src="assets/events/${e.img}.jpg?v=${ASSET_V}" alt="${e.n}" loading="lazy"><b>${e.n}</b><span>${e.d}</span></a>`).join('')}</div><div style="height:24px"></div></div>`}
- </div>`});
+ <div class="body">${S.commTab==='feed'?POSTS.map(postCard).join(''):`<div class="pad"><div class="evgrid">${EVENTS.map(e=>`<a class="ev" href="${e.u}" target="_blank" rel="noopener noreferrer" aria-label="${e.n} (${e.d})"><span class="evw"><img class="evimg" src="assets/events/${e.img}.jpg?v=${ASSET_V}" alt="${e.n}" loading="lazy"></span></a>`).join('')}</div><div style="height:24px"></div></div>`}
+ </div>`,after(){if(S.commTab==='goods')homeParallax('.evw img')}});
 /* 커뮤니티 등록하기: 명소 장면 + 텍스트 */
 SCREENS.post=()=>{const reg=SPOTS.filter(s=>REG.includes(s.id));if(!REG.includes(S.postSpot))S.postSpot=reg[0].id;const sp=spot(S.postSpot);return{html:`
  ${hdr('AR 기록 등록')}
