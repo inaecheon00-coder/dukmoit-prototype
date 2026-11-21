@@ -719,6 +719,12 @@ input,textarea{font-size:17px}
 .pk-i{display:block;aspect-ratio:1;border-radius:12px;background:#e9eef5 center/cover no-repeat;margin-bottom:4px}
 .pk b{font-size:14px;font-weight:700;line-height:1.3;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pk span{font-size:13px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.postimg{position:relative;border-radius:14px;overflow:hidden}
+.post-up{width:100%;height:240px;object-fit:cover;display:block}
+.post-dim{position:absolute;inset:0;background:rgba(0,0,0,.5);display:grid;place-items:center}
+.post-dim.has{background:rgba(0,0,0,.25);place-items:end center;padding-bottom:14px}
+.post-add{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.8);color:#fff;font-size:15px;font-weight:700;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.post-add svg{width:20px;height:20px}
 .feed-img{width:100%;height:300px;object-fit:cover;border-radius:14px;display:block;background:#e9eef5}
 .fab-plus{width:40px;height:40px;border-radius:50%;background:var(--b);color:#fff;font-size:26px;font-weight:400;line-height:1;display:grid;place-items:center;box-shadow:0 4px 10px rgba(0,120,233,.3)}
 .echips{transition:none;will-change:margin-top}
@@ -1204,12 +1210,12 @@ const GOODS={
  machi:[{n:'타코짱 쿠션',p:'24,000원',s:'현지 한정'},{n:'도톤보리 간판 마그넷',p:'6,500원',s:'관광안내소'}],
 };
 const POSTS=[
- {id:'p1',u:'나',mine:true,spot:'suga',t:'11월 2일',txt:'스가 신사 계단 위에서 오버레이 켜고 찍었어요. 영화 마지막 장면이랑 각도가 거의 같아서 소름!',like:86,c:12,exp:'장면 오버레이'},
  {id:'p2',u:'주술고전_1학년',spot:'shibuya',t:'2시간 전',txt:'109 앞에서 오버레이 켜니까 이타도리 뒷모습이랑 각도가 딱 맞아요. 신호등 초록불일 때가 제일 원작 같아요',like:528,c:64,exp:'장면 오버레이'},
- {id:'p3',u:'눈오는하보로',spot:'haboro',t:'어제',txt:'첫눈 오는 날 하보로 신사 다녀왔어요. 360° 재현 켜고 돌아보면 사와코랑 카제하야가 걷던 길이 그대로…',like:412,c:51,exp:'360° 장면 재현'},
- {id:'p4',u:'푸른상자덕',spot:'sunshine',t:'3일 전',txt:'수족관 펭귄 하늘길 앞, 원작이랑 같은 자리에 쪼그려 앉아서 찍었어요. 오후 햇살 들어올 때 추천',like:367,c:29,exp:'애니 배경 화풍'},
- {id:'p5',u:'카라스노_응원단',spot:'karumai',t:'5일 전',txt:'카루마이 체육관 계단, 노을 질 때 가면 원작 색감 그대로예요. 캐릭터 필터로 히나타 소환 성공',like:298,c:33,exp:'캐릭터 필터'},
  {id:'p6',u:'결속밴드팬',spot:'shelter',t:'1주 전',txt:'SHELTER 내려가는 계단 위에서 원작 구도로 찍었어요. 공연 없는 낮 시간에 가야 사람 없어요',like:455,c:47,exp:'장면 오버레이'},
+ {id:'p4',u:'푸른상자덕',spot:'sunshine',t:'3일 전',txt:'수족관 펭귄 하늘길 앞, 원작이랑 같은 자리에 쪼그려 앉아서 찍었어요. 오후 햇살 들어올 때 추천',like:367,c:29,exp:'애니 배경 화풍'},
+ {id:'p1',u:'나',mine:true,spot:'suga',t:'11월 2일',txt:'스가 신사 계단 위에서 오버레이 켜고 찍었어요. 영화 마지막 장면이랑 각도가 거의 같아서 소름!',like:86,c:12,exp:'장면 오버레이'},
+ {id:'p3',u:'눈오는하보로',spot:'haboro',t:'어제',txt:'첫눈 오는 날 하보로 신사 다녀왔어요. 360° 재현 켜고 돌아보면 사와코랑 카제하야가 걷던 길이 그대로…',like:412,c:51,exp:'360° 장면 재현'},
+ {id:'p5',u:'카라스노_응원단',spot:'karumai',t:'5일 전',txt:'카루마이 체육관 계단, 노을 질 때 가면 원작 색감 그대로예요. 캐릭터 필터로 히나타 소환 성공',like:298,c:33,exp:'캐릭터 필터'},
 ];
 
 /* ================= STATE ================= */
@@ -1245,7 +1251,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611212';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611213';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -2017,7 +2023,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['kamakura_sd','haboro','sunshine','nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-const HAS360=new Set(['shibuya','suga','meguro','nagatoro']);
+const HAS360=new Set(['shibuya','suga','meguro','nagatoro','haboro','karumai']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
@@ -2124,10 +2130,11 @@ const EVENTS=[
  {n:'히로아카 TV애니 10주년 기념전 OUR HERO',d:'2027.01.08 – 02.07',u:'https://heroaca-anime-10th-ex.com/',img:'heroaca'},
  {n:'AnimeJapan 2027',d:'2027.03.27 – 03.28',u:'https://www.anime-japan.jp/',img:'animejapan'},
 ];
+const FEED_IMG=new Set(['shibuya','haboro','shelter','suga','sunshine','karumai']);
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const postCard=p=>{const sp=spot(p.spot);return`<div style="padding:14px 16px;border-bottom:8px solid var(--bg)">
    <div class="row"><div class="av ${p.mine?'me':''}"></div><div style="flex:1"><b class="small">@${p.u}</b><div class="small muted">${sp.name} · ${p.t}</div></div><button class="ib">${I.more}</button></div>
-   <div style="margin:10px 0"><img class="feed-img" src="assets/real/${sp.id}.jpg?v=${ASSET_V}" alt="${sp.name}에서 찍은 사진" loading="lazy" onerror="this.src='assets/hero/${sp.id}.jpg?v=${ASSET_V}'"></div>
+   <div style="margin:10px 0"><img class="feed-img" src="${p.img||`assets/${FEED_IMG.has(sp.id)?'feed':'real'}/${sp.id}.jpg?v=${ASSET_V}`}" alt="${sp.name}에서 찍은 사진" loading="lazy" onerror="this.src='assets/hero/${sp.id}.jpg?v=${ASSET_V}'"></div>
    <div class="small" style="white-space:pre-wrap">${esc(p.txt)}</div>
    <div class="row" style="margin-top:10px;gap:16px"><button class="row small" style="gap:4px;${S.liked[p.id]?'color:var(--accent)':''}" data-act="like" data-i="${p.id}">${I.heart.replace('<svg','<svg width="18" height="18"')} ${fmt(p.like+(S.liked[p.id]?1:0))}</button><span class="small muted">댓글 ${p.c}</span><span style="flex:1"></span><button class="tag ac" data-go="spot" data-id="${p.spot}">이 장소 가기 ›</button></div>
   </div>`};
@@ -2144,13 +2151,14 @@ SCREENS.post=()=>{const reg=SPOTS.filter(s=>REG.includes(s.id));if(!REG.includes
  </div>
  <div class="chips" style="margin-bottom:12px">${reg.map(s=>`<button class="chip ${s.id===sp.id?'on':''}" data-act="postspot" data-v="${s.id}">${s.name.split(' ')[0]}</button>`).join('')}</div>
  <div class="pad">
-  <div id="postimg">${art(sp,240,{cap:false,bk:false,img:HERO_SCENE.has(sp.id)?'hero':true,st:'border-radius:14px;'})}</div>
+  <div id="postimg" class="postimg">${S.postImg?`<img class="post-up" src="${S.postImg}" alt="첨부한 사진">`:art(sp,240,{cap:false,bk:false,img:HERO_SCENE.has(sp.id)?'hero':true,st:'border-radius:14px;'})}
+   <div class="post-dim ${S.postImg?'has':''}"><label class="post-add">${I.cam}<span>${S.postImg?'사진 바꾸기':'사진 첨부하기'}</span><input type="file" accept="image/*" id="postfile" hidden></label></div></div>
   <div class="small muted" style="margin-top:8px" id="postcap">${work(sp).title} · ${sp.name}</div>
   <div style="font-weight:700;margin:20px 0 8px">내용</div>
   <textarea id="posttxt" maxlength="300" placeholder="이 장면 앞에서의 순간을 기록해 보세요">${S.postDraft||''}</textarea>
   <div style="height:24px"></div>
  </div></div>
- <div class="cta"><button class="btn pri" data-act="postsubmit">등록하기</button></div>`}};
+ <div class="cta"><button class="btn pri" data-act="postsubmit">등록하기</button></div>`,after(){const f=document.getElementById('postfile');if(f)f.onchange=()=>{const file=f.files&&f.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{const ta=document.querySelector('#posttxt');S.postDraft=ta?ta.value:'';S.postImg=r.result;render()};r.readAsDataURL(file)}}}};
 const wt=sp=>work(sp).title.replace(/\s*\(.*\)\s*$/,'');
 SCREENS.archive=()=>{
  const T=S.archTab,stamps=Object.entries(S.stamps||{}),got=new Set(stamps.map(e=>e[0]));
@@ -2413,7 +2421,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'like':S.liked[t.dataset.i]=!S.liked[t.dataset.i];render();break;
   case 'postspot':{const ta=document.querySelector('#posttxt');S.postDraft=ta?ta.value:'';S.postSpot=t.dataset.v;render();break}
   case 'postsubmit':{const ta=document.querySelector('#posttxt'),v=(ta&&ta.value||'').trim();if(!v){toast('내용을 입력해 주세요');ta&&ta.focus();break}
-   POSTS.unshift({id:'my'+Date.now(),u:'나',mine:true,spot:S.postSpot,t:'방금',txt:v,like:0,c:0});S.postDraft='';S.commTab='feed';back();toast('AR 기록 피드에 등록했어요');break}
+   POSTS.unshift({id:'my'+Date.now(),u:'나',mine:true,spot:S.postSpot,t:'방금',txt:v,like:0,c:0,img:S.postImg||null});S.postDraft='';S.postImg=null;S.commTab='feed';back();toast('AR 기록 피드에 등록했어요');break}
  }
 });
 
