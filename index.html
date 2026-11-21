@@ -1265,7 +1265,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611214';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611215';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1485,7 +1485,7 @@ SCREENS.search=()=>({html:`
 function arThumb(sp,id){const v=ASSET_V,hero=HERO_SCENE.has(sp.id)?`assets/hero/${sp.id}.jpg?v=${v}`:`assets/posters/${sp.id}.jpg?v=${v}`,real=`assets/real/${sp.id}.jpg?v=${v}`;
  const base=`url('${real}'),url('${hero}')`;
  if(id==='overlay')return`<div class="arth" style="background-image:${base}"><div class="arth-ov" style="background-image:url('${hero}')"></div><span>오버레이</span></div>`;
- if(id==='pano')return`<div class="arth" style="background-image:${sp.id==='shibuya'?`url('assets/360/shibuya.jpg?v=${v}')`:base}"><span>360°</span></div>`;
+ if(id==='pano')return`<div class="arth" style="background-image:${HAS360.has(sp.id)?`url('assets/360/${sp.id}.jpg?v=${v}')`:base}"><span>360°</span></div>`;
  return`<div class="arth" style="background-image:${base}">${CHAR.has(sp.id)?`<img class="arth-ch" src="assets/char/${sp.id}.png?v=${v}" alt="">`:''}<span>투샷</span></div>`}
 SCREENS.spot=()=>{const sp=spot();const w=work(sp);const near=SPOTS.filter(s=>s.work===sp.work&&s.id!==sp.id);return{html:`
  ${hdr('',{right:`<button class="ib bkh ${(S.saved||{})[sp.id]?'on':''}" data-act="bk" data-v="${sp.id}" aria-label="명소 저장">${I.star}</button><button class="ib" data-toast="공유 링크를 복사했어요">${I.share}</button>`}).replace('margin-right:36px','')}
@@ -2029,7 +2029,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['kamakura_sd','haboro','sunshine','nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-const HAS360=new Set(['shibuya','suga','meguro','nagatoro','haboro','karumai']);
+const HAS360=new Set(['shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
@@ -2185,7 +2185,7 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
   body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><div class="small muted" style="margin-bottom:6px;position:relative">최근 획득한 뱃지</div><div class="sh-wrap"><span class="sh-rays"></span><div class="sh-flip">${stampSVG(last[0],{size:168,date:last[1]})}<i class="sh-glint" style="-webkit-mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat;mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat"></i></div>${Array.from({length:8},(_,i)=>`<i class="sh-spark" style="--a:${i*45}deg;--t:${1.0+i*.03}s"></i>`).join('')}</div><b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
   <div class="row between" style="margin:20px 0 10px"><b class="small">전체 뱃지</b><span class="small muted">${got.size}/${REG.length}</span></div>
   <div class="st3" id="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}</button>`).join('')}</div>`}
- else body=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
+ else body=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',img:HERO_SCENE.has(sp.id)?'hero':true,st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
  return{tab:'archive',after(){if(T!=='stamp')return;const g=document.getElementById('st3');if(!g)return;const cells=[...g.children],gr=g.getBoundingClientRect(),r0={left:gr.left+gr.width/2,top:gr.top+Math.min(gr.height,320)/2};
    cells.forEach((c,i)=>{const r=c.getBoundingClientRect();c.style.transition='none';c.style.transform=`translate(${r0.left-(r.left+r.width/2)}px,${r0.top-(r.top+r.height/2)}px) rotate(${(i%5-2)*8}deg) scale(.9)`;c.style.zIndex=cells.length-i});
    requestAnimationFrame(()=>requestAnimationFrame(()=>cells.forEach((c,i)=>{c.style.transition=`transform .6s cubic-bezier(.2,1.25,.4,1) ${600+i*45}ms`;c.style.transform=''})));},html:`
