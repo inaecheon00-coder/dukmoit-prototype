@@ -705,14 +705,23 @@ input,textarea{font-size:17px}
 .ms-conf i{position:absolute;width:9px;height:14px;border-radius:3px;background:var(--c);transform:rotate(var(--a)) translateY(0);opacity:0;animation:msBurst .9s ease-out var(--t) forwards}
 @keyframes msBurst{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(.6)}100%{opacity:0;transform:rotate(var(--a)) translateY(calc(-1*var(--d) - 60px)) scale(1)}}
 .st-hero{position:relative;overflow:hidden;isolation:isolate;perspective:700px}
-.sh-rays{position:absolute;inset:-60%;z-index:-1;background:repeating-conic-gradient(from 0deg at 50% 50%,rgba(0,120,233,.10) 0 6deg,transparent 6deg 14deg);-webkit-mask:radial-gradient(closest-side,transparent 18%,#000 70%);mask:radial-gradient(closest-side,transparent 18%,#000 70%);animation:rkRot 22s linear infinite}
-.sh-flip{position:relative;transform-style:preserve-3d;animation:shFlip 1.3s cubic-bezier(.25,.8,.3,1.15) both}
-@keyframes shFlip{0%{transform:rotateX(-360deg) scale(.6);opacity:0}25%{opacity:1}100%{transform:rotateX(0) scale(1)}}
+.st-hero{background:radial-gradient(ellipse 72% 78% at 50% 50%,#6baeff 0%,#50a1fa 25%,#3693f4 50%,#1b86ef 75%,#0078e9 100%)!important;color:#fff;border:0!important}
+.st-hero .small.muted,.st-hero b{color:#fff!important}.st-hero .small.muted{opacity:.9}
+.sh-rays{position:absolute;inset:-60%;z-index:-1;background:repeating-conic-gradient(from 2deg at 50% 50%,rgba(255,255,255,.7) 0 .5deg,transparent .5deg 4.2deg,rgba(255,255,255,.4) 4.2deg 4.65deg,transparent 4.6deg 9deg);-webkit-mask:radial-gradient(closest-side,transparent 26%,rgba(0,0,0,.55) 50%,#000 100%);mask:radial-gradient(closest-side,transparent 26%,rgba(0,0,0,.55) 50%,#000 100%);animation:shBurst .9s cubic-bezier(.2,1.6,.4,1) 1s both,rkRot 18s linear 1.9s infinite}
+@keyframes shBurst{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+.sh-flip{position:relative;transform-style:preserve-3d;animation:shFlip 1.2s cubic-bezier(.45,0,.2,1) both}
+@keyframes shFlip{0%{transform:rotateX(-360deg)}80%{transform:rotateX(0) scale(1)}88%{transform:scale(1.14)}100%{transform:scale(1)}}
 .sh-glint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.7) 50%,transparent 65%) -200% 0/250% 100% no-repeat;animation:shGlint 3.2s ease-in-out 1.4s infinite;border-radius:20px}
 @keyframes shGlint{0%{background-position:-200% 0}50%,100%{background-position:200% 0}}
 .sh-spark{position:absolute;left:50%;top:52%;width:8px;height:8px;margin:-4px;border-radius:50%;background:#ffd34d;opacity:0;animation:shSpark .8s ease-out var(--t) both}
 .sh-spark:nth-child(even){background:#6baeff}
 @keyframes shSpark{0%{opacity:1;transform:rotate(var(--a)) translateY(0) scale(.4)}100%{opacity:0;transform:rotate(var(--a)) translateY(-120px) scale(1)}}
+.pstack{position:relative;display:block;height:400px;overflow:visible;margin:8px 0 14px;cursor:pointer}
+.pp{position:absolute;left:50%;top:50%;width:150px;height:190px;margin:-95px 0 0 -75px;border-radius:8px;background:#e9eef5 no-repeat;border:6px solid #fff;box-shadow:0 6px 18px rgba(0,40,100,.18);transform:translate(var(--x),var(--y)) rotate(var(--r));animation:ppIn .5s cubic-bezier(.2,1.4,.4,1) var(--d) both}
+@keyframes ppIn{from{opacity:0;transform:translate(0,30px) rotate(0) scale(.9)}to{opacity:1;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+.pp.top{width:190px;height:236px;margin:-118px 0 0 -95px;--r:-2deg;--x:0px;--y:0px;--d:450ms;background:#fff;border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--navy);box-shadow:0 10px 26px rgba(0,40,100,.22)}
+.pp.top b{font-size:19px;font-weight:800}.pp.top .small{font-size:12px;text-align:center;padding:0 10px;word-break:keep-all}.pt-i{color:var(--b);display:flex}
+.pstack:active .pp.top{transform:rotate(-2deg) scale(.97)}
 .trip-del{width:34px;height:34px;flex:none;border-radius:50%;background:var(--b-weak);color:var(--b);font-size:22px;font-weight:700;line-height:1;display:grid;place-items:center}
 .pick3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 10px;padding-bottom:28px}
 .pk{display:flex;flex-direction:column;gap:3px;text-align:left;min-width:0}
@@ -731,7 +740,8 @@ input,textarea{font-size:17px}
 .near .cart .poster{transform-origin:50% 45%}
 .near.anim-all .cart .poster{animation:nearWalk 3s ease-out forwards}
 @keyframes nearWalk{from{transform:scale(1)}to{transform:scale(1.2) translateY(-3%)}}
-.near.anim-tokyo .cart .poster{animation:nearClimb 3s ease-in-out forwards}
+.near.anim-tokyo .cart .poster{transform-origin:47% 22%;animation:nearClose 3s ease-out forwards}
+@keyframes nearClose{from{transform:scale(2.3) translateY(4%)}to{transform:scale(2.5) translateY(0)}}
 @keyframes nearClimb{from{transform:scale(1.18) translateY(7%)}to{transform:scale(1.18) translateY(-7%)}}
 .near.anim-osaka .cart .poster{animation:nearShout 3s ease-out forwards}
 @keyframes nearShout{0%{transform:scale(1.25)}60%{transform:scale(1.05)}70%{transform:scale(1.07) rotate(-.6deg)}80%{transform:scale(1.05) rotate(.6deg)}90%{transform:scale(1.07)}100%{transform:scale(1.05)}}
@@ -1251,7 +1261,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611213';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611214';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1340,24 +1350,16 @@ const rkCard=(mt=24)=>`<div class="card lg rank rank-flat" style="margin-top:${m
 function rkStart(){const r=document.getElementById('rkroll'),tk=r&&r.parentElement;if(!r)return;let i=0;clearInterval(S._rk);
   S._rk=setInterval(()=>{if(!document.body.contains(r)){clearInterval(S._rk);return}i=(i+1)%HOTKW.length;r.style.top=(-i*40)+'px';tk.dataset.q=HOTKW[i].k;
    const li=document.querySelectorAll('#rkol li')[i];if(li){li.classList.remove('rkfl');void li.offsetWidth;li.classList.add('rkfl')}},2200)}
-SCREENS.scan=()=>({after(){rkStart()},
+SCREENS.scan=()=>({
  html:`
  ${hdr('장면 검색')}
  <div class="body"><div class="pad">
-  <div class="sh2" style="margin-top:8px">애니메이션 제목 검색</div>
-  <p class="small muted" style="margin:2px 0 10px">한 때, 좋아했던 캐릭터를 떠올려보세요.</p>
-  <div class="search tsearch"><input id="q" placeholder="오늘의 추천) 체인소맨" value="${S.scanQuery}" enterkeyhint="search">
-   <button data-act="qsearch" aria-label="검색">${I.search}</button></div>
-
-  ${rkCard()}
-
   <p style="font-size:22px;font-weight:700;color:var(--navy);letter-spacing:-.02em;margin:28px 0 6px">어떤 장면이 기억나나요?</p>
   <p class="muted small" style="margin-bottom:14px">지명을 몰라도 괜찮아요. 사진 한 장이면 충분해요.</p>
-  <label class="drop">
+  <label class="pstack">
    <input type="file" accept="image/*" id="upl" hidden>
-   <div style="color:var(--sub);display:flex;justify-content:center;margin-bottom:8px">${I.img.replace('<svg','<svg width="32" height="32"')}</div>
-   <div style="font-weight:700">캡처 이미지 올리기</div>
-   <div class="small muted">애니 캡처 · 만화책 사진 · 굿즈 사진</div>
+   <span class="pp" style="background-image:url(assets/hero/nagatoro.jpg?v=${ASSET_V});background-position:82% 25%;background-size:260%;--r:-14deg;--x:-100px;--y:-70px;--d:0ms"></span><span class="pp" style="background-image:url(assets/hero/shibuya.jpg?v=${ASSET_V});background-position:52% 40%;background-size:260%;--r:10deg;--x:100px;--y:-62px;--d:70ms"></span><span class="pp" style="background-image:url(assets/hero/meguro.jpg?v=${ASSET_V});background-position:72% 50%;background-size:240%;--r:-8deg;--x:-108px;--y:58px;--d:140ms"></span><span class="pp" style="background-image:url(assets/hero/sunshine.jpg?v=${ASSET_V});background-position:30% 68%;background-size:280%;--r:13deg;--x:104px;--y:64px;--d:210ms"></span><span class="pp" style="background-image:url(assets/hero/haboro.jpg?v=${ASSET_V});background-position:76% 40%;background-size:260%;--r:6deg;--x:28px;--y:110px;--d:280ms"></span><span class="pp" style="background-image:url(assets/hero/onnazaka.jpg?v=${ASSET_V});background-position:47% 14%;background-size:480%;--r:-4deg;--x:-20px;--y:-112px;--d:350ms"></span>
+   <span class="pp top"><span class="pt-i">${I.img.replace('<svg','<svg width="34" height="34"')}</span><b>이미지 올리기</b><span class="small muted">애니 캡처 · 만화책 사진 · 굿즈 사진</span></span>
   </label>
   <div class="row" style="margin:10px 0 28px">
    <button class="btn out sm" data-toast="카메라는 실제 앱에서 열려요 (프로토타입에선 샘플 사용)">${I.cam.replace('<svg','<svg width="16" height="16"')} 만화책 촬영</button>
@@ -2176,7 +2178,7 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
  else if(T==='ar'){const mine=POSTS.filter(p=>p.mine);body=mine.length?`<div class="myar">${mine.map(postCard).join('')}</div>`:`<div class="small muted" style="text-align:center;padding:40px 0">AR 기록 피드에 등록한 글이 없어요<br><button class="btn pri sm" style="width:auto;padding:0 16px;margin-top:12px" data-go="post">등록하기</button></div>`}
  else if(T==='review')body=`<div class="sub-h">작성 후기</div>`+tl(reviews.map(r=>({id:r.spot,date:r.d,tags:['★ '+Number(r.r).toFixed(1),r.tag].filter(Boolean),memo:r.txt})));
  else if(T==='stamp'){const last=stamps[stamps.length-1];
-  body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><span class="sh-rays"></span><div class="small muted" style="margin-bottom:6px;position:relative">최근 획득한 뱃지</div><div class="sh-flip">${stampSVG(last[0],{size:168,date:last[1]})}<i class="sh-glint" style="-webkit-mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat;mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat"></i></div>${Array.from({length:8},(_,i)=>`<i class="sh-spark" style="--a:${i*45}deg;--t:${1.25+i*.04}s"></i>`).join('')}<b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
+  body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><span class="sh-rays"></span><div class="small muted" style="margin-bottom:6px;position:relative">최근 획득한 뱃지</div><div class="sh-flip">${stampSVG(last[0],{size:168,date:last[1]})}<i class="sh-glint" style="-webkit-mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat;mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat"></i></div>${Array.from({length:8},(_,i)=>`<i class="sh-spark" style="--a:${i*45}deg;--t:${1.0+i*.03}s"></i>`).join('')}<b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
   <div class="row between" style="margin:20px 0 10px"><b class="small">전체 뱃지</b><span class="small muted">${got.size}/${REG.length}</span></div>
   <div class="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}</button>`).join('')}</div>`}
  else body=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
