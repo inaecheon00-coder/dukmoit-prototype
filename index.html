@@ -1384,12 +1384,18 @@ SCREENS.scanning=()=>({html:`
    S._t2=setTimeout(()=>{clearInterval(S._t);replace('scanresult')},1700);
  }});
 
+/* 이미지 검색: 등록된 대표 장면과 색 분포(8x8)를 비교해 같은 장면이면 해당 작품을 1순위로 보여줘요 */
+const IMG_REF={"suga":[210,206,198,226,223,211,224,224,217,207,208,206,203,202,194,195,191,177,214,208,193,191,189,178,168,168,154,199,183,173,199,184,176,191,176,172,127,127,131,159,157,161,201,196,192,157,162,170,150,146,135,192,169,155,192,172,157,123,119,121,94,96,105,139,143,148,134,144,165,144,152,162,150,146,134,183,169,147,155,144,134,76,84,96,93,94,104,167,165,148,133,147,138,127,146,97,133,148,104,144,143,132,83,87,98,63,73,89,77,81,95,106,106,104,102,115,109,63,79,59,128,134,120,74,83,95,67,73,88,63,73,88,90,96,91,77,68,66,81,85,71,55,74,58,133,133,126,93,95,102,76,82,97,74,82,99,84,87,91,115,105,104,89,74,72,60,70,64,119,120,126,89,96,111,76,88,105,77,90,107,64,69,80,64,57,64,98,85,85,70,70,76],"shibuya":[90,97,104,160,160,164,216,216,216,239,239,237,231,231,229,217,217,216,171,170,171,79,88,93,85,88,94,160,161,166,187,161,160,234,234,233,228,227,227,188,172,172,155,158,161,106,115,117,65,74,81,150,152,159,125,102,105,124,85,86,165,137,139,140,130,134,125,132,138,103,107,107,60,71,77,122,131,138,136,119,122,118,99,101,92,91,96,163,165,166,234,231,226,199,192,185,94,102,106,107,115,121,107,97,99,113,101,100,74,80,86,151,157,159,200,200,198,166,167,166,72,82,86,111,122,130,105,99,100,41,15,22,34,39,47,123,127,131,108,113,112,115,119,120,56,70,82,131,142,155,88,79,83,129,130,132,48,54,61,99,100,98,144,148,131,56,65,65,36,49,61,92,106,125,152,162,172,198,205,202,77,83,86,103,112,113,114,125,131,48,61,69],"shelter":[86,89,108,85,77,125,134,125,178,142,136,188,131,125,180,125,118,175,139,131,184,130,123,176,45,51,81,104,97,151,139,123,183,155,136,191,170,156,206,140,130,184,150,132,182,146,125,180,51,58,92,121,125,182,107,100,160,153,119,173,165,148,196,156,150,195,141,136,180,162,135,179,56,61,93,132,132,168,95,89,137,131,116,163,143,134,169,148,144,181,133,124,158,159,139,171,67,70,93,119,120,144,64,67,108,153,147,173,146,142,162,144,139,158,161,141,158,143,126,150,108,108,116,75,83,114,51,55,86,125,144,166,117,100,129,144,121,145,114,112,128,107,102,120,36,37,51,54,61,89,41,43,62,93,99,116,111,100,120,82,81,102,91,92,107,83,85,102,23,23,27,26,26,32,27,27,34,68,64,68,64,54,60,49,42,49,59,59,64,42,42,47]};
+function imgFP(src){return new Promise(res=>{const im=new Image();im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.imageSmoothingQuality='high';x.drawImage(im,0,0,64,64);const d=x.getImageData(0,0,64,64).data,o=[];for(let by=0;by<8;by++)for(let bx=0;bx<8;bx++){let r=0,g=0,b=0;for(let y=0;y<8;y++)for(let xx=0;xx<8;xx++){const i=((by*8+y)*64+bx*8+xx)*4;r+=d[i];g+=d[i+1];b+=d[i+2]}o.push(r>>6,g>>6,b>>6)}res(o)}catch(e){res(null)}};im.onerror=()=>res(null);im.src=src})}
+function matchRef(v){if(!v)return null;let best=null,bd=1e9;for(const k in IMG_REF){const r=IMG_REF[k];let d=0;for(let i=0;i<r.length;i++)d+=Math.abs(v[i]-r[i]);d/=r.length;if(d<bd){bd=d;best=k}}return bd<20?best:null}
 SCREENS.scanresult=()=>{const img=s=>HERO_SCENE.has(s.id)?'hero':true;const reg=SPOTS.filter(x=>REG.includes(x.id));
  const q=(S.scanQuery||'').trim();let list,none=false;
  if(q){list=searchSpots(q);if(!list.length)none=true}
  if(!q){/* 이미지 검색: 등록된 명소 중 무작위로 매칭 결과를 보여줘요 (매번 바뀜) */
   const pool=reg.filter(x=>HERO_SCENE.has(x.id)).slice().sort(()=>Math.random()-.5);
-  list=pool.slice(0,5).map((x,i)=>Object.assign(Object.create(x),{match:[92,84,78,71,66][i]-Math.floor(Math.random()*4)}))}
+  const hit=S.upload&&S.uploadMatch&&reg.find(x=>x.id===S.uploadMatch);
+  if(hit){const rest=pool.filter(x=>x.id!==hit.id).slice(0,4);list=[Object.assign(Object.create(hit),{match:97-Math.floor(Math.random()*3)}),...rest.map((x,i)=>Object.assign(Object.create(x),{match:[71,64,58,52][i]-Math.floor(Math.random()*4)}))]}
+  else list=pool.slice(0,5).map((x,i)=>Object.assign(Object.create(x),{match:[92,84,78,71,66][i]-Math.floor(Math.random()*4)}))}
  if(none){const rec=reg.slice().sort((a,b)=>b.visits-a.visits);return{html:`
  ${hdr('검색 결과')}
  <div class="body"><div class="pad">
@@ -2302,7 +2308,7 @@ function render(mode='none',restore){closeMission(true);
  }
  applyScroll(el,restore||keep);
  if(def.after)def.after();
- const up=el.querySelector('#upl');if(up)up.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.upload=r.result;S.scanQuery='';go('scanning')};r.readAsDataURL(f)};
+ const up=el.querySelector('#upl');if(up)up.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.upload=r.result;S.scanQuery='';S.uploadMatch=null;imgFP(r.result).then(v=>{S.uploadMatch=matchRef(v)});go('scanning')};r.readAsDataURL(f)};
  const cc=el.querySelector('#camcap');if(cc)cc.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.photo=r.result;S.camMode='photo';render();toast('사진 위에 AR을 입혔어요')};r.readAsDataURL(f)};
  const q=el.querySelector('#q');if(q)q.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();el.querySelector('[data-act="qsearch"]')?.click()}};
  drawFlow();
