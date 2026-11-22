@@ -2034,13 +2034,14 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['meguro','shelter','kamakura_sd','haboro','sunshine','nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
+const PANO_SOON=new Set(['kifune_cn','haboro','karumai','tamako']);const PANO_CAP=id=>PANO_SOON.has(id)?'현재 서비스 준비 중에 있습니다.':'본 장면은 참고 영상입니다.';
 const HAS360=new Set(['kamakura_sd','tamako','keion','onnazaka','shelter','sunshine','shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn','seihantai']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
  else if(!modes.find(m=>m.id===S.siteMode))S.siteMode=modes[0]?.id||'overlay';
  const pano=JJK?S.jjkMode==='pano':S.siteMode==='pano';
  let view='';
- if(pano&&JJK){view=`<div class="pano v360" id="pano"><video id="v360" src="assets/360/${sp.id}.mp4?v=${ASSET_V}" muted loop playsinline autoplay preload="auto"></video></div><div class="compass" id="compass">본 장면은 참고 영상입니다.</div>`}
+ if(pano&&JJK){view=`<div class="pano v360" id="pano"><video id="v360" src="assets/360/${sp.id}.mp4?v=${ASSET_V}" muted loop playsinline autoplay preload="auto"></video></div><div class="compass" id="compass">${PANO_CAP(sp.id)}</div>`}
  else if(pano){/* 360°: 정면은 원작 장면, 옆·뒤는 실제 장소 사진으로 둘러보기 */const hs=`assets/hero/${sp.id}.jpg?v=${ASSET_V}`,rs=`assets/real/${sp.id}.jpg?v=${ASSET_V}`;
    const hues=[[hs,'정면 · 원작 장면',''],[rs,'오른쪽 · 실제 모습','right'],[hs,'뒤쪽 · 원작 장면 뒤편','flip'],[rs,'왼쪽 · 실제 모습','left']];
    view=`<div class="pano" id="pano"><div class="pano-strip" id="strip">${hues.concat(hues).map(h=>`<div class="pv ${h[2]}" style="background-image:url('${h[0]}')"><span>${h[1]}</span></div>`).join('')}</div></div><div class="compass" id="compass">0° · 드래그해서 둘러보기</div>`}
@@ -2082,7 +2083,7 @@ SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e
     p.onpointerup=p.onpointercancel=()=>{if(dr){dr=null;v.play().catch(()=>{})}};return}
    if(!pano){startCam();arLoop();if(!S.locked){clearTimeout(S._lock);S._lock=setTimeout(()=>{S.locked=true;S.lockAt=performance.now();const r=document.getElementById('reticle');if(r){r.classList.add('done');setTimeout(()=>r.remove(),500)}toast('장면 인식 완료 · 일치도 92%')},2600)}}
    else{stopCam();const p=document.getElementById('pano');const strip=document.getElementById('strip');let sx=0,start=0,drag=false;const W=strip.firstElementChild.offsetWidth*4;
-    const apply=()=>{let v=((S.pan%W)-W)%W;strip.style.transform=`translateX(${v}px)`;document.getElementById('compass').textContent='본 장면은 참고 영상입니다.'};apply();
+    const apply=()=>{let v=((S.pan%W)-W)%W;strip.style.transform=`translateX(${v}px)`;document.getElementById('compass').textContent=PANO_CAP(spot().id)};apply();
     p.onpointerdown=e=>{drag=true;sx=e.clientX;start=S.pan;p.setPointerCapture(e.pointerId)};p.onpointermove=e=>{if(!drag)return;S.pan=start+(e.clientX-sx);apply()};p.onpointerup=()=>{drag=false}}
  }}};
 
