@@ -1270,7 +1270,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611228';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611229';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1713,10 +1713,8 @@ async function startCam(){
  if(S.camMode==='photo'||S.camMode==='sim'||S.camMode==='denied'){syncCamUI();return}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){S.camMode='denied';render();return}
  try{
-  const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:S.facing||'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});
+  const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:S.facing||'environment'},width:{ideal:1280},height:{ideal:1920}},audio:false});
   S.stream=st;S.camMode='live';
-  /* 기본 배율(1x)로: 기기가 확대 상태로 열리면 최소 배율로 되돌려요 */
-  try{const tr=st.getVideoTracks()[0],cp=tr.getCapabilities&&tr.getCapabilities();if(cp&&cp.zoom){const z=Math.max(cp.zoom.min,Math.min(1,cp.zoom.max));await tr.applyConstraints({advanced:[{zoom:z}]})}}catch(e){}
   const v2=document.getElementById('camv');if(!v2){stopCam();return}
   v2.srcObject=st;v2.hidden=false;try{await v2.play()}catch(e){}
   syncCamUI();
@@ -2108,7 +2106,7 @@ SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e
 SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버레이'],ctx:'site'};return{html:`
  ${hdr('기록 남기기')}
  <div class="body"><div class="pad">
-  ${c.img?`<img src="${c.img}" alt="AR 촬영 결과" style="width:100%;border-radius:14px;display:block;height:auto;max-height:62vh;object-fit:contain;background:#111">`:ph(c.exp.join(' + ')+' 촬영본',360,'border-radius:14px','AR 촬영 결과')}
+  ${c.img?`<img src="${c.img}" alt="AR 촬영 결과" style="width:100%;border-radius:14px;display:block;aspect-ratio:9/16;object-fit:cover;background:#111">`:ph(c.exp.join(' + ')+' 촬영본',360,'border-radius:14px','AR 촬영 결과')}
   <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${c.exp.map(e=>`<span class="tag ac">${e}</span>`).join('')}<span class="tag">${work(sp).title}</span><span class="tag">${sp.ep}</span>${c.src?`<span class="tag">${c.src}</span>`:''}</div>
   <div style="font-weight:700;margin:20px 0 8px">오늘의 덕질 메모</div>
   <textarea id="memo" placeholder="이 장면 앞에서 어떤 기분이었나요?"></textarea>
