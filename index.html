@@ -2103,7 +2103,7 @@ const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,1
  seihantai:[34.6857,135.8399],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[34.9847,135.7585]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
-const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'시모키타자와역',g:[35.6616,139.6670]},osaka:{name:'교토역',g:[34.9845,135.7584]}};
+const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'시모키타자와역',g:[35.6616,139.6670]},osaka:{name:'도요사토역',g:[35.2015,136.2395]}};
 const km=(a,b)=>{const R=6371,t=x=>x*Math.PI/180,d1=t(b[0]-a[0]),d2=t(b[1]-a[1]),h=Math.sin(d1/2)**2+Math.cos(t(a[0]))*Math.cos(t(b[0]))*Math.sin(d2/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
 const fmtKm=d=>d<1?Math.round(d*1000)+'m':d<10?d.toFixed(1)+'km':Math.round(d)+'km';
 const ECATS=[['all','전체'],['tokyo','도쿄'],['osaka','오사카']];
