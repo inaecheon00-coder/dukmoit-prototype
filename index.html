@@ -1131,7 +1131,7 @@ const SCENE_FIX={
  keion:{ep:'1화',time:'',scene:'히라사와 유이가 고등학교 입학식에 참석하려고 학교에 도착하는 장면'},
  gotoubun:{ep:'2기 12화',time:'',scene:'후타로를 피하던 미쿠가 영화촌에서 우연히 마주쳐 어색한 상황을 맞이하는 장면'},
  nagatoro:{ep:'8화',time:'',scene:'가위바위보로 짐 들어주기 내기를 해서 이긴 나가토로가 선배 등에 훅 업히는 장면'},
- seihantai:{ep:'11화',time:'',name:'도다이지 남대문',jp:'東大寺南大門',st:'긴테쓰나라역 도보 20분',region:'일본 나라현 나라시',hub:'나라',tags:['수학여행','나라','절'],tip:'남대문 양옆의 금강역사상도 꼭 보고 가세요. 사슴이 많으니 간식 조심!',scene:'수학여행으로 나라를 찾은 친구들이 도다이지 남대문 일대를 둘러보며 추억을 쌓는 장면'},
+ seihantai:{ep:'11화',time:'',name:'기요미즈데라',jp:'清水寺',st:'기요미즈미치 정류장 도보 약 10분',region:'일본 교토부 교토시 히가시야마구',hub:'교토',tags:['수학여행','교토','사찰'],tip:'아침 일찍 가면 본당 무대에서 한적하게 사진을 찍을 수 있어요. 가을 단풍철엔 많이 붐비니 서둘러 주세요.',scene:'수학여행으로 교토를 찾은 스즈키와 타니가 기요미즈데라 난간 앞에서 단풍과 교토 시내를 배경으로 나란히 선 장면'},
  yanineko:{ep:'11화',time:'',scene:'야니네코와 아파트 주민들이 교토·나라 여행을 떠나 교토역에 도착하는 장면'},
  tamako:{ep:'극장판',time:'',scene:'교토역 신칸센 승강장에서 타마코와 모치조가 마주하는 장면'},
  shibuya:{ep:'2기 시부야 사변',time:'',scene:'2기 시부야 사변 엔딩에 등장하는 이타도리 유지'},
@@ -1265,7 +1265,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611226';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611227';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1542,7 +1542,7 @@ const PROUTE={
  shelter:{tokyo:{t:[['지하철 마루노우치선',18,'신주쿠역'],['오다큐선',8,'시모키타자와역']],walk:3,fare:380,km:12},shibuya:{t:[['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:140,km:3},narita:{t:[NEXS,['게이오 이노카시라선',4,'시모키타자와역']],walk:3,fare:3390,km:82}},
  kamakura:kana('가마쿠라코코마에역',17,1),shichiri:kana('시치리가하마역',19,5),enoshima:kana('에노시마역',10,12),
  keion:{umeda:{t:[['JR 비와코선 신쾌속',60,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:1900,km:110},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 비와코선 신쾌속',60,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:2140,km:115},kix:{t:[['JR 특급 하루카',75,'교토역'],['JR 비와코선',45,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:4800,km:160}},
- seihantai:{umeda:{t:[['JR 야마토지선 쾌속',50,'나라역'],['나라교통 버스',10,'다이부쓰덴카스가타이샤마에']],walk:5,fare:1040,km:42},namba:{t:[['긴테쓰 나라선 쾌속급행',38,'긴테쓰나라역']],walk:20,fare:680,km:33},kix:{t:[['JR 간쿠쾌속',70,'덴노지역'],['JR 야마토지선 쾌속',33,'나라역'],['나라교통 버스',10,'다이부쓰덴카스가타이샤마에']],walk:5,fare:1890,km:75}},
+ seihantai:{umeda:{t:[['한큐 교토선 특급',43,'교토카와라마치역'],['교토 시버스 207',10,'기요미즈미치']],walk:10,fare:630,km:48},namba:{t:[['오사카 메트로 미도스지선',8,'요도야바시역'],['게이한 본선 특급',45,'기요미즈고조역']],walk:25,fare:690,km:50},kix:{t:[['JR 특급 하루카',75,'교토역'],['교토 시버스 206',15,'기요미즈미치']],walk:10,fare:3810,km:100}},
  kifune_cn:{umeda:{t:[['JR 오사카순환선',8,'니시쿠조역'],['JR 유메사키선',5,'유니버설시티역']],walk:5,fare:190,km:9},namba:{t:[['한신 난바선',12,'니시쿠조역'],['JR 유메사키선',5,'유니버설시티역']],walk:5,fare:450,km:10},kix:{t:[['리무진 버스',70,'유니버설 스튜디오 재팬']],walk:3,fare:1800,km:50}},
  gotoubun:{umeda:{t:[['JR 교토선 신쾌속',30,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:820,km:60},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 교토선 신쾌속',30,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:1060,km:62},kix:{t:[['JR 특급 하루카',75,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:3900,km:110}},
  yanineko:{umeda:{t:[['JR 교토선 신쾌속',30,'교토역 승강장']],walk:3,fare:580,km:50},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 교토선 신쾌속',30,'교토역 승강장']],walk:3,fare:820,km:52},kix:{t:[['JR 특급 하루카',75,'교토역 승강장']],walk:3,fare:3640,km:100}},
@@ -1906,7 +1906,7 @@ const STAMP={
  shelter:{sh:'diamond',c:'#f0503c',ic:'guitar',k:'SHELTER'},
  meguro:{sh:'star',c:'#8a4fd0',ic:'idol',k:'메구로'},
  keion:{sh:'circle',c:'#e8960a',ic:'note',k:'도요사토',ring:'TOYOSATO SCHOOL ★ DUKMOIT ★ '},
- seihantai:{sh:'shield',c:'#c43e6e',ic:'temple',k:'도다이지'},
+ seihantai:{sh:'shield',c:'#c43e6e',ic:'temple',k:'기요미즈데라'},
  gotoubun:{sh:'ticket',c:'#b5338a',ic:'curtain',k:'나카무라자'},
  yanineko:{sh:'hex',c:'#3a8a3a',ic:'cat',k:'교토역'},
  nagatoro:{sh:'scallop',c:'#e0607e',ic:'paw',k:'나가토로'},
@@ -2100,7 +2100,7 @@ SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버�
 const REG=AREAS.all.map(x=>x.s);   // 홈 '전체' 영역에 등록된 애니 명소만
 const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,141.4605],haboro:[44.3613,141.7006],meguro:[35.6339,139.7158],shelter:[35.6612,139.6680],
  onnazaka:[35.6958,139.7580],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[34.6654,135.4323],keion:[35.2054,136.2311],
- seihantai:[34.6857,135.8399],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[34.9847,135.7585]};
+ seihantai:[34.9949,135.7850],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[34.9847,135.7585]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
 const HERE={all:{name:'하라주쿠역',g:[35.6702,139.7027]},tokyo:{name:'시모키타자와역',g:[35.6616,139.6670]},osaka:{name:'도요사토역',g:[35.2015,136.2395]}};
