@@ -168,6 +168,10 @@ input[type=range]{width:100%;accent-color:#fff}
 .camwrap{position:absolute;inset:0;overflow:hidden;background:#000}
 .camwrap video,.camwrap img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .camwrap{background:#000}
+.rec-badge{position:relative;width:56px;height:56px;flex:none;display:grid;place-items:center}
+.rec-badge img{width:100%;height:100%;object-fit:contain;display:block}
+.rec-badge.lock img,.rec-badge.lock .stamp{filter:brightness(.4)}
+.rt-btn{width:52px!important;flex:none;padding:0!important;display:grid;place-items:center}.rt-btn svg{width:24px;height:24px}
 .camwrap .cam{display:none}.camwrap.sim .cam{display:none}
 .camwrap.sim video,.camwrap.sim img.bg{display:none}
 #arcv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
@@ -1047,6 +1051,7 @@ const I={
  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.3c-1.4-.7-8.3-4.6-8.3-10.2A4.4 4.4 0 0112 7.7a4.4 4.4 0 018.3 2.4c0 5.6-6.9 9.5-8.3 10.2z"/><path d="M6.6 10.6a1.8 1.8 0 012.5-1.7"/></svg>',
  share:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 3.6L3.9 12a.5.5 0 000 .9l4.9 3 11.8-12.3-7.2 14.4a.5.5 0 00.9.1z"/><path d="M8.8 15.9v4.1l2.6-2.2"/></svg>',
  sparkle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.5c.4 3 2 4.6 5 5-3 .4-4.6 2-5 5-.4-3-2-4.6-5-5 3-.4 4.6-2 5-5z"/><path d="M18 14.5c.2 1.4.9 2.1 2.3 2.3-1.4.2-2.1.9-2.3 2.3-.2-1.4-.9-2.1-2.3-2.3 1.4-.2 2.1-.9 2.3-2.3z"/></svg>',
+ retake:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M13.66 6.34h4v-4"/></svg>',
  flip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 11a7.5 7.5 0 0113.2-4.4L19.5 8.5"/><path d="M19.5 4.5v4h-4M19.5 13a7.5 7.5 0 01-13.2 4.4L4.5 15.5"/><path d="M4.5 19.5v-4h4"/></svg>',
  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.8c-1.7 0-5.8-4.7-5.8-9.3a5.8 5.8 0 0111.6 0c0 4.6-4.1 9.3-5.8 9.3z"/><circle cx="12" cy="11" r="2.3"/></svg>',
  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.8" cy="10.8" r="6.3"/><path d="M15.6 15.6l4 4M8 9.4a2.9 2.9 0 012-1.9"/></svg>',
@@ -1265,7 +1270,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611227';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611228';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1708,8 +1713,10 @@ async function startCam(){
  if(S.camMode==='photo'||S.camMode==='sim'||S.camMode==='denied'){syncCamUI();return}
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){S.camMode='denied';render();return}
  try{
-  const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:S.facing||'environment'},width:{ideal:1280},height:{ideal:1920}},audio:false});
+  const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:S.facing||'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});
   S.stream=st;S.camMode='live';
+  /* 기본 배율(1x)로: 기기가 확대 상태로 열리면 최소 배율로 되돌려요 */
+  try{const tr=st.getVideoTracks()[0],cp=tr.getCapabilities&&tr.getCapabilities();if(cp&&cp.zoom){const z=Math.max(cp.zoom.min,Math.min(1,cp.zoom.max));await tr.applyConstraints({advanced:[{zoom:z}]})}}catch(e){}
   const v2=document.getElementById('camv');if(!v2){stopCam();return}
   v2.srcObject=st;v2.hidden=false;try{await v2.play()}catch(e){}
   syncCamUI();
@@ -1885,16 +1892,27 @@ function arLoop(){const cv=document.getElementById('arcv');if(!cv)return;fxFrame
  const c=cv.getContext('2d');c.clearRect(0,0,W,H);drawOverlay(c,W,H,performance.now());S._raf=requestAnimationFrame(arLoop)}
 
 /* 촬영: 카메라 프레임 + 필터 + AR 오버레이를 한 장으로 합성 */
-function captureAR(ctxName){const v=document.getElementById('camv'),img=document.getElementById('camimg');const W=1080,H=1920;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
- const glc=document.getElementById('glcv');let src=S.camMode==='live'&&v&&v.videoWidth?v:(S.camMode==='photo'&&img&&img.naturalWidth?img:null);
- if(glc&&glc.style.display==='block'){fxFrame();const s=Math.max(W/glc.width,H/glc.height);const dw=glc.width*s,dh=glc.height*s;c.drawImage(glc,(W-dw)/2,(H-dh)/2,dw,dh)}
- else if(src){const sw=src.videoWidth||src.naturalWidth,sh=src.videoHeight||src.naturalHeight;const s=Math.max(W/sw,H/sh);const dw=sw*s,dh=sh*s;try{c.filter=camFilter()}catch(e){}c.drawImage(src,(W-dw)/2,(H-dh)/2,dw,dh);c.filter='none'}
- else{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#555a66');g.addColorStop(.48,'#555a66');g.addColorStop(.481,'#2b2d33');g.addColorStop(1,'#1f2025');c.fillStyle=g;c.fillRect(0,0,W,H)}
- const t=performance.now();
- if(S.screen==='arrive'&&S.siteMode==='pano'){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#e76f51');g.addColorStop(1,'#2a2438');c.fillStyle=g;c.fillRect(0,0,W,H)}
- drawOverlay(c,W,H,t);
- const sp=spot();c.save();c.font='700 34px "Pretendard Variable",Pretendard,sans-serif';c.fillStyle='rgba(0,0,0,.45)';rr(c,40,H-130,W-80,90,45);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText('덕모잇 · '+work(sp).title+' · '+sp.name,80,H-85);c.restore();
- return cv.toDataURL('image/jpeg',.86)}
+function captureAR(ctxName){
+ /* 화면에 보이는 그대로(카메라 + 360° 영상 + 캐릭터 + 오버레이) 한 장으로 합성 */
+ const sc=curScreen();const R=sc.getBoundingClientRect();const k=1920/Math.max(R.width,R.height);const W=Math.round(R.width*k),H=Math.round(R.height*k);
+ const cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');c.fillStyle='#000';c.fillRect(0,0,W,H);
+ const vis=el=>el&&!el.hidden&&getComputedStyle(el).display!=='none'&&getComputedStyle(el).visibility!=='hidden';
+ const box=el=>{const r=el.getBoundingClientRect();return[(r.left-R.left)*k,(r.top-R.top)*k,r.width*k,r.height*k]};
+ const fit=(el,sw,sh,cover,mirror)=>{if(!sw||!sh)return;const[x,y,w,h]=box(el);const s=cover?Math.max(w/sw,h/sh):Math.min(w/sw,h/sh);const dw=sw*s,dh=sh*s;
+  c.save();c.beginPath();c.rect(x,y,w,h);c.clip();if(mirror){c.translate(x+w/2,0);c.scale(-1,1);c.translate(-(x+w/2),0)}
+  c.drawImage(el,x+(w-dw)/2,y+(h-dh)/2,dw,dh);c.restore()};
+ let drew=false;
+ const glc=document.getElementById('glcv'),v=document.getElementById('camv'),img=document.getElementById('camimg'),v3=document.getElementById('v360');
+ if(glc&&glc.style.display==='block'){fxFrame();const[x,y,w,h]=box(glc);c.drawImage(glc,x,y,w,h);drew=true}
+ else if(vis(v)&&v.videoWidth){try{c.filter=camFilter()}catch(e){}fit(v,v.videoWidth,v.videoHeight,true,/matrix\(-1/.test(getComputedStyle(v).transform));c.filter='none';drew=true}
+ else if(vis(img)&&img.naturalWidth){fit(img,img.naturalWidth,img.naturalHeight,true);drew=true}
+ if(v3&&v3.videoWidth){fit(v3,v3.videoWidth,v3.videoHeight,true);drew=true}
+ if(!drew){const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#555a66');g.addColorStop(.48,'#555a66');g.addColorStop(.481,'#2b2d33');g.addColorStop(1,'#1f2025');c.fillStyle=g;c.fillRect(0,0,W,H)}
+ const ar=document.getElementById('arcv');if(ar&&ar.width){const[x,y,w,h]=box(ar);c.drawImage(ar,x,y,w,h)}
+ const ch=sc.querySelector('.charlayer.ok img');if(ch&&ch.naturalWidth)fit(ch,ch.naturalWidth,ch.naturalHeight,false);
+ const sp=spot();const fs=Math.round(Math.min(W,H)*.028);c.save();c.font=`700 ${fs}px "Pretendard Variable",Pretendard,sans-serif`;const tx='덕모잇 · '+work(sp).title.replace(/\s*\(.*\)\s*$/,'')+' · '+sp.name;const tw=c.measureText(tx).width;
+ c.fillStyle='rgba(0,0,0,.45)';rr(c,fs*1.2,H-fs*3.2,tw+fs*2,fs*2.1,fs*1.05);c.fill();c.fillStyle='#fff';c.textBaseline='middle';c.fillText(tx,fs*2.2,H-fs*2.15);c.restore();
+ return cv.toDataURL('image/jpeg',.9)}
 
 /* ===== 명소 뱃지: 명소마다 다른 모양·색·로고(아이콘) ===== */
 const STAMP={
@@ -2090,17 +2108,13 @@ SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e
 SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버레이'],ctx:'site'};return{html:`
  ${hdr('기록 남기기')}
  <div class="body"><div class="pad">
-  ${c.img?`<img src="${c.img}" alt="AR 촬영 결과" style="width:100%;border-radius:14px;display:block;aspect-ratio:9/16;object-fit:cover;background:#111">`:ph(c.exp.join(' + ')+' 촬영본',360,'border-radius:14px','AR 촬영 결과')}
+  ${c.img?`<img src="${c.img}" alt="AR 촬영 결과" style="width:100%;border-radius:14px;display:block;height:auto;max-height:62vh;object-fit:contain;background:#111">`:ph(c.exp.join(' + ')+' 촬영본',360,'border-radius:14px','AR 촬영 결과')}
   <div class="row" style="gap:6px;margin-top:10px;flex-wrap:wrap">${c.exp.map(e=>`<span class="tag ac">${e}</span>`).join('')}<span class="tag">${work(sp).title}</span><span class="tag">${sp.ep}</span>${c.src?`<span class="tag">${c.src}</span>`:''}</div>
   <div style="font-weight:700;margin:20px 0 8px">오늘의 덕질 메모</div>
   <textarea id="memo" placeholder="이 장면 앞에서 어떤 기분이었나요?"></textarea>
-  <div style="font-weight:700;margin:20px 0 10px">공유하기</div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center" class="small">
-   ${['인스타그램','X','커뮤니티','링크 복사'].map(n=>`<button data-toast="${n==='커뮤니티'?'커뮤니티에 게시했어요 (더미)':n==='링크 복사'?'링크를 복사했어요':n+'로 공유 (더미)'}"><div class="av" style="width:48px;height:48px;margin:0 auto 6px"></div>${n}</button>`).join('')}
-  </div>
-  <div class="card row" style="padding:12px;margin:22px 0 24px"><div class="stamp got" style="width:52px;flex:none">${sp.name.slice(0,4)}</div><div class="small"><b>순례 뱃지 획득!</b><div class="muted">${work(sp).title} 성지 1/${SPOTS.filter(s=>s.work===sp.work).length}곳 완료</div></div></div>
+  ${(()=>{const got=!!(S.stamps&&S.stamps[sp.id]);return`<div class="card row" style="padding:12px;margin:22px 0 24px;gap:12px"><div class="rec-badge ${got?'':'lock'}">${BADGE.has(sp.id)?`<img src="assets/badges/${sp.id}.png?v=${ASSET_V}" alt="${work(sp).title.replace(/\s*\(.*\)\s*$/,'')} 뱃지">`:`<div class="stamp got" style="width:52px">${sp.name.slice(0,4)}</div>`}</div><div class="small"><b>${got?'순례 뱃지 획득!':'순례 뱃지 미획득'}</b><div class="muted">${got?`${work(sp).title.replace(/\s*\(.*\)\s*$/,'')} 성지 1/${SPOTS.filter(s=>s.work===sp.work).length}곳 완료`:'현장에서 깜짝 미션을 완료하면 뱃지를 받아요'}</div></div></div>`})()}
  </div></div>
- <div class="cta"><button class="btn sec2" style="width:auto;padding:0 18px" data-act="back">다시 찍기</button><button class="btn pri" data-act="savearchive">덕질 아카이브에 저장</button></div>`}};
+ <div class="cta"><button class="btn sec2 rt-btn" data-act="back" aria-label="다시 찍기" title="다시 찍기">${I.retake}</button><button class="btn pri" data-act="savearchive">덕질 아카이브에 저장</button></div>`}};
 
 
 /* ================= 성지 탐색: 등록된 애니 명소 + 실제 지도 ================= */
@@ -2409,7 +2423,10 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'nextstep':{S.locked=false;replace('arrive');toast('장면 포인트에 도착했어요!');break}
   case 'sitemode':S.siteMode=t.dataset.v;render();break;
   case 'jjkmode':{const v=t.dataset.v;if(v==='pano'&&!HAS360.has(spot().id)){toast('360° 영상은 준비 중이에요');break}if(S.jjkMode===v){S.jjkMode=null}else{S.jjkMode=v;if(v==='overlay')S.jjkSlider=true}render();break}
-  case 'capture':{const ctx=t.dataset.ctx;if(ctx==='site'&&S.siteMode!=='pano'&&!S.locked){toast('장면을 인식하는 중이에요. 잠시만요');break}const exp=ctx==='move'?MOVE_EXP.filter(x=>S.moveExp[x.id]).map(x=>x.name):[SITE_EXP.find(x=>x.id===S.siteMode).name];const fl=document.getElementById('flash');if(fl){fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on')}let img=null;try{img=captureAR(ctx)}catch(e){}S.lastCapture={ctx,exp:exp.length?exp:['일반 촬영'],img,src:{live:'실시간 카메라',photo:'사진',sim:'시뮬레이션'}[S.camMode]||''};setTimeout(()=>go('record'),180);break}
+  case 'capture':{const ctx=t.dataset.ctx;if(ctx==='site'&&S.siteMode==='overlay'&&!S.locked){toast('장면을 인식하는 중이에요. 잠시만요');break}
+   const NM={char:'캐릭터 투샷',pano:'360° 장면',overlay:'장면 오버레이'};
+   const exp=ctx==='move'?MOVE_EXP.filter(x=>S.moveExp[x.id]).map(x=>x.name):(S.jjkMode&&NM[S.jjkMode]?[NM[S.jjkMode]]:((SITE_EXP.find(x=>x.id===S.siteMode)||{}).name?[SITE_EXP.find(x=>x.id===S.siteMode).name]:[]));
+   const fl=document.getElementById('flash');if(fl){fl.classList.remove('on');void fl.offsetWidth;fl.classList.add('on')}let img=null;try{img=captureAR(ctx)}catch(e){}S.lastCapture={ctx,exp:exp.length?exp:['일반 촬영'],img,src:{live:'실시간 카메라',photo:'사진',sim:'시뮬레이션'}[S.camMode]||''};setTimeout(()=>go('record'),180);break}
   case 'fxtoggle':{const tgt=S.screen==='move'?S.moveExp:S.siteFx;const keys=['anime','tone','sky'];const on=keys.some(k=>tgt[k]);const key=S.screen==='move'?'_fxm':'_fxs';if(on){S[key]=keys.reduce((a,k)=>(a[k]=tgt[k],a),{});keys.forEach(k=>tgt[k]=false)}else{const prev=S[key]||(S.screen==='move'?{anime:true,tone:true,sky:true}:{anime:true,tone:true,sky:false});keys.forEach(k=>tgt[k]=prev[k])}render();break}
   case 'camretry':S.camMode=null;render();break;
   case 'camsim':S.camMode='sim';render();break;
