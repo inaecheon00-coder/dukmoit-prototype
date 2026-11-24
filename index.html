@@ -1134,7 +1134,7 @@ const SCENE_FIX={
  kamakura_sd:{ep:'오프닝',time:'',scene:'오프닝에 나오는, 이제는 유명해져 버린 건널목 장면'},
  shelter:{ep:'1기 2화',time:'',scene:'소심한 고토 히토리가 라이브 하우스 앞에 도착했지만 망설이는 사이 다른 친구들에게 발견되는 장면'},
  sunshine:{ep:'5화',time:'',scene:'타이키와 치나츠가 함께 수족관을 찾아 서로에게 조금씩 가까워지는 장면'},
- kifune_cn:{ep:'855화',time:'',name:'유니버설 스튜디오 재팬',jp:'ユニバーサル・スタジオ・ジャパン',st:'유니버설시티역 5분',region:'일본 오사카부 오사카시 고노하나구',hub:'유니버설시티',tags:['유니버설스튜디오','USJ','오사카'],tip:'정문 앞 지구본은 밤에 조명이 켜질 때 원작 분위기와 가장 비슷해요.',scene:'사건 해결 후 요도가와 공원을 들렀다가, 소노코 일행과 코난 일행이 함께 유니버설 스튜디오를 방문하는 장면'},
+ kifune_cn:{ep:'763~764화',time:'',name:'도톤보리 글리코 간판',jp:'道頓堀 グリコサイン',st:'난바역 도보 약 5분',region:'일본 오사카부 오사카시 주오구',hub:'난바',tags:['도톤보리','글리코','오사카'],tip:'해가 진 뒤 간판에 불이 들어올 때가 원작 분위기와 가장 비슷해요. 에비스바시 다리 위가 가장 잘 보여요.',scene:'마약 밀매 조직의 암호를 추적하는 과정에서 헤이지가 카즈하의 지인을 마약사범으로 오해하는 장면'},
  keion:{ep:'1화',time:'',scene:'히라사와 유이가 고등학교 입학식에 참석하려고 학교에 도착하는 장면'},
  gotoubun:{ep:'2기 12화',time:'',scene:'후타로를 피하던 미쿠가 영화촌에서 우연히 마주쳐 어색한 상황을 맞이하는 장면'},
  nagatoro:{ep:'8화',time:'',scene:'가위바위보로 짐 들어주기 내기를 해서 이긴 나가토로가 선배 등에 훅 업히는 장면'},
@@ -1272,7 +1272,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611233';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611234';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 const poster=(sp,dir='posters',src)=>`<img class="poster" alt="" src="assets/${dir}/${src||sp.id}.jpg?v=${ASSET_V}" onload="this.parentNode.classList.add('has-img')" onerror="this.parentNode.classList.remove('has-img');this.remove()">`;
 const PALS=[['#ffe3a3','#ff9f7a','#6a5ad8','rgba(40,25,70,.5)'],['#c9ecff','#6cbcf5','#2a6fd6','rgba(10,40,90,.5)'],['#ffd6e7','#f59bc4','#8a5ad6','rgba(60,20,70,.5)'],['#d7f7e4','#7fd6b0','#2a8f9c','rgba(10,60,60,.5)'],['#fff1c4','#ffc56b','#e86a4a','rgba(80,30,20,.5)']];
 const ph=(label,h=160,extra='',center='')=>{const k=[...(label+h)].reduce((a,c)=>a+c.charCodeAt(0),0)%PALS.length,p=PALS[k];return`<div class="ph cart" style="height:${h}px;--c1:${p[0]};--c2:${p[1]};--c3:${p[2]};--c4:${p[3]};${extra}"><div class="gr"></div>${center?`<div class="x">${center}</div>`:''}${label?`<span class="lb">${label}</span>`:''}</div>`};
@@ -1556,7 +1556,7 @@ const PROUTE={
  kamakura:kana('가마쿠라코코마에역',17,1),shichiri:kana('시치리가하마역',19,5),enoshima:kana('에노시마역',10,12),
  keion:{umeda:{t:[['JR 비와코선 신쾌속',60,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:1900,km:110},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 비와코선 신쾌속',60,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:2140,km:115},kix:{t:[['JR 특급 하루카',75,'교토역'],['JR 비와코선',45,'히코네역'],['오미 철도',15,'도요사토역']],walk:10,fare:4800,km:160}},
  seihantai:{umeda:{t:[['한큐 교토선 특급',43,'교토카와라마치역'],['교토 시버스 207',10,'기요미즈미치']],walk:10,fare:630,km:48},namba:{t:[['오사카 메트로 미도스지선',8,'요도야바시역'],['게이한 본선 특급',45,'기요미즈고조역']],walk:25,fare:690,km:50},kix:{t:[['JR 특급 하루카',75,'교토역'],['교토 시버스 206',15,'기요미즈미치']],walk:10,fare:3810,km:100}},
- kifune_cn:{umeda:{t:[['JR 오사카순환선',8,'니시쿠조역'],['JR 유메사키선',5,'유니버설시티역']],walk:5,fare:190,km:9},namba:{t:[['한신 난바선',12,'니시쿠조역'],['JR 유메사키선',5,'유니버설시티역']],walk:5,fare:450,km:10},kix:{t:[['리무진 버스',70,'유니버설 스튜디오 재팬']],walk:3,fare:1800,km:50}},
+ kifune_cn:{umeda:{t:[['오사카 메트로 미도스지선',8,'난바역']],walk:5,fare:240,km:4},namba:{t:[],walk:7,fare:0,km:0.5},kix:{t:[['난카이 공항급행',45,'난바역']],walk:5,fare:970,km:45}},
  gotoubun:{umeda:{t:[['JR 교토선 신쾌속',30,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:820,km:60},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 교토선 신쾌속',30,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:1060,km:62},kix:{t:[['JR 특급 하루카',75,'교토역'],['JR 사가노선',11,'우즈마사역']],walk:10,fare:3900,km:110}},
  yanineko:{umeda:{t:[['JR 교토선 신쾌속',30,'교토역 승강장']],walk:3,fare:580,km:50},namba:{t:[['지하철 미도스지선',8,'우메다역'],['JR 교토선 신쾌속',30,'교토역 승강장']],walk:3,fare:820,km:52},kix:{t:[['JR 특급 하루카',75,'교토역 승강장']],walk:3,fare:3640,km:100}},
  tamako:{umeda:{t:[['JR 교토선 신쾌속',29,'교토역']],walk:5,fare:580,km:43},namba:{t:[['지하철 미도스지선',8,'신오사카역'],['JR 교토선 신쾌속',24,'교토역']],walk:5,fare:810,km:50},kix:{t:[['JR 특급 하루카',75,'교토역']],walk:5,fare:3640,km:100}},
@@ -1568,7 +1568,7 @@ const PROUTE={
  karumai:{ninohe:{t:[['노선버스',50,'카루마이 중심가']],walk:8,fare:1200,km:30},hachinohe:{t:[['노선버스',70,'카루마이 중심가']],walk:8,fare:1500,km:40},morioka:{t:[['도호쿠 신칸센',30,'니노헤역'],['노선버스',50,'카루마이 중심가']],walk:8,fare:4200,km:95}},
  hida:{takayama:{t:[['JR 다카야마 본선',15,'히다후루카와역']],walk:2,fare:240,km:15},nagoya:{t:[['JR 특급 히다',150,'다카야마역'],['JR 다카야마 본선',15,'히다후루카와역']],walk:2,fare:6000,km:170},centrair:{t:[['메이테쓰 뮤스카이',28,'나고야역'],['JR 특급 히다',150,'다카야마역'],['JR 다카야마 본선',15,'히다후루카와역']],walk:2,fare:7400,km:200}},
 };
-PROUTE.kamakura_sd=PROUTE.kamakura;PROUTE.kifune_cn=PROUTE.kifune;
+PROUTE.kamakura_sd=PROUTE.kamakura;
 const CAR_VIA={tokyo:km=>km>30?'고속도로 경유':km>8?'수도고속도로 경유':'시내 일반도로',osaka:km=>km>30?'한신고속도로 경유':'시내 일반도로',hokkaido:km=>km>30?'도오자동차도 경유':'시내 일반도로',seoul:km=>km>30?'공항고속도로 경유':'도심 일반도로',tohoku:km=>km>45?'하치노헤자동차도 경유':'국도 경유',hida:km=>km>30?'도카이호쿠리쿠자동차도 경유':'국도 41호선 경유'};
 const MODES=[{id:'transit',name:'대중교통',icon:'train'},{id:'walk',name:'도보',icon:'walk'},{id:'car',name:'자동차',icon:'car'}];
 const fmtMin=m=>{m=Math.round(m);return m<60?`${m}분`:`${Math.floor(m/60)}시간${m%60?` ${m%60}분`:''}`};
@@ -1939,7 +1939,7 @@ const STAMP={
  dotonbori:{sh:'star',c:'#ff7a00',ic:'takoyaki',k:'도톤보리'},
  tsutenkaku:{sh:'shield',c:'#2a6fd6',ic:'tsuten',k:'츠텐카쿠'},
  kamakura_sd:{sh:'circle',c:'#c62828',ic:'ball',k:'가마쿠라',ring:'KAMAKURAKOKOMAE ★ DUKMOIT ★ '},
- kifune_cn:{sh:'diamond',c:'#1e3a8a',ic:'bowtie',k:'USJ'},
+ kifune_cn:{sh:'diamond',c:'#1e3a8a',ic:'bowtie',k:'도톤보리'},
 };
 const STAMP_IC={
  crossing:'<path d="M-14 -17L14 -3M14 -17L-14 -3M0 -10V17M-7 17H7"/><circle cx="-7" cy="4" r="3"/><circle cx="7" cy="4" r="3"/>',
@@ -2120,7 +2120,7 @@ SCREENS.record=()=>{const sp=spot();const c=S.lastCapture||{exp:['장면 오버�
 /* ================= 성지 탐색: 등록된 애니 명소 + 실제 지도 ================= */
 const REG=AREAS.all.map(x=>x.s);   // 홈 '전체' 영역에 등록된 애니 명소만
 const GEO={suga:[35.6858,139.7226],shibuya:[35.6595,139.7005],karumai:[40.3259,141.4605],haboro:[44.3613,141.7006],meguro:[35.6339,139.7158],shelter:[35.6612,139.6680],
- onnazaka:[35.6958,139.7580],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[34.6654,135.4323],keion:[35.2054,136.2311],
+ onnazaka:[35.6958,139.7580],kamakura_sd:[35.3069,139.5005],sunshine:[35.7289,139.7197],kifune_cn:[34.6687,135.5013],keion:[35.2054,136.2311],
  seihantai:[34.9949,135.7850],nagatoro:[35.7006,139.5439],gotoubun:[35.0167,135.7096],yanineko:[34.9858,135.7588],tamako:[34.9847,135.7585]};
 const regList=c=>{const l=SPOTS.filter(s=>REG.includes(s.id));return c==='all'?l:c==='hot'?l.sort((a,b)=>b.visits-a.visits).slice(0,6):l.filter(s=>s.cat===c).sort((a,b)=>b.visits-a.visits)};
 /* 현재 위치(예시): 도쿄 탭·전체 = 하라주쿠역, 오사카 탭 = 시조역(교토) — 실제 GPS는 사용하지 않아요 */
