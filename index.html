@@ -1272,7 +1272,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611239';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611240';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -1984,7 +1984,7 @@ function stampShape(sh,r){const C=60,P=(n,rot,rr)=>Array.from({length:n},(_,i)=>
   case'ticket':{const x=C-r,y=C-r*.78,w=r*2,h=r*1.56,n=8;return`M${x+n},${y}H${x+w-n}A${n},${n} 0 0 0 ${x+w},${y+n}V${C-7}A7,7 0 0 0 ${x+w},${C+7}V${y+h-n}A${n},${n} 0 0 0 ${x+w-n},${y+h}H${x+n}A${n},${n} 0 0 0 ${x},${y+h-n}V${C+7}A7,7 0 0 0 ${x},${C-7}V${y+n}A${n},${n} 0 0 0 ${x+n},${y}Z`}
   default:return`M${C-r},${C}a${r},${r} 0 1,0 ${r*2},0a${r},${r} 0 1,0 ${-r*2},0Z`}}
 let _stUid=0;
-const BADGE=new Set(['shibuya','shelter','onnazaka','suga','seihantai','kamakura_sd','karumai','haboro','meguro','sunshine','kifune_cn','keion','gotoubun','yanineko','nagatoro']);
+const BADGE=new Set(['shibuya','shelter','onnazaka','suga','seihantai','kamakura_sd','karumai','haboro','meguro','sunshine','kifune_cn','keion','gotoubun','yanineko','tamako','nagatoro']);
 function stampSVG(id,{size=96,locked=false,date=''}={}){if(BADGE.has(id))return`<img class="badge-img${locked?' lk':''}" src="assets/badges/${id}.png?v=${ASSET_V}" alt="${spot(id).name} 뱃지" style="width:${size}px;height:${size}px" draggable="false">`;const sp=spot(id),d=STAMP[id]||{sh:'circle',c:'#0078e9',ic:'star',k:sp.name.split(' ')[0]};const c=locked?'#9aa3ad':d.c,u='st'+(++_stUid);
  const sq=d.sh==='ticket',iy=d.ring?50:(sq?50:48),ky=d.ring?76:(sq?78:81),jy=ky+12;
  const jp=(sp.jp||'').length>9?(sp.jp||'').slice(0,9)+'…':(sp.jp||'');
