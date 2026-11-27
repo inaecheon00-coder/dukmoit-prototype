@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="덕모잇">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
-<script>/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone){var d=document.documentElement;d.classList.add('native');var ios=!!navigator.standalone;if(ios)d.classList.add('iospwa');var sz=function(){var w=window.innerWidth,h=window.innerHeight;
+<script>document.documentElement.classList.add('splashing');/* 터치 폰이면 프레임 없는 앱 화면으로 */(function(){try{var m=function(q){return window.matchMedia&&matchMedia(q).matches};var phone=(m('(pointer:coarse)')&&Math.min(screen.width,screen.height)<600)||m('(display-mode: standalone)')||navigator.standalone;if(phone){var d=document.documentElement;d.classList.add('native');var ios=!!navigator.standalone;if(ios)d.classList.add('iospwa');var sz=function(){var w=window.innerWidth,h=window.innerHeight;
  /* iOS 홈 화면 앱(상태바 투명)은 화면 높이가 상태바만큼 짧게 잡히는 버그가 있어 실제 화면 크기로 맞춰요 */
  if(ios){var a=Math.max(screen.width,screen.height),b=Math.min(screen.width,screen.height);if(w<=h){w=b;h=a}else{w=a;h=b}}
  d.style.setProperty('--vw',w+'px');d.style.setProperty('--vh',h+'px')};sz();addEventListener('resize',sz);addEventListener('orientationchange',function(){setTimeout(sz,300)})}}catch(e){}})();</script>
@@ -1015,6 +1015,9 @@ input,textarea{font-size:17px}
 .splash .logo-img{width:240px;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 4px 0 rgba(0,50,120,.3))}
 .splash .sub{margin-top:10px;font-size:17px;font-weight:500;letter-spacing:.02em}
 .splash.off{opacity:0;visibility:hidden}
+/* 스플래시 동안은 화면 바깥(주소창·홈 표시줄 영역)까지 같은 파란색으로 채워 하단에 흰 띠가 비치지 않게 */
+html.splashing,html.splashing body{background:#0078e9!important}
+html.native .splash{position:fixed;left:0;top:0;width:100%;height:100lvh;min-height:100%}
 
 /* 실제 폰(브라우저·홈 화면 앱 모두)에서 열면: 아이폰 프레임 없이 앱처럼 화면을 꽉 채워요. PC에서만 프레임 표시 */
 html.native,html.native body{background:var(--surface);overflow:hidden}
@@ -1285,7 +1288,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 (function(){try{const a=JSON.parse(localStorage.getItem('dkArchive')||'null');if(Array.isArray(a)&&a.length)S.archive=a}catch(e){}})();
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611243';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611244';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2521,7 +2524,7 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
 
 /* ================= SPLASH ================= */
 (function(){const sp=document.getElementById('splash'),ph=document.getElementById('phone');
- const hide=()=>{sp.classList.add('off');ph.classList.remove('splash-on')};
+ const hide=()=>{if(sp.classList.contains('off'))return;sp.classList.add('off');ph.classList.remove('splash-on');setTimeout(()=>document.documentElement.classList.remove('splashing'),500)};
  sp.onclick=hide;setTimeout(hide,1800);})();
 
 /* ================= INIT ================= */
