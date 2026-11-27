@@ -1272,7 +1272,7 @@ const work=sp=>WORKS[sp.work];
 
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611241';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611242';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -1444,7 +1444,7 @@ SCREENS.scanresult=()=>{const img=s=>HERO_SCENE.has(s.id)?'hero':true;const reg=
 /* 명소 상세 상단: 원작 장면 이미지 (assets/hero) — 받은 명소만, 나머지는 기존 이미지 */
 const HERO_SCENE=new Set(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','suga','gotoubun','onnazaka','nagatoro','keion']);
 /* 비교 슬라이더 이미지 위치 (세로 이미지인 너의이름은은 계단이 보이도록 아래쪽 기준) */
-const CMP_POS={suga:'50% 100%'};
+const CMP_POS={suga:'50% 50%'};
 /* 원작 비교 슬라이더: 하단 = 원본(애니 장면), 상단 = 비교(실제 장소, assets/real/<id>.jpg). 이미지는 고정, 노출 영역만 변경 */
 const CMP_ARR='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/></svg>';
 function cmpSlider(sp){const p=(S.cmpPos&&S.cmpPos[sp.id]!=null)?S.cmpPos[sp.id]:50;
@@ -2056,7 +2056,7 @@ SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp)
 /* 캐릭터 투샷 이미지가 있는 명소 */
 const CHAR=new Set(['meguro','shelter','kamakura_sd','haboro','sunshine','nagatoro','kifune_cn','yanineko','onnazaka','suga','gotoubun','keion','shibuya','seihantai','tamako','karumai']);
 const JJK_MODES=[['char','캐릭터'],['pano','360°'],['overlay','오버레이']];
-const PANO_SOON=new Set(['haboro']);const PANO_CAP=id=>PANO_SOON.has(id)?'현재 서비스 준비 중에 있습니다.':'본 장면은 참고 영상입니다.';
+const PANO_SOON=new Set([]);const PANO_CAP=id=>PANO_SOON.has(id)?'현재 서비스 준비 중에 있습니다.':'본 장면은 참고 영상입니다.';
 const HAS360=new Set(['kamakura_sd','tamako','keion','onnazaka','shelter','sunshine','shibuya','suga','meguro','nagatoro','haboro','karumai','yanineko','gotoubun','kifune_cn','seihantai']);
 SCREENS.arrive=()=>{const sp=spot();const JJK=true;const modes=SITE_EXP.filter(e=>S.siteExp[e.id]||(e.id==='duo'&&CHAR.has(sp.id)));
  if(JJK){if(S.jjkMode===undefined)S.jjkMode='overlay';S.siteMode=S.jjkMode==='overlay'?'overlay':'none'}
