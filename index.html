@@ -1266,8 +1266,10 @@ const S={
  liked:{}, moveProg:0,
  lastCapture:null,
  archive:[
-  {spot:'suga',date:'2026.11.02',exp:['360° 장면'],memo:'계단 위에서 내려다본 구도 그대로…',img:'assets/real/suga.jpg'},
-  {spot:'shelter',date:'2026.10.03',exp:['장면 오버레이'],memo:'계단 내려가는 구도 완벽 재현!',img:'assets/real/shelter.jpg'},
+  {id:'seed-dotonbori',spot:'kifune_cn',date:'2026.11.21',exp:['애니 필터'],memo:'어느 시간대 방문해도 사람이 항상 많다..',img:'assets/archive/kifune_cn_1.jpg'},
+  {id:'seed-keion',spot:'keion',date:'2026.11.20',exp:['애니 필터'],memo:'일본은 구름도 왜이렇게 애니메이션 같을까',img:'assets/archive/keion_1.jpg'},
+  {id:'seed-suga',spot:'suga',date:'2026.11.02',exp:['360° 장면'],memo:'계단 위에서 내려다본 구도 그대로…',img:'assets/real/suga.jpg'},
+  {id:'seed-shelter',spot:'shelter',date:'2026.10.03',exp:['장면 오버레이'],memo:'계단 내려가는 구도 완벽 재현!',img:'assets/real/shelter.jpg'},
  ],
  trips:[{spot:'shibuya',date:'12월 20일(토)',status:'예정'}],
  /* 나의 덕질 기록 예시 데이터 */
@@ -1285,10 +1287,13 @@ const work=sp=>WORKS[sp.work];
 
 /* 덕질 아카이브 사진은 기기에 저장(앱을 다시 열어도 남도록, 용량을 넘으면 오래된 것부터 정리) */
 function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;n>0;n--){try{localStorage.setItem('dkArchive',JSON.stringify(list.slice(0,n)));return}catch(e){}}}catch(e){}}
-(function(){try{const a=JSON.parse(localStorage.getItem('dkArchive')||'null');if(Array.isArray(a)&&a.length)S.archive=a}catch(e){}})();
+(function(){try{const seed=S.archive.slice();const a=JSON.parse(localStorage.getItem('dkArchive')||'null');if(Array.isArray(a)&&a.length){
+  /* 기기에 저장된 사진 + 새로 추가된 예시 사진(아직 없는 것만) */
+  const have=new Set(a.map(x=>x.id).filter(Boolean));const add=seed.filter(x=>x.id&&!have.has(x.id));
+  S.archive=a.concat(add).sort((x,y)=>String(y.date).localeCompare(String(x.date)))}}catch(e){}})();
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611244';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611245';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2461,7 +2466,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'camsim':S.camMode='sim';render();break;
   case 'ctltoggle':{S.ctlHidden=!S.ctlHidden;document.getElementById('camctl')?.classList.toggle('hid',S.ctlHidden);break}
   case 'camflip':{if(S.camMode!=='live'){toast('실시간 카메라에서만 전환할 수 있어요');break}S.facing=S.facing==='user'?'environment':'user';stopCam();render();break}
-  case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});saveArchive();const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';
+  case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({id:'u'+Date.now(),img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});saveArchive();const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';
    /* 뒤로 가면 방문 계획으로: 카메라·기록 화면은 기록에서 빼고 계획 화면까지만 남겨요 */
    let pi=-1;S.stack.forEach((e,i)=>{if(e.screen==='plan')pi=i});S.stack=pi>=0?S.stack.slice(0,pi+1):S.stack.filter(e=>!['move','arrive','record'].includes(e.screen));
    S.archTab='ar';S.arSub='arch';clearTimers();finishAnim();S.screen='archive';render('push');syncHist();toast('덕질 아카이브에 저장했어요');break}
