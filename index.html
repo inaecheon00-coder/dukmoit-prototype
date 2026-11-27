@@ -660,6 +660,16 @@ input,textarea{font-size:17px}
 .srch-chips{display:flex;flex-wrap:wrap;gap:8px}
 .srch-none{display:flex;flex-direction:column;gap:4px;padding:18px 16px;margin:4px 0 20px;border-radius:14px;background:#eef4fb;text-align:center}.srch-none b{font-size:17px;word-break:keep-all}.srch-none span{font-size:15px;color:var(--mute)}
 .sub-h{font-size:17px;font-weight:700;margin:0 0 12px}
+.subdd{position:relative;display:inline-block;margin:0 0 12px;z-index:5}
+.subdd .ddb{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;margin:0;color:inherit;font-family:inherit;cursor:pointer}
+.subdd .tri{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid currentColor;opacity:.7;transition:transform .18s ease;margin-top:1px}
+.subdd.on .tri{transform:rotate(180deg)}
+.subdd .ddm{position:absolute;left:0;top:calc(100% + 6px);min-width:150px;background:var(--card,#fff);border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,.16);padding:6px;display:none}
+.subdd.on .ddm{display:block}
+.subdd .ddm button{display:block;width:100%;text-align:left;background:none;border:0;border-radius:8px;padding:10px 12px;font:inherit;font-size:15px;color:inherit;cursor:pointer}
+.subdd .ddm button.on{color:var(--ac,#0078e9);font-weight:700;background:rgba(0,120,233,.08)}
+.arx{padding:0;overflow:hidden}.arx-ph{position:relative;aspect-ratio:4/5;background:#111}.arx-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.arx-chip{position:absolute;left:10px;top:10px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:600;padding:5px 9px;border-radius:999px}
 .atabs{display:grid;grid-template-columns:1.3fr 1.1fr 1fr 1.1fr .8fr;padding:6px 4px;gap:2px}
 .atabs button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 2px 10px;border-radius:12px;color:var(--mute);position:relative}
 .atabs b{font-size:20px;font-weight:700;color:var(--text);line-height:1.1}
@@ -1249,12 +1259,12 @@ const S={
  device:'phone', siteMode:'overlay', blend:55, pan:0,
  route:0, from:'서울역', date:'12월 20일(토)', planFrom:'tokyo', planMode:'transit', planDate:'', planArr:'', planOptOpen:false,
  exploreWork:'all', exploreCat:'all', exploreSel:'kamakura', homeCat:'all',
- commTab:'feed', archTab:'mine',
+ commTab:'feed', archTab:'mine', mineSub:'recent', arSub:'feed',
  liked:{}, moveProg:0,
  lastCapture:null,
  archive:[
-  {spot:'ihwa',date:'2026.10.03',exp:['캐릭터 필터','장면 오버레이'],memo:'반장이 앉아 있던 그 계단. 실제 고양이도 있었다!'},
-  {spot:'hida',date:'2026.08.15',exp:['360° 장면 재현'],memo:'열차 지나갈 때 타이밍 맞추느라 세 번 기다림'},
+  {spot:'suga',date:'2026.11.02',exp:['360° 장면'],memo:'계단 위에서 내려다본 구도 그대로…',img:'assets/real/suga.jpg'},
+  {spot:'shelter',date:'2026.10.03',exp:['장면 오버레이'],memo:'계단 내려가는 구도 완벽 재현!',img:'assets/real/shelter.jpg'},
  ],
  trips:[{spot:'shibuya',date:'12월 20일(토)',status:'예정'}],
  /* 나의 덕질 기록 예시 데이터 */
@@ -1270,9 +1280,12 @@ const S={
 const spot=id=>SPOTS.find(s=>s.id===(id||S.spot));
 const work=sp=>WORKS[sp.work];
 
+/* 덕질 아카이브 사진은 기기에 저장(앱을 다시 열어도 남도록, 용량을 넘으면 오래된 것부터 정리) */
+function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;n>0;n--){try{localStorage.setItem('dkArchive',JSON.stringify(list.slice(0,n)));return}catch(e){}}}catch(e){}}
+(function(){try{const a=JSON.parse(localStorage.getItem('dkArchive')||'null');if(Array.isArray(a)&&a.length)S.archive=a}catch(e){}})();
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611242';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611243';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -1833,8 +1846,9 @@ function fxSource(){const v=document.getElementById('camv'),img=document.getElem
  if(S.camMode==='live'&&v&&v.readyState>=2&&v.videoWidth)return[v,v.videoWidth,v.videoHeight];
  if(S.camMode==='photo'&&img&&img.naturalWidth)return[img,img.naturalWidth,img.naturalHeight];
  return null}   /* 카메라 대기 중: 그래픽 없이 검은 화면 */
-function fxFrame(){const cv=document.getElementById('glcv');if(!cv)return;const w=document.getElementById('camwrap');
- const on=!(S.screen==='arrive'&&S.siteMode==='pano');
+function fxFrame(){let cv=document.getElementById('glcv');if(!cv)return;const w=document.getElementById('camwrap');
+ if(FX.ok&&FX.cv&&FX.cv!==cv){const keep=FX.cv;keep.id='glcv';keep.className=cv.className;keep.style.cssText=cv.style.cssText;cv.replaceWith(keep);cv=keep}
+ const on=!(S.screen==='arrive'&&S.siteMode==='pano')&&fxActive();   /* 필터가 꺼져 있으면 셰이더를 돌리지 않아요 */
  if(!on||!fxInit(cv)){cv.style.display='none';if(w)w.classList.remove('fx');return}
  const src=fxSource();if(!src){cv.style.display='none';if(w)w.classList.remove('fx');return}
  const dpr=Math.min(1.5,window.devicePixelRatio||1);const box=(w||cv.parentElement).getBoundingClientRect();const W=Math.round(box.width*dpr),H=Math.round(box.height*dpr);if(!W||!H)return;if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
@@ -2203,8 +2217,12 @@ SCREENS.archive=()=>{
  let body='';
 const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date,tags:sp.tags.slice(0,3).map(t=>'#'+t),memo:sp.scene||''}}));
  const savedB=tl(saved.map(id=>{const sp=spot(id);return{id,date:(S.savedAt||{})[id]||'저장한 명소',tags:[sp.st,...sp.tags.slice(0,2).map(t=>'#'+t)].filter(Boolean),memo:''}}));
- if(T==='mine')body=`<div class="sub-h">최근 본 명소</div>${recentB}<div class="sub-h" style="margin-top:8px">저장한 명소</div>${savedB}`;
- else if(T==='ar'){const mine=POSTS.filter(p=>p.mine);body=mine.length?`<div class="myar">${mine.map(postCard).join('')}</div>`:`<div class="small muted" style="text-align:center;padding:40px 0">AR 기록 피드에 등록한 글이 없어요<br><button class="btn pri sm" style="width:auto;padding:0 16px;margin-top:12px" data-go="post">등록하기</button></div>`}
+ /* 소제목 드롭다운: 제목 옆 작은 삼각형을 누르면 목록 전환 */
+ const subdd=(key,cur,opts)=>`<div class="subdd"><button class="sub-h ddb" data-act="subdd" data-k="${key}" aria-haspopup="listbox" aria-expanded="false">${opts.find(o=>o[0]===cur)[1]}<i class="tri" aria-hidden="true"></i></button><div class="ddm" role="listbox">${opts.map(([v,l])=>`<button role="option" aria-selected="${v===cur}" class="${v===cur?'on':''}" data-act="subpick" data-k="${key}" data-v="${v}">${l}</button>`).join('')}</div></div>`;
+ const archB=()=>S.archive.length?`<div class="tl">${S.archive.map((a,i)=>{const sp=spot(a.spot);if(!sp)return'';return`<div class="st done"><div class="small muted">${a.date}</div><div class="card arx" style="margin-top:6px">${a.img?`<div class="arx-ph"><img src="${a.img}" alt="${sp.name}에서 찍은 AR 사진" loading="lazy">${(a.exp||[]).length?`<span class="arx-chip">${a.exp[0]}</span>`:''}</div>`:''}<div style="padding:12px;cursor:pointer" data-go="spot" data-id="${sp.id}"><b class="small">${sp.name}</b><div class="small muted">${wt(sp)} · ${sp.ep}</div>${a.memo?`<div class="small" style="margin-top:8px">${a.memo}</div>`:''}</div></div></div>`}).join('')}</div>`:`<div class="small muted" style="text-align:center;padding:40px 0">덕질 아카이브에 저장한 사진이 없어요<br>현장 AR 카메라로 찍고 저장해 보세요</div>`;
+ if(T==='mine'){const k=S.mineSub==='saved'?'saved':'recent';body=subdd('mine',k,[['recent','최근 본 명소'],['saved','저장한 명소']])+(k==='saved'?savedB:recentB)}
+ else if(T==='ar'){const k=S.arSub==='arch'?'arch':'feed';const mine=POSTS.filter(p=>p.mine);
+  body=subdd('ar',k,[['feed','AR 기록 피드'],['arch','덕질 아카이브']])+(k==='arch'?archB():(mine.length?`<div class="myar">${mine.map(postCard).join('')}</div>`:`<div class="small muted" style="text-align:center;padding:40px 0">AR 기록 피드에 등록한 글이 없어요<br><button class="btn pri sm" style="width:auto;padding:0 16px;margin-top:12px" data-go="post">등록하기</button></div>`))}
  else if(T==='review')body=`<div class="sub-h">작성 후기</div>`+tl(reviews.map(r=>({id:r.spot,date:r.d,tags:['★ '+Number(r.r).toFixed(1),r.tag].filter(Boolean),memo:r.txt})));
  else if(T==='stamp'){const last=stamps[stamps.length-1];
   body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><div class="small muted" style="margin-bottom:6px;position:relative">최근 획득한 뱃지</div><div class="sh-wrap"><span class="sh-rays"></span><div class="sh-flip">${stampSVG(last[0],{size:168,date:last[1]})}<i class="sh-glint" style="-webkit-mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat;mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat"></i></div>${Array.from({length:8},(_,i)=>`<i class="sh-spark" style="--a:${i*45}deg;--t:${1.0+i*.03}s"></i>`).join('')}</div><b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
@@ -2282,6 +2300,7 @@ function syncHist(){
   else history.replaceState(history.state,'','#'+S.screen);
  }catch(e){}
  const ed=document.getElementById('edge');if(ed)ed.classList.toggle('on',S.stack.length>0);
+ try{localStorage.setItem('dkNav',JSON.stringify({t:Date.now(),screen:S.screen,spot:S.spot,stack:S.stack.map(e=>({screen:e.screen,spot:e.spot,scroll:null}))}))}catch(e){}
 }
 window.addEventListener('popstate',()=>{
  if(NAV.ignorePop>0){NAV.ignorePop--;try{history.replaceState(history.state,'','#'+S.screen)}catch(e){}return}
@@ -2290,9 +2309,12 @@ window.addEventListener('popstate',()=>{
  if(S.stack.length){doBack(SWIPE.active?'none':'pop')}
  syncHist();
 });
+/* 화면을 버릴 때 그 안의 영상(360° 영상·카메라 미리보기)을 완전히 멈추고 메모리에서 내려요 */
+function killMedia(root){if(!root)return;root.querySelectorAll('video').forEach(v=>{try{v.pause();v.srcObject=null;v.removeAttribute('src');v.querySelectorAll('source').forEach(x=>x.remove());v.load()}catch(e){}})}
+function dropScreen(o){killMedia(o);o.remove()}
 function finishAnim(){
  clearTimeout(NAV.animT);const app=document.getElementById('app');
- app.querySelectorAll('.screen.leaving,.screen.under').forEach(o=>o.remove());
+ app.querySelectorAll('.screen.leaving,.screen.under').forEach(dropScreen);
  app.querySelectorAll('.screen').forEach(o=>{o.classList.remove('enter-push','enter-pop');o.style.transform='';o.style.transition=''});
  app.classList.remove('navlock');NAV.busy=false;
 }
@@ -2323,7 +2345,7 @@ function render(mode='none',restore){closeMission(true);
   if(mode==='push')app.appendChild(el);else app.insertBefore(el,old);
   NAV.animT=setTimeout(finishAnim,mode==='push'?380:330);
  }else{
-  app.querySelectorAll('.screen').forEach(o=>o.remove());app.appendChild(el);
+  app.querySelectorAll('.screen').forEach(dropScreen);app.appendChild(el);
  }
  applyScroll(el,restore||keep);
  if(def.after)def.after();
@@ -2393,7 +2415,7 @@ const SWIPE={active:false};
   setTimeout(()=>{
    SWIPE.active=false;NAV.busy=false;cur.classList.remove('dragging');
    if(commit){doBack('none');syncHist()}
-   else{under.remove();cur.style.transform='';cur.style.transition=''}
+   else{dropScreen(under);cur.style.transform='';cur.style.transition=''}
   },290);
  }
 })();
@@ -2436,7 +2458,10 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'camsim':S.camMode='sim';render();break;
   case 'ctltoggle':{S.ctlHidden=!S.ctlHidden;document.getElementById('camctl')?.classList.toggle('hid',S.ctlHidden);break}
   case 'camflip':{if(S.camMode!=='live'){toast('실시간 카메라에서만 전환할 수 있어요');break}S.facing=S.facing==='user'?'environment':'user';stopCam();render();break}
-  case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';S.stack=[];S.archTab='timeline';S.screen='archive';render('push');syncHist();toast('아카이브에 저장했어요');break}
+  case 'savearchive':{const memo=(document.getElementById('memo')||{}).value||'';const d=new Date();S.archive.unshift({img:S.lastCapture&&S.lastCapture.img,spot:S.spot,date:`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`,exp:S.lastCapture?S.lastCapture.exp:[],memo});saveArchive();const tr=S.trips.find(x=>x.spot===S.spot);if(tr)tr.status='완료';
+   /* 뒤로 가면 방문 계획으로: 카메라·기록 화면은 기록에서 빼고 계획 화면까지만 남겨요 */
+   let pi=-1;S.stack.forEach((e,i)=>{if(e.screen==='plan')pi=i});S.stack=pi>=0?S.stack.slice(0,pi+1):S.stack.filter(e=>!['move','arrive','record'].includes(e.screen));
+   S.archTab='ar';S.arSub='arch';clearTimers();finishAnim();S.screen='archive';render('push');syncHist();toast('덕질 아카이브에 저장했어요');break}
   case 'srchset':{const i=document.getElementById('srchq');if(i){i.value=t.dataset.v;i.dispatchEvent(new Event('input'))}break}
   case 'tripdel':{S.trips.splice(+t.dataset.i,1);render();toast('여정을 삭제했어요');break}
   case 'postmenu':{document.querySelector('.pmenu')?.remove();const p=POSTS.find(x=>x.id===t.dataset.i);if(!p)break;
@@ -2457,6 +2482,8 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'esel':S.exploreSel=t.dataset.v;render();break;
   case 'ctab':S.commTab=t.dataset.v;render();break;
   case 'atab':S.archTab=t.dataset.v;render();break;
+  case 'subdd':{const w=t.closest('.subdd');const on=!w.classList.contains('on');document.querySelectorAll('.subdd.on').forEach(x=>{x.classList.remove('on');x.querySelector('.ddb').setAttribute('aria-expanded','false')});if(on){w.classList.add('on');t.setAttribute('aria-expanded','true')}break}
+  case 'subpick':{if(t.dataset.k==='mine')S.mineSub=t.dataset.v;else S.arSub=t.dataset.v;render();break}
   case 'bk':{S.saved=S.saved||{};S.saved[t.dataset.v]=!S.saved[t.dataset.v];if(S.saved[t.dataset.v]){const d=new Date();S.savedAt=S.savedAt||{};S.savedAt[t.dataset.v]=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')}const on=S.saved[t.dataset.v];document.querySelectorAll(`[data-act="bk"][data-v="${t.dataset.v}"]`).forEach(b=>b.classList.toggle('on',on));toast(on?'저장한 명소에 추가했어요':'저장을 취소했어요');break}
   case 'like':S.liked[t.dataset.i]=!S.liked[t.dataset.i];render();break;
   case 'postspot':{const ta=document.querySelector('#posttxt');S.postDraft=ta?ta.value:'';S.postSpot=t.dataset.v;render();break}
@@ -2499,10 +2526,13 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
 
 /* ================= INIT ================= */
 (function(){let h='';try{h=location.hash.slice(1)}catch(e){}
- if(h&&SCREENS[h]&&h!=='scanning'){S.screen=h;if(!TOP.includes(h))S.stack=[{screen:'home',spot:S.spot,scroll:null}]}
+ let nav=null;try{nav=JSON.parse(localStorage.getItem('dkNav')||'null')}catch(e){}
+ if(h&&SCREENS[h]&&h!=='scanning'){S.screen=h;
+  if(nav&&nav.screen===h&&Date.now()-nav.t<30*60*1000&&Array.isArray(nav.stack)){S.spot=nav.spot||S.spot;S.stack=nav.stack.filter(e=>SCREENS[e.screen])}
+  else if(!TOP.includes(h))S.stack=[{screen:'home',spot:S.spot,scroll:null}]}
  try{history.replaceState({dm:0},'','#'+(S.stack.length?'home':S.screen))}catch(e){}
  render();syncHist();
- document.addEventListener('click',e=>{if(!e.target.closest('.catmenu,[data-act="catmenu"]'))document.querySelectorAll('.catmenu.on').forEach(m=>m.classList.remove('on'))},true);
+ document.addEventListener('click',e=>{if(!e.target.closest('.catmenu,[data-act="catmenu"]'))document.querySelectorAll('.catmenu.on').forEach(m=>m.classList.remove('on'));if(!e.target.closest('.subdd'))document.querySelectorAll('.subdd.on').forEach(m=>m.classList.remove('on'))},true);
 })();
 </script>
 </body>
