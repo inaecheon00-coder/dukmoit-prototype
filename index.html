@@ -661,7 +661,7 @@ input,textarea{font-size:17px}
 .srch-none{display:flex;flex-direction:column;gap:4px;padding:18px 16px;margin:4px 0 20px;border-radius:14px;background:#eef4fb;text-align:center}.srch-none b{font-size:17px;word-break:keep-all}.srch-none span{font-size:15px;color:var(--mute)}
 .sub-h{font-size:17px;font-weight:700;margin:0 0 12px}
 .subdd{position:relative;display:inline-block;margin:0 0 12px;z-index:5}
-.subdd .ddb{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;margin:0;color:inherit;font-family:inherit;cursor:pointer}
+.subdd .ddb{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;margin:0;cursor:pointer;font-family:var(--f-press)!important;font-weight:400!important;font-size:19px!important;color:var(--b)!important;letter-spacing:-.01em}  /* 홈 '다가오는 여정'과 같은 글꼴·크기·색 */
 .subdd .tri{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid currentColor;opacity:.7;transition:transform .18s ease;margin-top:1px}
 .subdd.on .tri{transform:rotate(180deg)}
 .subdd .ddm{position:absolute;left:0;top:calc(100% + 6px);min-width:150px;background:var(--card,#fff);border-radius:12px;box-shadow:0 8px 24px rgba(16,24,40,.16);padding:6px;display:none}
@@ -1268,8 +1268,6 @@ const S={
  archive:[
   {id:'seed-dotonbori',spot:'kifune_cn',date:'2026.11.21',exp:['애니 필터'],memo:'어느 시간대 방문해도 사람이 항상 많다..',img:'assets/archive/kifune_cn_1.jpg'},
   {id:'seed-keion',spot:'keion',date:'2026.11.20',exp:['애니 필터'],memo:'일본은 구름도 왜이렇게 애니메이션 같을까',img:'assets/archive/keion_1.jpg'},
-  {id:'seed-suga',spot:'suga',date:'2026.11.02',exp:['360° 장면'],memo:'계단 위에서 내려다본 구도 그대로…',img:'assets/real/suga.jpg'},
-  {id:'seed-shelter',spot:'shelter',date:'2026.10.03',exp:['장면 오버레이'],memo:'계단 내려가는 구도 완벽 재현!',img:'assets/real/shelter.jpg'},
  ],
  trips:[{spot:'shibuya',date:'12월 20일(토)',status:'예정'}],
  /* 나의 덕질 기록 예시 데이터 */
@@ -1290,10 +1288,11 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 (function(){try{const seed=S.archive.slice();const a=JSON.parse(localStorage.getItem('dkArchive')||'null');if(Array.isArray(a)&&a.length){
   /* 기기에 저장된 사진 + 새로 추가된 예시 사진(아직 없는 것만) */
   const have=new Set(a.map(x=>x.id).filter(Boolean));const add=seed.filter(x=>x.id&&!have.has(x.id));
-  S.archive=a.concat(add).sort((x,y)=>String(y.date).localeCompare(String(x.date)))}}catch(e){}})();
+  const gone=x=>['seed-suga','seed-shelter'].includes(x.id)||(!x.id&&/^assets\/real\/(suga|shelter)\.jpg/.test(x.img||''));   /* 없앤 예시 사진 */
+  S.archive=a.filter(x=>!gone(x)).concat(add).sort((x,y)=>String(y.date).localeCompare(String(x.date)))}}catch(e){}})();
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611245';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611246';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
