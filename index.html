@@ -1411,7 +1411,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611288';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611289';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2198,8 +2198,7 @@ function moveGuide(sp){const r=planRoute(sp),n=r.nodes,m=MODES.find(x=>x.id===S.
  <div class="mg-meta"><span class="mg-mode">${I[m.icon]}${m.name}</span><span class="mg-left">소요시간 <b>약 ${fmtMin(r.total)}</b></span></div>`}
 /* 카메라 방향: 너의이름은(스가 신사)만 세로 촬영, 나머지는 가로 촬영 */
 const PORTRAIT_CAM=new Set(['suga']);
-/* 폰에서는 들고 있는 방향 그대로: 세로로 들면 세로 카메라(너의이름은과 같은 화면), 가로로 돌리면 가로 카메라 */
-const camLand=def=>{if(!def.ar||PORTRAIT_CAM.has(spot().id))return false;if(document.documentElement.classList.contains('native'))return innerWidth>innerHeight;return true};
+const camLand=def=>{if(!def.ar||PORTRAIT_CAM.has(spot().id))return false;return true};   // 너의이름은만 세로, 나머지는 가로 촬영(세로로 들고 있으면 '가로로 돌려 주세요' 안내)
 (function(){let t=0;const re=()=>{clearTimeout(t);t=setTimeout(()=>{if(!window._curAr)return;const ph=document.getElementById('phone'),was=ph.classList.contains('land'),L=camLand({ar:true});if(was!==L){ph.classList.toggle('land',L);if(window.fitPhone)fitPhone();dispatchEvent(new Event('resize'))}},120)};
  addEventListener('resize',e=>{if(e.isTrusted)re()});addEventListener('orientationchange',()=>setTimeout(re,250))})();
 SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
