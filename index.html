@@ -1409,7 +1409,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611282';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611283';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2726,7 +2726,9 @@ function authRender(){const el=document.getElementById('auth'),last=(authSaved()
  <div class="au-wait" id="au-wait"><div class="bx"><div class="ic" id="au-wic"></div><b id="au-wt"></b><div class="sp"></div></div></div>
  <div class="au-done" id="au-done"></div>`;
  el.querySelectorAll('.au-c').forEach(b=>b.onclick=()=>authStart(b.dataset.p));
- el.querySelector('[data-a="member"]').onclick=authMember;
+ el.querySelector('[data-a="member"]').onclick=()=>{const sv=authSaved()||{};   // 기존 회원: 바로 홈으로
+  try{localStorage.setItem('dkAuth',JSON.stringify({...sv,in:true}));sessionStorage.removeItem('dkGuest')}catch(e){}
+  if(sv.nick)S.nick=sv.nick;if(AUTH.out){AUTH.out=false;S.stack=[];S.screen='home'}authClose();render();try{syncHist()}catch(e){}};
  el.querySelector('[data-a="guest"]').onclick=()=>{try{sessionStorage.setItem('dkGuest','1')}catch(e){}authClose();setTimeout(()=>toast('둘러보기 모드예요 · 기록은 가입 후 저장돼요'),350)};
 }
 AUTH_P.email={name:'이메일',label:'이메일로 로그인',bg:'#0078e9',mail:'',ic:''};
