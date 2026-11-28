@@ -1132,6 +1132,16 @@ html.native .auth{position:fixed;left:0;top:0;width:100%;height:100lvh;min-heigh
 .phone.auth-on .sbar{color:#fff}.phone.auth-on::after{background:rgba(255,255,255,.85)}
 .phone.auth-on.auth-lt .sbar{color:#000}.phone.auth-on.auth-lt::after{background:rgba(0,0,0,.85)}
 
+
+/* 세로로 든 폰: 가로 촬영 안내 */
+.rothint{position:absolute;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 32px;background:rgba(10,12,18,.92);color:#fff;font-family:var(--f-body);transition:opacity .25s}
+.rothint.off{opacity:0}
+.rothint b{font-size:20px;font-weight:800;margin-top:28px}
+.rothint p{font-size:14px;opacity:.75;margin-top:8px;word-break:keep-all}
+.rh-ph{width:52px;height:92px;border:3px solid #fff;border-radius:12px;position:relative;animation:rhRot 2.2s ease-in-out infinite}
+.rh-ph i{position:absolute;left:50%;top:6px;width:14px;height:4px;margin-left:-7px;border-radius:9px;background:#fff}
+@keyframes rhRot{0%,20%{transform:rotate(0)}50%,75%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+.rh-btn{margin-top:30px;height:46px;padding:0 22px;border-radius:999px;border:1px solid rgba(255,255,255,.6);background:rgba(255,255,255,.12);color:#fff;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
 /* 실제 폰(브라우저·홈 화면 앱 모두)에서 열면: 아이폰 프레임 없이 앱처럼 화면을 꽉 채워요. PC에서만 프레임 표시 */
 html.native,html.native body{background:var(--surface);overflow:hidden}
 html.native body{display:block!important;padding:0!important;margin:0!important}
@@ -1411,7 +1421,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611289';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611290';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2198,8 +2208,17 @@ function moveGuide(sp){const r=planRoute(sp),n=r.nodes,m=MODES.find(x=>x.id===S.
  <div class="mg-meta"><span class="mg-mode">${I[m.icon]}${m.name}</span><span class="mg-left">소요시간 <b>약 ${fmtMin(r.total)}</b></span></div>`}
 /* 카메라 방향: 너의이름은(스가 신사)만 세로 촬영, 나머지는 가로 촬영 */
 const PORTRAIT_CAM=new Set(['suga']);
-const camLand=def=>{if(!def.ar||PORTRAIT_CAM.has(spot().id))return false;return true};   // 너의이름은만 세로, 나머지는 가로 촬영(세로로 들고 있으면 '가로로 돌려 주세요' 안내)
-(function(){let t=0;const re=()=>{clearTimeout(t);t=setTimeout(()=>{if(!window._curAr)return;const ph=document.getElementById('phone'),was=ph.classList.contains('land'),L=camLand({ar:true});if(was!==L){ph.classList.toggle('land',L);if(window.fitPhone)fitPhone();dispatchEvent(new Event('resize'))}},120)};
+const isNative=()=>document.documentElement.classList.contains('native');
+/* 폰: 가로로 들면 가로 카메라, 세로로 들고 있으면 '가로로 돌려 주세요' 안내 → '세로로 볼게요'를 누르면 너의이름은과 같은 세로 배치 */
+const camLand=def=>{if(!def.ar||PORTRAIT_CAM.has(spot().id))return false;if(isNative())return innerWidth>innerHeight;return true};
+function rotHint(def,wasAr){const ph=document.getElementById('phone');let h=document.getElementById('rothint');
+ const need=def.ar&&isNative()&&!PORTRAIT_CAM.has(spot().id)&&innerWidth<=innerHeight;
+ if(!need){if(h)h.remove();return}
+ if(wasAr||h)return;   // 카메라에 처음 들어올 때만
+ h=document.createElement('div');h.id='rothint';h.className='rothint';
+ h.innerHTML=`<div class="rh-ph"><i></i></div><b>휴대폰을 가로로 돌려 주세요</b><p>가로 화면으로 촬영하면 원작 장면이 더 잘 맞아요</p><button class="rh-btn">세로로 볼게요</button>`;
+ h.querySelector('.rh-btn').onclick=()=>{h.classList.add('off');setTimeout(()=>h.remove(),250)};ph.appendChild(h)}
+(function(){let t=0;const re=()=>{clearTimeout(t);t=setTimeout(()=>{if(!window._curAr)return;const ph=document.getElementById('phone'),was=ph.classList.contains('land'),L=camLand({ar:true});if(L){const h=document.getElementById('rothint');if(h)h.remove()}if(was!==L){ph.classList.toggle('land',L);if(window.fitPhone)fitPhone();dispatchEvent(new Event('resize'))}},120)};
  addEventListener('resize',e=>{if(e.isTrusted)re()});addEventListener('orientationchange',()=>setTimeout(re,250))})();
 SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
  const ch=work(sp).chars;
@@ -2495,7 +2514,7 @@ function render(mode='none',restore){closeMission(true);
  const old=curScreen();
  const keep=(mode==='none'&&!restore&&old&&old.dataset.screen===S.screen&&old.dataset.spot===S.spot)?snapScroll(old):null;
  const def=SCREENS[S.screen]();
- document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');window._curAr=!!def.ar;const L=camLand(def);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
+ document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');const wasAr=!!window._curAr;window._curAr=!!def.ar;const L=camLand(def);rotHint(def,wasAr);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
  const el=buildScreen(def);
  if(old)stripIds(old);
  if((mode==='push'||mode==='pop')&&old){
@@ -2529,7 +2548,7 @@ function backReuse(under,def){
  const app=document.getElementById('app');app.querySelectorAll('.screen').forEach(o=>{if(o!==under)dropScreen(o)});
  under.classList.remove('under');under.querySelector(':scope > .shade')?.remove();under.style.transform='';under.style.transition='';
  restoreIds(under);
- const ph=document.getElementById('phone');ph.classList.toggle('dk',!!def.dark);{const was=ph.classList.contains('land');window._curAr=!!def.ar;const L=camLand(def);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
+ const ph=document.getElementById('phone');ph.classList.toggle('dk',!!def.dark);{const was=ph.classList.contains('land');const wasAr=!!window._curAr;window._curAr=!!def.ar;const L=camLand(def);rotHint(def,wasAr);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
  wireScreen(under,def);
 }
 const SWIPE={active:false};
