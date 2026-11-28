@@ -1409,7 +1409,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611283';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611284';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2808,7 +2808,7 @@ function authFinish(nick,fav,returning){const k=AUTH.p,p=AUTH_P[k];
 function authClose(){const el=document.getElementById('auth'),ph=document.getElementById('phone');el.classList.add('off');el.setAttribute('aria-hidden','true');ph.classList.remove('auth-on','auth-lt');setTimeout(()=>{if(el.classList.contains('off')){el.innerHTML='';el.classList.remove('step2')}},450)}
 function authOpen(){const el=document.getElementById('auth'),ph=document.getElementById('phone');AUTH.p=null;AUTH.terms={age:false,tos:false,priv:false,loc:true,mkt:false};
  authRender();el.classList.remove('off','step2');el.removeAttribute('aria-hidden');ph.classList.add('auth-on')}
-function authNeeded(){const sv=authSaved();let g=null;try{g=sessionStorage.getItem('dkGuest')}catch(e){}return !(sv&&sv.in)&&!g}
+function authNeeded(){return true}   // 앱을 새로 열 때마다 스플래시 → 가입 화면
 
 /* ================= SPLASH ================= */
 (function(){const sp=document.getElementById('splash'),ph=document.getElementById('phone');
