@@ -1037,6 +1037,93 @@ input,textarea{font-size:17px}
 html.splashing,html.splashing body{background:#0078e9!important}
 html.native .splash{position:fixed;left:0;top:0;width:100%;height:100lvh;min-height:100%}
 
+
+/* ================= 가입 / 로그인 (스플래시 다음) ================= */
+.auth{position:absolute;inset:0;z-index:80;background:#0078e9;color:#fff;overflow:hidden;font-family:var(--f-body)}
+html.native .auth{position:fixed;left:0;top:0;width:100%;height:100lvh;min-height:100%}
+.auth.off{opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s .4s}
+.auth::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 38%,rgba(255,255,255,.16) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side at 50% 38%,transparent 30%,#000 80%);mask:radial-gradient(closest-side at 50% 38%,transparent 30%,#000 80%);animation:spin 60s linear infinite;pointer-events:none}
+.au-st{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.au-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding-top:var(--sat,0)}
+.au-hero img{width:178px;height:auto;filter:drop-shadow(0 4px 0 rgba(0,50,120,.3));animation:auLogo .6s cubic-bezier(.2,.8,.2,1) both}
+.au-hero .au-tag{margin-top:14px;font-size:16px;font-weight:500;opacity:.95;text-align:center;line-height:1.55;animation:auUp .5s .12s both}
+.au-hero .au-tag b{font-weight:800}
+@keyframes auLogo{from{transform:scale(1.35) translateY(40px)}to{transform:none}}
+@keyframes auUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.au-card{position:relative;background:#fff;color:var(--text);border-radius:28px 28px 0 0;padding:26px 22px calc(18px + var(--sab,0px));animation:auCard .5s .05s cubic-bezier(.2,.8,.2,1) both}
+@keyframes auCard{from{transform:translateY(100%)}to{transform:none}}
+.au-bub{position:absolute;left:50%;top:-17px;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 14px -6px rgba(0,0,0,.4);animation:auBob 2.4s ease-in-out infinite}
+.au-bub::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px}
+@keyframes auBob{50%{transform:translateX(-50%) translateY(-3px)}}
+.au-ttl{font-size:21px;font-weight:800;color:var(--navy);text-align:center;letter-spacing:-.02em}
+.au-sub{font-size:14px;color:var(--slate);text-align:center;margin:4px 0 20px}
+.au-btn{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:54px;border-radius:14px;font:inherit;font-size:16px;font-weight:700;border:0;cursor:pointer;transition:transform .12s,filter .12s}
+.au-btn+.au-btn{margin-top:10px}
+.au-btn:active{transform:scale(.98);filter:brightness(.95)}
+.au-btn svg{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:22px;height:22px}
+.au-btn.kakao{background:#FEE500;color:rgba(0,0,0,.85)}
+.au-btn.naver{background:#03C75A;color:#fff}
+.au-btn.google{background:#fff;color:#1f1f1f;box-shadow:inset 0 0 0 1px #dadce0}
+.au-btn.apple{background:#000;color:#fff}
+.au-btn .last{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.75);color:#fff}
+.au-foot{display:flex;justify-content:center;gap:14px;margin-top:16px;font-size:13px;color:var(--slate)}
+.au-foot button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.au-legal{font-size:11.5px;color:var(--mute);text-align:center;margin-top:12px;line-height:1.5}
+/* 연결 중 */
+.au-wait{position:absolute;inset:0;z-index:5;display:grid;place-items:center;background:rgba(15,23,42,.55);opacity:0;pointer-events:none;transition:opacity .2s}
+.au-wait.on{opacity:1;pointer-events:auto}
+.au-wait .bx{background:#fff;color:var(--text);border-radius:20px;padding:22px 26px;display:flex;flex-direction:column;align-items:center;gap:12px;min-width:220px;transform:scale(.94);transition:transform .2s}
+.au-wait.on .bx{transform:none}
+.au-wait .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center}.au-wait .ic svg{width:28px;height:28px}
+.au-wait .sp{width:22px;height:22px;border-radius:50%;border:3px solid var(--b-weak);border-top-color:var(--b);animation:spin .8s linear infinite}
+.au-wait b{font-size:15px}
+/* 2단계: 프로필 · 약관 */
+.au-st.s2{background:#fff;color:var(--text);transform:translateX(100%)}
+.auth.step2 .au-st.s1{transform:translateX(-30%);opacity:.4}
+.auth.step2 .au-st.s2{transform:none}
+.au-top{display:flex;align-items:center;height:56px;padding:var(--sat,0) 6px 0;flex:none;box-sizing:content-box}
+.au-top button{width:44px;height:44px;display:grid;place-items:center;background:none;border:0;color:var(--navy);cursor:pointer}.au-top svg{width:24px;height:24px}
+.au-top .prog{flex:1;height:4px;margin:0 18px 0 6px;border-radius:9px;background:#eef2f6;overflow:hidden}.au-top .prog i{display:block;height:100%;width:70%;background:var(--b);border-radius:inherit;transition:width .4s}
+.au-body{flex:1;overflow-y:auto;padding:8px 22px 20px;-webkit-overflow-scrolling:touch}
+.au-h{font-size:24px;font-weight:800;color:var(--navy);letter-spacing:-.02em;line-height:1.35}
+.au-h+p{font-size:14px;color:var(--slate);margin-top:6px}
+.au-via{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13px;font-weight:600;padding:6px 10px 6px 7px;border-radius:999px;background:var(--b-weak);color:var(--b-deep)}
+.au-via i{width:20px;height:20px;border-radius:6px;display:grid;place-items:center}.au-via svg{width:13px;height:13px}
+.au-l{display:block;font-size:14px;font-weight:700;color:var(--navy);margin:22px 0 0}
+.au-l small{font-weight:500;color:var(--mute);margin-left:4px}
+.au-in{position:relative}.au-in .set-in{padding-right:56px}
+.au-in .cnt{position:absolute;right:14px;top:50%;transform:translateY(-30%);font-size:12px;color:var(--mute)}
+.au-hint{font-size:12.5px;margin-top:6px;color:var(--b)}
+.au-hint.bad{color:#e5484d}
+.au-works{display:flex;gap:10px;overflow-x:auto;margin:10px -22px 0;padding:4px 22px 6px;scrollbar-width:none}.au-works::-webkit-scrollbar{display:none}
+.au-w{flex:none;width:84px;background:none;border:0;padding:0;font:inherit;text-align:center;cursor:pointer;color:var(--sub)}
+.au-w .im{position:relative;width:84px;height:112px;border-radius:12px;background:var(--ph) center/cover;box-shadow:0 0 0 2px transparent;transition:box-shadow .15s,transform .15s}
+.au-w .im::after{content:"";position:absolute;right:6px;top:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.25);box-shadow:inset 0 0 0 2px #fff}
+.au-w.on .im{box-shadow:0 0 0 3px var(--b);transform:translateY(-2px)}
+.au-w.on .im::after{background:var(--b) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/14px no-repeat}
+.au-w span{display:block;margin-top:6px;font-size:12px;font-weight:600;line-height:1.3;word-break:keep-all}
+.au-w.on span{color:var(--b)}
+.au-terms{margin-top:24px;border-radius:16px;background:var(--bg);padding:6px 4px}
+.au-ck{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;background:none;border:0;font:inherit;font-size:14px;color:var(--sub);text-align:left;cursor:pointer}
+.au-ck .b{width:22px;height:22px;flex:none;border-radius:50%;background:#dfe5ec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/13px no-repeat;transition:background-color .15s}
+.au-ck.on .b{background-color:var(--b)}
+.au-ck.all{font-size:16px;font-weight:800;color:var(--navy);border-bottom:1px solid var(--line2);border-radius:0;padding-bottom:14px;margin-bottom:4px}
+.au-ck em{font-style:normal;font-weight:700;color:var(--b);margin-right:2px}.au-ck em.opt{color:var(--mute)}
+.au-ck .v{margin-left:auto;font-size:12px;color:var(--mute);text-decoration:underline}
+.au-cta{flex:none;padding:10px 22px calc(14px + var(--sab,0px));background:#fff;box-shadow:0 -10px 20px -12px rgba(15,23,42,.12)}
+.au-cta .btn:disabled{opacity:1;background:#d5dee8;box-shadow:none}
+/* 3단계: 환영 */
+.au-done{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bubble);color:#fff;opacity:0;pointer-events:none;transition:opacity .3s;text-align:center}
+.au-done.on{opacity:1;pointer-events:auto}
+.au-done .av{width:96px;height:96px;border-radius:50%;background:#fff;color:var(--b);display:grid;place-items:center;font-size:40px;font-weight:800;box-shadow:0 10px 30px -10px rgba(0,40,100,.6)}
+.au-done.on .av{animation:auPop .55s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes auPop{from{transform:scale(.3);opacity:0}}
+.au-done h2{margin-top:20px;font-size:24px;font-weight:800;line-height:1.4}
+.au-done p{margin-top:6px;font-size:15px;opacity:.9}
+.au-done.on h2,.au-done.on p{animation:auUp .45s .2s both}
+.phone.auth-on .sbar{color:#fff}.phone.auth-on::after{background:rgba(255,255,255,.85)}
+.phone.auth-on.auth-lt .sbar{color:#000}.phone.auth-on.auth-lt::after{background:rgba(0,0,0,.85)}
+
 /* 실제 폰(브라우저·홈 화면 앱 모두)에서 열면: 아이폰 프레임 없이 앱처럼 화면을 꽉 채워요. PC에서만 프레임 표시 */
 html.native,html.native body{background:var(--surface);overflow:hidden}
 html.native body{display:block!important;padding:0!important;margin:0!important}
@@ -1062,6 +1149,7 @@ html.native .phone.land .cam-rail{right:calc(env(safe-area-inset-right,0px) + 20
   <div class="phone splash-on" id="phone">
     <div class="sbar" aria-hidden="true"><span>9:41</span><span class="ic"><svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.2-1.2A10.2 10.2 0 008 .5 10.2 10.2 0 00.8 3.4L2 4.6a8.5 8.5 0 016-2.4zm0 3.4c1.4 0 2.6.5 3.6 1.4l1.2-1.2A6.8 6.8 0 008 3.9a6.8 6.8 0 00-4.8 1.9l1.2 1.2c1-.9 2.2-1.4 3.6-1.4zM8 9l2.3-2.3a3.3 3.3 0 00-4.6 0z"/></svg><svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4a2 2 0 000-4z" fill="currentColor" opacity=".5"/></svg></span></div>
     <div class="splash" id="splash"><div class="c"><img class="logo-img" src="assets/logo-white.png?v=2611152" alt="덕모잇" width="240"><div class="sub">덕후들 모여잇</div></div></div>
+    <div class="auth off" id="auth" aria-hidden="true"></div>
     <div id="app"></div>
     <div id="edge" aria-hidden="true"></div>
     <div class="dim" id="dim"></div>
@@ -1315,7 +1403,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611257';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611281';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2545,7 +2633,7 @@ document.getElementById('app').addEventListener('click',e=>{
    try{localStorage.setItem('dkSet',JSON.stringify({set:S.set,nick:S.nick}))}catch(e){}
    const L={loc:'위치 정보 이용',cam:'카메라 접근',push:'알림',night:'야간 알림',mkt:'마케팅 정보 수신'};toast(`${L[k]}을 ${S.set[k]?'켰어요':'껐어요'}`);break}
   case 'setprof':openProfileSheet();break;
-  case 'setlogout':toast('데모 버전이라 로그아웃은 실행되지 않아요');break;
+  case 'setlogout':{try{const v=authSaved();if(v){v.in=false;localStorage.setItem('dkAuth',JSON.stringify(v))}sessionStorage.removeItem('dkGuest')}catch(e){}authOpen();AUTH.out=true;break}
   case 'setleave':toast('회원 탈퇴는 고객센터로 문의해 주세요');break;
   case 'rvmenu':{document.querySelector('.pmenu')?.remove();const m=document.createElement('div');m.className='pmenu';m.style.top='44px';m.style.right='8px';
    m.innerHTML=`<button data-act="rvdel" data-i="${t.dataset.i}" data-s="${t.dataset.s}">삭제하기</button>`;t.parentNode.appendChild(m);
@@ -2603,8 +2691,91 @@ document.getElementById('flow')?.addEventListener('click',e=>{const b=e.target.c
   ph.style.setProperty('--fit',k.toFixed(4));ph.style.setProperty('--rot',rot?'90deg':'0deg')};
  window.fitPhone=fit;fit();addEventListener('resize',fit);})();
 
+
+/* ================= 가입 / 로그인 ================= */
+const AUTH_P={
+ kakao:{name:'카카오',label:'카카오로 시작하기',bg:'#FEE500',mail:'dukmoit@kakao.com',ic:'<svg viewBox="0 0 24 24"><path fill="#000" d="M12 3.2C6.5 3.2 2 6.7 2 11c0 2.8 1.9 5.3 4.7 6.6l-1 3.6c-.1.3.3.6.6.4l4.3-2.8c.5.1 1 .1 1.4.1 5.5 0 10-3.5 10-7.9S17.5 3.2 12 3.2z"/></svg>'},
+ naver:{name:'네이버',label:'네이버로 시작하기',bg:'#03C75A',mail:'dukmoit@naver.com',ic:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M15.6 12.8 8.1 2H2v20h6.4V11.2L15.9 22H22V2h-6.4z" transform="translate(2.4 2.4) scale(.8)"/></svg>'},
+ google:{name:'Google',label:'Google로 시작하기',bg:'#fff',mail:'dukmoit@gmail.com',ic:'<svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>'},
+ apple:{name:'Apple',label:'Apple로 시작하기',bg:'#000',mail:'dk7x2q@privaterelay.appleid.com',ic:'<svg viewBox="0 0 24 24"><path fill="#fff" d="M16.37 1.43c0 1.14-.5 2.27-1.18 3.08-.74.9-1.99 1.57-2.99 1.57-.12 0-.23-.02-.3-.03-.01-.06-.04-.22-.04-.39 0-1.15.57-2.27 1.21-2.98.8-.94 2.14-1.64 3.25-1.68.03.13.05.28.05.43zm4.56 15.71c-.03.07-.46 1.58-1.52 3.12-.94 1.34-1.94 2.71-3.43 2.71-1.52 0-1.9-.88-3.63-.88-1.7 0-2.3.91-3.67.91-1.38 0-2.33-1.26-3.43-2.8-1.29-1.82-2.32-4.63-2.32-7.28 0-4.28 2.8-6.55 5.55-6.55 1.45 0 2.68.95 3.6.95.87 0 2.22-1.01 3.9-1.01.61 0 2.89.06 4.37 2.19-.13.09-2.38 1.37-2.38 4.19 0 3.26 2.85 4.42 2.96 4.45z"/></svg>'}};
+const AUTH={p:null,nick:'',fav:'',terms:{age:false,tos:false,priv:false,loc:true,mkt:false}};
+function authSaved(){try{return JSON.parse(localStorage.getItem('dkAuth')||'null')}catch(e){return null}}
+function authWorks(){const seen=new Set(),out=[];SPOTS.forEach(sp=>{const t=work(sp).title.replace(/\s*\(.*\)\s*$/,'');if(!seen.has(t)&&POSTER_IDS.has(sp.id)){seen.add(t);out.push({t,img:`assets/posters/${sp.id}.jpg?v=${ASSET_V}`})}});return out}
+const POSTER_IDS=new Set(['gotoubun','haboro','kamakura_sd','karumai','keion','kifune_cn','meguro','nagatoro','onnazaka','seihantai','shelter','shibuya','suga','sunshine','tamako','yanineko']);
+function authRender(){const el=document.getElementById('auth'),last=(authSaved()||{}).last;
+ const btn=k=>{const p=AUTH_P[k];return`<button class="au-btn ${k}" data-p="${k}">${p.ic}${p.label}${last===k?'<span class="last">최근 로그인</span>':''}</button>`};
+ el.innerHTML=`
+ <div class="au-st s1">
+  <div class="au-hero"><img src="assets/logo-white.png?v=2611152" alt="덕모잇" width="178"><div class="au-tag">애니 속 그 장소, 직접 가 보자<br><b>덕후들 모여잇</b></div></div>
+  <div class="au-card"><div class="au-bub">⚡ 3초 만에 시작하기</div>
+   <div class="au-ttl">반가워요, 순례자님!</div><div class="au-sub">자주 쓰는 계정으로 바로 가입할 수 있어요</div>
+   ${btn('kakao')}${btn('naver')}${btn('google')}${btn('apple')}
+   <div class="au-foot"><button data-a="guest">먼저 둘러볼게요</button></div>
+   <div class="au-legal">가입하면 덕모잇 이용약관 및 개인정보 처리방침에 동의하게 돼요</div>
+  </div>
+ </div>
+ <div class="au-st s2" id="au-s2"></div>
+ <div class="au-wait" id="au-wait"><div class="bx"><div class="ic" id="au-wic"></div><b id="au-wt"></b><div class="sp"></div></div></div>
+ <div class="au-done" id="au-done"></div>`;
+ el.querySelectorAll('.au-btn').forEach(b=>b.onclick=()=>authStart(b.dataset.p));
+ el.querySelector('[data-a="guest"]').onclick=()=>{try{sessionStorage.setItem('dkGuest','1')}catch(e){}authClose();setTimeout(()=>toast('둘러보기 모드예요 · 기록은 가입 후 저장돼요'),350)};
+}
+function authStart(k){const p=AUTH_P[k],w=document.getElementById('au-wait');AUTH.p=k;
+ document.getElementById('au-wic').style.background=p.bg;document.getElementById('au-wic').style.boxShadow=k==='google'?'inset 0 0 0 1px #dadce0':'none';
+ document.getElementById('au-wic').innerHTML=p.ic;document.getElementById('au-wt').textContent=`${p.name} 계정 연결 중…`;w.classList.add('on');
+ const sv=authSaved();
+ setTimeout(()=>{w.classList.remove('on');
+  if(sv&&sv.p===k&&sv.nick){authFinish(sv.nick,sv.fav,true);return}   // 이미 가입한 계정이면 바로 로그인
+  AUTH.nick=AUTH.nick||(S.nick&&S.nick!=='덕모잇 순례자'?S.nick:'');AUTH.fav=AUTH.fav||'';authStep2()},950)}
+function authStep2(){const k=AUTH.p,p=AUTH_P[k],el=document.getElementById('au-s2'),T=AUTH.terms;
+ const req=T.age&&T.tos&&T.priv,all=req&&T.loc&&T.mkt,nickOk=AUTH.nick.trim().length>=2;
+ const ck=(id,txt,opt,view)=>`<button class="au-ck ${T[id]?'on':''}" data-ck="${id}"><span class="b"></span><span><em class="${opt?'opt':''}">[${opt?'선택':'필수'}]</em> ${txt}</span>${view?'<span class="v">보기</span>':''}</button>`;
+ el.innerHTML=`
+  <div class="au-top"><button data-a="back" aria-label="뒤로">${I.back||'‹'}</button><div class="prog"><i style="width:${nickOk&&req?100:nickOk||req?82:60}%"></i></div></div>
+  <div class="au-body">
+   <div class="au-h">순례를 떠나기 전에<br>프로필만 정해 볼까요?</div><p>나중에 설정에서 언제든 바꿀 수 있어요</p>
+   <div class="au-via"><i style="background:${p.bg};${k==='google'?'box-shadow:inset 0 0 0 1px #dadce0':''}">${p.ic}</i>${p.name} 계정으로 가입 중 · ${p.mail}</div>
+   <label class="au-l" for="au-nick">닉네임</label>
+   <div class="au-in"><input id="au-nick" class="set-in" maxlength="12" placeholder="2~12자, 방문록에 보여요" value="${AUTH.nick.replace(/"/g,'&quot;')}" autocomplete="off"><span class="cnt" id="au-cnt">${AUTH.nick.length}/12</span></div>
+   <div class="au-hint ${AUTH.nick&&!nickOk?'bad':''}" id="au-hint">${!AUTH.nick?'&nbsp;':nickOk?'멋진 닉네임이에요!':'2자 이상 입력해 주세요'}</div>
+   <div class="au-l">최애 작품<small>하나 골라 주세요 · 선택</small></div>
+   <div class="au-works" id="au-works">${authWorks().map(w=>`<button class="au-w ${AUTH.fav===w.t?'on':''}" data-w="${w.t.replace(/"/g,'&quot;')}"><div class="im" style="background-image:url('${w.img}')"></div><span>${w.t}</span></button>`).join('')}</div>
+   <div class="au-terms">
+    <button class="au-ck all ${all?'on':''}" data-ck="all"><span class="b"></span><span>약관 전체 동의</span></button>
+    ${ck('age','만 14세 이상이에요')}${ck('tos','서비스 이용약관',0,1)}${ck('priv','개인정보 수집 및 이용',0,1)}${ck('loc','위치기반 서비스 이용 (성지 근처 알림)',1,1)}${ck('mkt','이벤트·혜택 알림 받기',1)}
+   </div>
+  </div>
+  <div class="au-cta"><button class="btn pri" id="au-go" ${nickOk&&req?'':'disabled'}>덕모잇 시작하기</button></div>`;
+ const box=document.getElementById('auth');box.classList.add('step2');document.getElementById('phone').classList.add('auth-lt');
+ el.querySelector('[data-a="back"]').onclick=()=>{box.classList.remove('step2');document.getElementById('phone').classList.remove('auth-lt')};
+ const inp=document.getElementById('au-nick');
+ inp.oninput=()=>{AUTH.nick=inp.value;const ok=inp.value.trim().length>=2;document.getElementById('au-cnt').textContent=`${inp.value.length}/12`;
+  const h=document.getElementById('au-hint');h.className='au-hint '+(inp.value&&!ok?'bad':'');h.innerHTML=!inp.value?'&nbsp;':ok?'멋진 닉네임이에요!':'2자 이상 입력해 주세요';authSync()};
+ el.querySelectorAll('.au-w').forEach(b=>b.onclick=()=>{AUTH.fav=AUTH.fav===b.dataset.w?'':b.dataset.w;el.querySelectorAll('.au-w').forEach(x=>x.classList.toggle('on',x.dataset.w===AUTH.fav))});
+ el.querySelectorAll('.au-ck').forEach(b=>b.onclick=e=>{const id=b.dataset.ck;
+  if(e.target.classList.contains('v')){toast(id==='loc'?'위치기반 서비스 약관은 준비 중이에요':'약관 화면은 준비 중이에요');return}
+  if(id==='all'){const v=!(T.age&&T.tos&&T.priv&&T.loc&&T.mkt);['age','tos','priv','loc','mkt'].forEach(x=>T[x]=v)}else T[id]=!T[id];authSync()});
+ document.getElementById('au-go').onclick=()=>{inp.blur();authFinish(AUTH.nick.trim(),AUTH.fav,false)};
+}
+function authSync(){const el=document.getElementById('au-s2'),T=AUTH.terms,req=T.age&&T.tos&&T.priv,ok=AUTH.nick.trim().length>=2;
+ el.querySelectorAll('.au-ck').forEach(b=>{const id=b.dataset.ck;b.classList.toggle('on',id==='all'?req&&T.loc&&T.mkt:!!T[id])});
+ document.getElementById('au-go').disabled=!(ok&&req);el.querySelector('.prog i').style.width=(ok&&req?100:ok||req?82:60)+'%'}
+function authFinish(nick,fav,returning){const k=AUTH.p,p=AUTH_P[k];
+ S.nick=nick;if(fav)S.set.fav=fav;S.set.acct=p.name;S.set.email=p.mail;
+ if(!returning){S.set.loc=AUTH.terms.loc;S.set.mkt=AUTH.terms.mkt}
+ try{localStorage.setItem('dkAuth',JSON.stringify({p:k,nick,fav:fav||S.set.fav,last:k,in:true}));localStorage.setItem('dkSet',JSON.stringify({set:S.set,nick:S.nick}));sessionStorage.removeItem('dkGuest')}catch(e){}
+ const d=document.getElementById('au-done');
+ d.innerHTML=`<div class="av">${nick.slice(0,1)}</div><h2>${returning?'다시 만나서 반가워요':'가입 완료!'}<br>${nick}님</h2><p>${returning?'이어서 순례를 떠나 볼까요?':(fav?`${fav} 성지부터 둘러볼까요?`:'첫 성지순례를 떠나 볼까요?')}</p>`;
+ d.classList.add('on');document.getElementById('phone').classList.remove('auth-lt');
+ setTimeout(()=>{if(AUTH.out){AUTH.out=false;S.stack=[];S.screen='home'}authClose();render();try{syncHist()}catch(e){}},1500)}
+function authClose(){const el=document.getElementById('auth'),ph=document.getElementById('phone');el.classList.add('off');el.setAttribute('aria-hidden','true');ph.classList.remove('auth-on','auth-lt');setTimeout(()=>{if(el.classList.contains('off')){el.innerHTML='';el.classList.remove('step2')}},450)}
+function authOpen(){const el=document.getElementById('auth'),ph=document.getElementById('phone');AUTH.p=null;AUTH.terms={age:false,tos:false,priv:false,loc:true,mkt:false};
+ authRender();el.classList.remove('off','step2');el.removeAttribute('aria-hidden');ph.classList.add('auth-on')}
+function authNeeded(){const sv=authSaved();let g=null;try{g=sessionStorage.getItem('dkGuest')}catch(e){}return !(sv&&sv.in)&&!g}
+
 /* ================= SPLASH ================= */
 (function(){const sp=document.getElementById('splash'),ph=document.getElementById('phone');
+ if(authNeeded())authOpen();   // 스플래시가 걷히면 바로 가입 화면이 보이도록 뒤에 미리 깔아 둬요
  const hide=()=>{if(sp.classList.contains('off'))return;sp.classList.add('off');ph.classList.remove('splash-on');setTimeout(()=>document.documentElement.classList.remove('splashing'),500)};
  sp.onclick=hide;setTimeout(hide,1800);})();
 
