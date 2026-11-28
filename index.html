@@ -1050,22 +1050,28 @@ html.native .auth{position:fixed;left:0;top:0;width:100%;height:100lvh;min-heigh
 .au-hero .au-tag b{font-weight:800}
 @keyframes auLogo{from{transform:scale(1.35) translateY(40px)}to{transform:none}}
 @keyframes auUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.au-card{position:relative;background:#fff;color:var(--text);border-radius:28px 28px 0 0;padding:26px 22px calc(18px + var(--sab,0px));animation:auCard .5s .05s cubic-bezier(.2,.8,.2,1) both}
+.au-card{position:relative;background:#fff;color:var(--text);border-radius:28px 28px 0 0;padding:28px 22px calc(18px + var(--sab,0px));animation:auCard .5s .05s cubic-bezier(.2,.8,.2,1) both}
 @keyframes auCard{from{transform:translateY(100%)}to{transform:none}}
 .au-bub{position:absolute;left:50%;top:-17px;transform:translateX(-50%);background:var(--navy);color:#fff;font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 14px -6px rgba(0,0,0,.4);animation:auBob 2.4s ease-in-out infinite}
 .au-bub::after{content:"";position:absolute;left:50%;bottom:-5px;width:10px;height:10px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px}
 @keyframes auBob{50%{transform:translateX(-50%) translateY(-3px)}}
 .au-ttl{font-size:21px;font-weight:800;color:var(--navy);text-align:center;letter-spacing:-.02em}
 .au-sub{font-size:14px;color:var(--slate);text-align:center;margin:4px 0 20px}
-.au-btn{position:relative;display:flex;align-items:center;justify-content:center;width:100%;height:54px;border-radius:14px;font:inherit;font-size:16px;font-weight:700;border:0;cursor:pointer;transition:transform .12s,filter .12s}
-.au-btn+.au-btn{margin-top:10px}
-.au-btn:active{transform:scale(.98);filter:brightness(.95)}
-.au-btn svg{position:absolute;left:20px;top:50%;transform:translateY(-50%);width:22px;height:22px}
-.au-btn.kakao{background:#FEE500;color:rgba(0,0,0,.85)}
-.au-btn.naver{background:#03C75A;color:#fff}
-.au-btn.google{background:#fff;color:#1f1f1f;box-shadow:inset 0 0 0 1px #dadce0}
-.au-btn.apple{background:#000;color:#fff}
-.au-btn .last{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.75);color:#fff}
+.au-or{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;color:var(--mute);margin:2px 0 14px}.au-or::before,.au-or::after{content:"";flex:1;height:1px;background:var(--line2)}
+.au-sns{display:flex;justify-content:center;gap:18px}
+.au-c{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;background:none;border:0;padding:0;font:inherit;font-size:12px;font-weight:600;color:var(--sub);cursor:pointer}
+.au-c i{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;transition:transform .12s,filter .12s}
+.au-c:active i{transform:scale(.92);filter:brightness(.95)}
+.au-c svg{width:26px;height:26px}
+.au-c.kakao i{background:#FEE500}.au-c.naver i{background:#03C75A}.au-c.google i{background:#fff;box-shadow:inset 0 0 0 1px #dadce0}.au-c.apple i{background:#000}
+.au-c.apple svg{margin-top:-2px}
+.au-c .last{position:absolute;left:50%;top:-24px;transform:translateX(-50%);font-size:10.5px;font-weight:700;white-space:nowrap;padding:3px 7px;border-radius:999px;background:var(--navy);color:#fff;animation:auBob2 2.4s ease-in-out infinite}
+.au-c .last::after{content:"";position:absolute;left:50%;bottom:-3px;width:6px;height:6px;background:inherit;transform:translateX(-50%) rotate(45deg)}
+@keyframes auBob2{50%{transform:translateX(-50%) translateY(-2px)}}
+.au-sns.sm{gap:14px}.au-sns.sm .au-c i{width:48px;height:48px}.au-sns.sm .au-c svg{width:22px;height:22px}
+.au-mem{margin-top:22px}
+.auth .set-in:focus{outline:none;border-color:var(--b);box-shadow:0 0 0 3px var(--b-weak)}
+.au-pw{display:flex;justify-content:flex-end;margin-top:10px}.au-pw button{font:inherit;font-size:13px;color:var(--slate);background:none;border:0;cursor:pointer}
 .au-foot{display:flex;justify-content:center;gap:14px;margin-top:16px;font-size:13px;color:var(--slate)}
 .au-foot button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .au-legal{font-size:11.5px;color:var(--mute);text-align:center;margin-top:12px;line-height:1.5}
@@ -1403,7 +1409,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611281';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611282';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2703,13 +2709,15 @@ function authSaved(){try{return JSON.parse(localStorage.getItem('dkAuth')||'null
 function authWorks(){const seen=new Set(),out=[];SPOTS.forEach(sp=>{const t=work(sp).title.replace(/\s*\(.*\)\s*$/,'');if(!seen.has(t)&&POSTER_IDS.has(sp.id)){seen.add(t);out.push({t,img:`assets/posters/${sp.id}.jpg?v=${ASSET_V}`})}});return out}
 const POSTER_IDS=new Set(['gotoubun','haboro','kamakura_sd','karumai','keion','kifune_cn','meguro','nagatoro','onnazaka','seihantai','shelter','shibuya','suga','sunshine','tamako','yanineko']);
 function authRender(){const el=document.getElementById('auth'),last=(authSaved()||{}).last;
- const btn=k=>{const p=AUTH_P[k];return`<button class="au-btn ${k}" data-p="${k}">${p.ic}${p.label}${last===k?'<span class="last">최근 로그인</span>':''}</button>`};
+ const btn=k=>authCirc(k,last);
  el.innerHTML=`
  <div class="au-st s1">
   <div class="au-hero"><img src="assets/logo-white.png?v=2611152" alt="덕모잇" width="178"><div class="au-tag">애니 속 그 장소, 직접 가 보자<br><b>덕후들 모여잇</b></div></div>
   <div class="au-card"><div class="au-bub">⚡ 3초 만에 시작하기</div>
    <div class="au-ttl">반가워요, 순례자님!</div><div class="au-sub">자주 쓰는 계정으로 바로 가입할 수 있어요</div>
-   ${btn('kakao')}${btn('naver')}${btn('google')}${btn('apple')}
+   <div class="au-or">SNS 계정으로 간편 가입</div>
+   <div class="au-sns">${btn('kakao')}${btn('naver')}${btn('google')}${btn('apple')}</div>
+   <button class="btn pri au-mem" data-a="member">기존 회원 시작하기</button>
    <div class="au-foot"><button data-a="guest">먼저 둘러볼게요</button></div>
    <div class="au-legal">가입하면 덕모잇 이용약관 및 개인정보 처리방침에 동의하게 돼요</div>
   </div>
@@ -2717,15 +2725,42 @@ function authRender(){const el=document.getElementById('auth'),last=(authSaved()
  <div class="au-st s2" id="au-s2"></div>
  <div class="au-wait" id="au-wait"><div class="bx"><div class="ic" id="au-wic"></div><b id="au-wt"></b><div class="sp"></div></div></div>
  <div class="au-done" id="au-done"></div>`;
- el.querySelectorAll('.au-btn').forEach(b=>b.onclick=()=>authStart(b.dataset.p));
+ el.querySelectorAll('.au-c').forEach(b=>b.onclick=()=>authStart(b.dataset.p));
+ el.querySelector('[data-a="member"]').onclick=authMember;
  el.querySelector('[data-a="guest"]').onclick=()=>{try{sessionStorage.setItem('dkGuest','1')}catch(e){}authClose();setTimeout(()=>toast('둘러보기 모드예요 · 기록은 가입 후 저장돼요'),350)};
 }
-function authStart(k){const p=AUTH_P[k],w=document.getElementById('au-wait');AUTH.p=k;
+AUTH_P.email={name:'이메일',label:'이메일로 로그인',bg:'#0078e9',mail:'',ic:''};
+const authCirc=(k,last)=>{const p=AUTH_P[k];return`<button class="au-c ${k}" data-p="${k}" aria-label="${p.label}"><i>${p.ic}</i>${p.name}${last===k?'<span class="last">최근 로그인</span>':''}</button>`};
+function authMember(){const el=document.getElementById('au-s2'),sv=authSaved()||{},last=sv.last;
+ el.innerHTML=`
+  <div class="au-top"><button data-a="back" aria-label="뒤로">${I.back}</button></div>
+  <div class="au-body">
+   <div class="au-h">다시 오셨군요!<br>로그인하고 순례를 이어가요</div><p>가입할 때 쓴 이메일이나 SNS 계정으로 로그인해요</p>
+   <label class="au-l" for="au-em">이메일</label><input id="au-em" class="set-in" type="email" inputmode="email" autocomplete="username" placeholder="dukmoit@example.com" value="${sv.em||''}">
+   <label class="au-l" for="au-pwd" style="margin-top:14px">비밀번호</label><input id="au-pwd" class="set-in" type="password" autocomplete="current-password" placeholder="비밀번호 입력">
+   <div class="au-hint bad" id="au-mh">&nbsp;</div>
+   <div class="au-pw"><button data-a="find">아이디 · 비밀번호 찾기</button></div>
+   <div class="au-or" style="margin-top:26px">가입한 SNS 계정으로 로그인</div>
+   <div class="au-sns sm">${['kakao','naver','google','apple'].map(k=>authCirc(k,last)).join('')}</div>
+  </div>
+  <div class="au-cta"><button class="btn pri" id="au-login" disabled>로그인</button></div>`;
+ const box=document.getElementById('auth');box.classList.add('step2');document.getElementById('phone').classList.add('auth-lt');
+ el.querySelector('[data-a="back"]').onclick=()=>{box.classList.remove('step2');document.getElementById('phone').classList.remove('auth-lt')};
+ el.querySelector('[data-a="find"]').onclick=()=>toast('아이디 · 비밀번호 찾기는 준비 중이에요');
+ el.querySelectorAll('.au-c').forEach(b=>b.onclick=()=>authStart(b.dataset.p,true));
+ const em=document.getElementById('au-em'),pw=document.getElementById('au-pwd'),go=document.getElementById('au-login'),mh=document.getElementById('au-mh');
+ const chk=()=>{go.disabled=!(em.value.trim()&&pw.value);mh.innerHTML='&nbsp;'};em.oninput=chk;pw.oninput=chk;chk();
+ go.onclick=()=>{const v=em.value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){mh.textContent='이메일 형식을 확인해 주세요';return}
+  if(pw.value.length<4){mh.textContent='비밀번호를 다시 확인해 주세요';return}
+  em.blur();pw.blur();go.disabled=true;go.textContent='로그인 중…';
+  setTimeout(()=>{AUTH.p='email';AUTH_P.email.mail=v;const nick=(sv.nick&&sv.em===v)?sv.nick:(S.nick&&S.nick!=='덕모잇 순례자'?S.nick:v.split('@')[0].slice(0,12));authFinish(nick,sv.fav,true)},700)};
+}
+function authStart(k,member){const p=AUTH_P[k],w=document.getElementById('au-wait');AUTH.p=k;
  document.getElementById('au-wic').style.background=p.bg;document.getElementById('au-wic').style.boxShadow=k==='google'?'inset 0 0 0 1px #dadce0':'none';
  document.getElementById('au-wic').innerHTML=p.ic;document.getElementById('au-wt').textContent=`${p.name} 계정 연결 중…`;w.classList.add('on');
  const sv=authSaved();
  setTimeout(()=>{w.classList.remove('on');
-  if(sv&&sv.p===k&&sv.nick){authFinish(sv.nick,sv.fav,true);return}   // 이미 가입한 계정이면 바로 로그인
+  if((sv&&sv.p===k&&sv.nick)||member){authFinish((sv&&sv.nick)||(S.nick&&S.nick!=='덕모잇 순례자'?S.nick:p.name+' 순례자'),sv&&sv.fav,true);return}   // 이미 가입한 계정이면 바로 로그인
   AUTH.nick=AUTH.nick||(S.nick&&S.nick!=='덕모잇 순례자'?S.nick:'');AUTH.fav=AUTH.fav||'';authStep2()},950)}
 function authStep2(){const k=AUTH.p,p=AUTH_P[k],el=document.getElementById('au-s2'),T=AUTH.terms;
  const req=T.age&&T.tos&&T.priv,all=req&&T.loc&&T.mkt,nickOk=AUTH.nick.trim().length>=2;
@@ -2763,7 +2798,7 @@ function authSync(){const el=document.getElementById('au-s2'),T=AUTH.terms,req=T
 function authFinish(nick,fav,returning){const k=AUTH.p,p=AUTH_P[k];
  S.nick=nick;if(fav)S.set.fav=fav;S.set.acct=p.name;S.set.email=p.mail;
  if(!returning){S.set.loc=AUTH.terms.loc;S.set.mkt=AUTH.terms.mkt}
- try{localStorage.setItem('dkAuth',JSON.stringify({p:k,nick,fav:fav||S.set.fav,last:k,in:true}));localStorage.setItem('dkSet',JSON.stringify({set:S.set,nick:S.nick}));sessionStorage.removeItem('dkGuest')}catch(e){}
+ try{localStorage.setItem('dkAuth',JSON.stringify({p:k,nick,fav:fav||S.set.fav,last:k==='email'?((authSaved()||{}).last||''):k,em:k==='email'?p.mail:((authSaved()||{}).em||''),in:true}));localStorage.setItem('dkSet',JSON.stringify({set:S.set,nick:S.nick}));sessionStorage.removeItem('dkGuest')}catch(e){}
  const d=document.getElementById('au-done');
  d.innerHTML=`<div class="av">${nick.slice(0,1)}</div><h2>${returning?'다시 만나서 반가워요':'가입 완료!'}<br>${nick}님</h2><p>${returning?'이어서 순례를 떠나 볼까요?':(fav?`${fav} 성지부터 둘러볼까요?`:'첫 성지순례를 떠나 볼까요?')}</p>`;
  d.classList.add('on');document.getElementById('phone').classList.remove('auth-lt');
