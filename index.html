@@ -1042,7 +1042,9 @@ html.native .splash{position:fixed;left:0;top:0;width:100%;height:100lvh;min-hei
 .auth{position:absolute;inset:0;z-index:80;background:#0078e9;color:#fff;overflow:hidden;font-family:var(--f-body)}
 html.native .auth{position:fixed;left:0;top:0;width:100%;height:100lvh;min-height:100%}
 .auth.off{opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s .4s}
-.auth::before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 3deg at 50% 38%,rgba(255,255,255,.16) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(closest-side at 50% 38%,transparent 30%,#000 80%);mask:radial-gradient(closest-side at 50% 38%,transparent 30%,#000 80%);animation:spin 60s linear infinite;pointer-events:none}
+.au-hero::before{content:"";position:absolute;left:50%;top:50%;width:max(260vmax,1800px);aspect-ratio:1;background:repeating-conic-gradient(from 3deg at 50% 50%,rgba(255,255,255,.16) 0 .7deg,transparent .7deg 6.5deg);-webkit-mask:radial-gradient(circle at 50% 50%,transparent 6%,#000 22%);mask:radial-gradient(circle at 50% 50%,transparent 6%,#000 22%);animation:auSpin 60s linear infinite;pointer-events:none;z-index:0}
+.au-hero>*{position:relative;z-index:1}
+@keyframes auSpin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 .au-st{position:absolute;inset:0;display:flex;flex-direction:column;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .3s}
 .au-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding-top:var(--sat,0)}
 .au-hero img{width:178px;height:auto;filter:drop-shadow(0 4px 0 rgba(0,50,120,.3));animation:auLogo .6s cubic-bezier(.2,.8,.2,1) both}
@@ -1409,7 +1411,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611286';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611287';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
