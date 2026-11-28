@@ -740,6 +740,19 @@ input,textarea{font-size:17px}
 .pp.top b{font-size:19px;font-weight:800}.pp.top .small{font-size:12px;text-align:center;padding:0 10px;word-break:keep-all}.pt-i{color:var(--b);display:flex}
 .pstack:active .pp.top{transform:rotate(-2deg) scale(.97)}
 .pmenu{position:absolute;right:0;top:40px;z-index:20;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,30,80,.18);overflow:hidden;min-width:120px;animation:jjkIn .15s ease}
+.hdr-gear{margin-left:auto;color:var(--b)}.hdr-gear svg{width:24px;height:24px}
+.set-prof{display:flex;align-items:center;gap:14px;padding:16px}
+.set-av{width:56px;height:56px;display:grid;place-items:center;color:#fff;font-size:22px;font-weight:800}
+.set-h{font-family:var(--f-press);font-size:17px;color:var(--b);margin:22px 4px 8px}
+.set-card{padding:4px 0;overflow:hidden}
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:56px;padding:10px 16px;background:none;border:0;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.set-row+.set-row{border-top:1px solid rgba(16,24,40,.06)}
+.set-l{display:flex;flex-direction:column;gap:2px;min-width:0}.set-l b{font-size:15px;font-weight:600}
+.set-chev{color:var(--sub,#98a2b3);display:flex}.set-chev svg{width:18px;height:18px;transform:rotate(-90deg)}
+.tgl{position:relative;width:46px;height:28px;flex:none;border-radius:999px;background:#d0d5dd;transition:background .2s}
+.tgl i{position:absolute;left:3px;top:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
+.tgl.on{background:var(--b)}.tgl.on i{transform:translateX(18px)}
+.set-in{width:100%;height:46px;margin-top:6px;padding:0 14px;border:1px solid #e4e7ec;border-radius:12px;font:inherit;font-size:16px;background:#fff;color:inherit}
 .tl-more{position:absolute;top:6px;right:6px;z-index:2;width:36px;height:36px;display:grid;place-items:center;color:var(--b)}.tl-more svg{width:20px;height:20px}
 .tl-one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pmenu button{display:block;width:100%;padding:12px 16px;text-align:left;font-size:15px;font-weight:600;color:#e5484d}
@@ -1060,6 +1073,7 @@ html.native .phone.land .cam-rail{right:calc(env(safe-area-inset-right,0px) + 20
 <script>
 /* ================= ICONS ================= */
 const I={
+ gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1z"/></svg>',
  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 5.5L8 12l6.5 6.5"/></svg>',
  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>',
  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 10.7c0-.6.3-1.2.8-1.6l5.4-4.3a2.1 2.1 0 012.6 0l5.4 4.3c.5.4.8 1 .8 1.6v7.3a2.5 2.5 0 01-2.5 2.5h-10A2.5 2.5 0 014.5 18z"/><path d="M10 20.5v-3.3a2 2 0 014 0v3.3"/></svg>',
@@ -1268,6 +1282,7 @@ const S={
  route:0, from:'서울역', date:'12월 20일(토)', planFrom:'tokyo', planMode:'transit', planDate:'', planArr:'', planOptOpen:false,
  exploreWork:'all', exploreCat:'all', exploreSel:'kamakura', homeCat:'all',
  commTab:'feed', archTab:'mine', mineSub:'recent', arSub:'feed', tripSub:'plan',
+ set:{loc:true,cam:true,push:true,mkt:false,night:false,acct:'카카오',email:'dukmoit@kakao.com',bio:'주말마다 성지순례 떠나는 오타쿠',fav:'주술회전'},
  liked:{}, moveProg:0,
  lastCapture:null,
  archive:[
@@ -1295,11 +1310,12 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
   const have=new Set(a.map(x=>x.id).filter(Boolean));const add=seed.filter(x=>x.id&&!have.has(x.id));
   const gone=x=>['seed-suga','seed-shelter'].includes(x.id)||(!x.id&&/^assets\/real\/(suga|shelter)\.jpg/.test(x.img||''));   /* 없앤 예시 사진 */
   S.archive=a.filter(x=>!gone(x)).concat(add).sort((x,y)=>String(y.date).localeCompare(String(x.date)))}}catch(e){}})();
+(function(){try{const v=JSON.parse(localStorage.getItem('dkSet')||'null');if(v){Object.assign(S.set,v.set||{});if(v.nick)S.nick=v.nick}}catch(e){}})();
 /* 뱃지 이미지를 미리 받아 두어 '내 뱃지' 탭을 열자마자 애니메이션이 시작되게 */
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611256';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611257';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -1632,6 +1648,31 @@ function planRoute(sp){
  return{total:drive+park,cost:money(cost,krw),costNote:taxi?'택시 기준':'유류비·통행료 기준',transfers:0,km,nodes,summary:`약 ${km<1?km.toFixed(1):Math.round(km)}km 주행`,warn:''};
 }
 /* 여정 시작(이동 중 AR) 화면은 기존과 같은 형태로 선택된 경로를 받아요 */
+/* ================= 설정 ================= */
+const setRow=(label,{sub='',right='',act='',attrs=''}={})=>`<button class="set-row" ${act?`data-act="${act}"`:''} ${attrs}><span class="set-l"><b>${label}</b>${sub?`<span class="small muted">${sub}</span>`:''}</span>${right||`<span class="set-chev">${I.chev}</span>`}</button>`;
+const setTgl=(k,label,sub)=>setRow(label,{sub,act:'settgl',attrs:`data-k="${k}" role="switch" aria-checked="${!!S.set[k]}"`,right:`<span class="tgl ${S.set[k]?'on':''}"><i></i></span>`});
+SCREENS.settings=()=>{const st=S.set;const nick=S.nick||'덕모잇 순례자';return{html:`
+ ${hdr('설정',{left:true})}
+ <div class="body"><div class="pad" style="padding-top:8px;padding-bottom:32px">
+  <div class="card set-prof"><div class="av me set-av">${nick.slice(0,1)}</div><div style="flex:1;min-width:0"><b style="font-size:17px">${nick}</b><div class="small muted" style="margin-top:2px">${st.bio}</div><div class="small" style="margin-top:6px;color:var(--b)">최애 · ${st.fav}</div></div></div>
+  <div class="set-h">프로필 관리</div>
+  <div class="card set-card">${setRow('프로필 편집',{sub:'닉네임 · 소개 · 최애 작품',act:'setprof'})}${setRow('최애 작품',{sub:st.fav,act:'setprof'})}${setRow('뱃지 공개 범위',{sub:'전체 공개',attrs:'data-toast="공개 범위 설정은 준비 중이에요"'})}</div>
+  <div class="set-h">계정 관리</div>
+  <div class="card set-card">${setRow('연결된 계정',{sub:`${st.acct} · ${st.email}`,attrs:'data-toast="연결된 계정 관리는 준비 중이에요"'})}${setRow('비밀번호 변경',{attrs:'data-toast="비밀번호 변경 메일을 보냈어요"'})}${setRow('로그아웃',{act:'setlogout',right:' '})}${setRow('회원 탈퇴',{act:'setleave',right:' ',attrs:'style="color:#e5484d"'})}</div>
+  <div class="set-h">권한 및 동의</div>
+  <div class="card set-card">${setTgl('loc','위치 정보 이용 동의','가까운 성지 추천·도착 알림에 사용해요')}${setTgl('cam','카메라 접근','AR 촬영에 사용해요')}${setTgl('push','알림 받기','여정 일정·깜짝 미션 알림')}${setTgl('night','야간 알림 받기','21시~08시 알림')}${setTgl('mkt','마케팅 정보 수신 동의','이벤트·혜택 소식')}</div>
+  <div class="set-h">고객 지원</div>
+  <div class="card set-card">${setRow('공지사항',{attrs:'data-toast="새 공지가 없어요"'})}${setRow('고객센터',{sub:'평일 10:00~18:00',attrs:'data-toast="고객센터 연결은 준비 중이에요"'})}${setRow('이용약관',{attrs:'data-toast="이용약관 화면은 준비 중이에요"'})}${setRow('개인정보 처리방침',{attrs:'data-toast="개인정보 처리방침 화면은 준비 중이에요"'})}${setRow('앱 버전',{right:`<span class="small muted">1.0.${ASSET_V.slice(-3)}</span>`})}</div>
+ </div></div>`}};
+function openProfileSheet(){const el=document.getElementById('sheet');const st=S.set;
+ el.innerHTML=`<div class="grab"></div><div style="font-size:18px;font-weight:700">프로필 편집</div>
+  <div class="small muted" style="margin:2px 0 14px">순례 기록과 방문록에 보이는 정보예요</div>
+  <label class="rvw-l" for="pf-nick">닉네임</label><input id="pf-nick" class="set-in" maxlength="12" value="${(S.nick||'덕모잇 순례자').replace(/"/g,'&quot;')}">
+  <label class="rvw-l" for="pf-bio" style="margin-top:12px;display:block">소개</label><input id="pf-bio" class="set-in" maxlength="30" value="${st.bio.replace(/"/g,'&quot;')}">
+  <label class="rvw-l" for="pf-fav" style="margin-top:12px;display:block">최애 작품</label><select id="pf-fav" class="set-in">${[...new Set(SPOTS.map(x=>work(x).title.replace(/\s*\(.*\)\s*$/,'')))].map(t=>`<option ${t===st.fav?'selected':''}>${t}</option>`).join('')}</select>
+  <button class="btn pri" style="margin-top:18px" id="pf-save">저장하기</button>`;
+ document.getElementById('dim').classList.add('on');el.classList.add('on');
+ document.getElementById('pf-save').onclick=()=>{const n=document.getElementById('pf-nick').value.trim();if(n)S.nick=n;st.bio=document.getElementById('pf-bio').value.trim()||st.bio;st.fav=document.getElementById('pf-fav').value;try{localStorage.setItem('dkSet',JSON.stringify({set:S.set,nick:S.nick}))}catch(e){}closeSheet();render();toast('프로필을 저장했어요')}}
 SCREENS.reviews=()=>{const sp=spot();const list=rvList(sp);const sm=rvSum(sp);const line=RV_LINE[sp.id]||sp.line||'ここが\n聖地だ！';return{html:`
  ${hdr('',{right:`<button class="ib" data-act="gohome" aria-label="홈">${I.home}</button><button class="ib" data-go="archive" aria-label="내 기록">${I.face}</button>`})}
  <div class="body"><div class="pad">
@@ -2249,7 +2290,7 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
  return{tab:'archive',after(){if(T!=='stamp')return;const g=document.getElementById('st3');if(!g)return;const cells=[...g.children],gr=g.getBoundingClientRect(),r0={left:gr.left+gr.width/2,top:gr.top+Math.min(gr.height,320)/2};
    cells.forEach((c,i)=>{const r=c.getBoundingClientRect();c.style.transition='none';c.style.transform=`translate(${r0.left-(r.left+r.width/2)}px,${r0.top-(r.top+r.height/2)}px) rotate(${(i%5-2)*8}deg) scale(.9)`;c.style.zIndex=cells.length-i});
    requestAnimationFrame(()=>requestAnimationFrame(()=>cells.forEach((c,i)=>{c.style.transition=`transform .55s cubic-bezier(.2,1.25,.4,1) ${100+i*28}ms`;c.style.transform=''})));},html:`
- ${hdr('나의 덕질 기록',{back:'auto',left:true})}
+ ${hdr('나의 덕질 기록',{back:'auto',left:true,right:`<button class="ib hdr-gear" data-go="settings" aria-label="설정">${I.gear}</button>`})}
  <div class="body">
   <div class="pad" style="margin-top:8px"><div class="seg aseg" role="tablist">${tabs.map(([k,l])=>`<button class="${T===k?'on':''}" data-act="atab" data-v="${k}" role="tab" aria-selected="${T===k}">${l}</button>`).join('')}</div></div>
   <div class="pad" style="margin-top:18px;padding-bottom:24px">${body}</div>
@@ -2500,6 +2541,12 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'postmenu':{document.querySelector('.pmenu')?.remove();const p=POSTS.find(x=>x.id===t.dataset.i);if(!p)break;
    const m=document.createElement('div');m.className='pmenu';m.innerHTML=p.mine?`<button data-act="postdel" data-i="${p.id}">삭제하기</button>`:`<button data-act="postmenu-x" data-toast="신고가 접수됐어요">신고하기</button>`;
    t.parentNode.style.position='relative';t.parentNode.appendChild(m);setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)){m.remove();document.removeEventListener('click',h,true)}},true),0);break}
+  case 'settgl':{const k=t.dataset.k;S.set[k]=!S.set[k];t.setAttribute('aria-checked',S.set[k]);t.querySelector('.tgl').classList.toggle('on',S.set[k]);
+   try{localStorage.setItem('dkSet',JSON.stringify({set:S.set,nick:S.nick}))}catch(e){}
+   const L={loc:'위치 정보 이용',cam:'카메라 접근',push:'알림',night:'야간 알림',mkt:'마케팅 정보 수신'};toast(`${L[k]}을 ${S.set[k]?'켰어요':'껐어요'}`);break}
+  case 'setprof':openProfileSheet();break;
+  case 'setlogout':toast('데모 버전이라 로그아웃은 실행되지 않아요');break;
+  case 'setleave':toast('회원 탈퇴는 고객센터로 문의해 주세요');break;
   case 'rvmenu':{document.querySelector('.pmenu')?.remove();const m=document.createElement('div');m.className='pmenu';m.style.top='44px';m.style.right='8px';
    m.innerHTML=`<button data-act="rvdel" data-i="${t.dataset.i}" data-s="${t.dataset.s}">삭제하기</button>`;t.parentNode.appendChild(m);
    setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)){m.remove();document.removeEventListener('click',h,true)}},true),0);break}
