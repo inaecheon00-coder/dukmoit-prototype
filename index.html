@@ -861,6 +861,8 @@ input,textarea{font-size:17px}
 .screen.under{pointer-events:none;transform:translate3d(-30%,0,0)}
 .screen.under .shade{position:absolute;inset:0;background:rgba(10,20,40,.14);z-index:99}
 .screen.dragging{box-shadow:-10px 0 28px rgba(0,30,70,.18);will-change:transform}
+.screen.dragging *,.screen.under *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.screen.under{will-change:transform}
 #edge{position:absolute;left:0;top:var(--sat,0);bottom:0;width:20px;z-index:35;touch-action:none;display:none}
 #edge.on{display:block}
 @media (prefers-reduced-motion:reduce){.enter-push,.leave-push,.enter-pop,.leave-pop{animation-duration:.01s}}
@@ -1262,7 +1264,7 @@ const S={
  device:'phone', siteMode:'overlay', blend:55, pan:0,
  route:0, from:'서울역', date:'12월 20일(토)', planFrom:'tokyo', planMode:'transit', planDate:'', planArr:'', planOptOpen:false,
  exploreWork:'all', exploreCat:'all', exploreSel:'kamakura', homeCat:'all',
- commTab:'feed', archTab:'mine', mineSub:'recent', arSub:'feed',
+ commTab:'feed', archTab:'mine', mineSub:'recent', arSub:'feed', tripSub:'plan',
  liked:{}, moveProg:0,
  lastCapture:null,
  archive:[
@@ -1294,7 +1296,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611253';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611254';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2237,7 +2239,10 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
   body=`${last?`<div class="card st-hero" data-go="spot" data-id="${last[0]}"><div class="small muted" style="margin-bottom:6px;position:relative">최근 획득한 뱃지</div><div class="sh-wrap"><span class="sh-rays"></span><div class="sh-flip">${stampSVG(last[0],{size:168,date:last[1]})}<i class="sh-glint" style="-webkit-mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat;mask:url(assets/badges/${last[0]}.png?v=${ASSET_V}) center/contain no-repeat"></i></div>${Array.from({length:8},(_,i)=>`<i class="sh-spark" style="--a:${i*45}deg;--t:${.45+i*.02}s"></i>`).join('')}</div><b style="font-size:17px;margin-top:8px">${wt(spot(last[0]))}</b><div class="small muted">${spot(last[0]).name} · ${last[1]} 획득</div></div>`:''}
   <div class="row between" style="margin:20px 0 10px"><b class="small">전체 뱃지</b><span class="small muted">${got.size}/${REG.length}</span></div>
   <div class="st3" id="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}</button>`).join('')}</div>`}
- else body=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',img:HERO_SCENE.has(sp.id)?'hero':true,st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
+ else{const k=S.tripSub==='log'?'log':'plan';
+  const tripsB=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',img:HERO_SCENE.has(sp.id)?'hero':true,st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
+  const logB=reviews.length?tl(reviews.map(r=>({id:r.spot,date:r.d,tags:['★ '+Number(r.r).toFixed(1),r.tag].filter(Boolean),memo:r.txt}))):'<div class="small muted" style="text-align:center;padding:40px 0">작성한 방문 후기가 없어요<br>명소의 방문록에서 후기를 남겨 보세요</div>';
+  body=subdd('trip',k,[['plan','예정된 여행'],['log','덕질 기록']])+(k==='log'?logB:tripsB)}
  return{tab:'archive',after(){if(T!=='stamp')return;const g=document.getElementById('st3');if(!g)return;const cells=[...g.children],gr=g.getBoundingClientRect(),r0={left:gr.left+gr.width/2,top:gr.top+Math.min(gr.height,320)/2};
    cells.forEach((c,i)=>{const r=c.getBoundingClientRect();c.style.transition='none';c.style.transform=`translate(${r0.left-(r.left+r.width/2)}px,${r0.top-(r.top+r.height/2)}px) rotate(${(i%5-2)*8}deg) scale(.9)`;c.style.zIndex=cells.length-i});
    requestAnimationFrame(()=>requestAnimationFrame(()=>cells.forEach((c,i)=>{c.style.transition=`transform .55s cubic-bezier(.2,1.25,.4,1) ${100+i*28}ms`;c.style.transform=''})));},html:`
@@ -2329,7 +2334,8 @@ function finishAnim(){
 }
 function clearTimers(){clearInterval(S._t);clearTimeout(S._t2);clearTimeout(S._lock);cancelAnimationFrame(S._raf)}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1800)}
-const stripIds=root=>root.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
+const stripIds=root=>root.querySelectorAll('[id]').forEach(n=>{n.dataset.sid=n.id;n.removeAttribute('id')});
+const restoreIds=root=>root.querySelectorAll('[data-sid]').forEach(n=>{n.id=n.dataset.sid;delete n.dataset.sid});
 function buildScreen(def){
  const el=document.createElement('div');
  el.className=`screen ${def.dark?'dark':''} ${def.tab?'has-tab':''}`;el.dataset.screen=S.screen;el.dataset.spot=S.spot;
@@ -2357,6 +2363,9 @@ function render(mode='none',restore){closeMission(true);
   app.querySelectorAll('.screen').forEach(dropScreen);app.appendChild(el);
  }
  applyScroll(el,restore||keep);
+ wireScreen(el,def);
+}
+function wireScreen(el,def){
  if(def.after)def.after();
  const up=el.querySelector('#upl');if(up)up.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.upload=r.result;S.scanQuery='';S.uploadMatch=null;imgFP(r.result).then(v=>{S.uploadMatch=matchRef(v)});go('scanning')};r.readAsDataURL(f)};
  const cc=el.querySelector('#camcap');if(cc)cc.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{S.photo=r.result;S.camMode='photo';render();toast('사진 위에 AR을 입혔어요')};r.readAsDataURL(f)};
@@ -2368,6 +2377,16 @@ function render(mode='none',restore){closeMission(true);
 document.getElementById('app').addEventListener('change',e=>{const k=e.target.dataset&&e.target.dataset.pset;if(!k)return;S[k]=e.target.value;const sm=document.getElementById('poptsum');if(sm)sm.textContent=planOptSummary()});
 
 /* ================= SWIPE BACK (왼쪽 가장자리 → 오른쪽 드래그) ================= */
+/* 드래그로 이미 그려 둔 이전 화면을 그대로 이어서 사용(다시 그리지 않아 끊김 없음) */
+function backReuse(under,def){
+ clearTimers();const e=S.stack.pop();S.screen=e.screen;S.spot=e.spot;
+ closeMission(true);closeSheet();cancelAnimationFrame(S._raf);if(!['move','arrive'].includes(S.screen))stopCam();
+ const app=document.getElementById('app');app.querySelectorAll('.screen').forEach(o=>{if(o!==under)dropScreen(o)});
+ under.classList.remove('under');under.querySelector(':scope > .shade')?.remove();under.style.transform='';under.style.transition='';
+ restoreIds(under);
+ const ph=document.getElementById('phone');ph.classList.toggle('dk',!!def.dark);{const was=ph.classList.contains('land');const L=!!def.ar&&!PORTRAIT_CAM.has(spot().id);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
+ wireScreen(under,def);
+}
 const SWIPE={active:false};
 (function(){
  const edge=document.getElementById('edge'),phone=document.getElementById('phone');
@@ -2403,6 +2422,7 @@ const SWIPE={active:false};
   finishAnim();SWIPE.active=true;NAV.busy=true;SWIPE.x=0;
   const prev=S.stack[S.stack.length-1];const keep=[S.screen,S.spot];
   S.screen=prev.screen;S.spot=prev.spot;let def;try{def=SCREENS[prev.screen]()}finally{S.screen=keep[0];S.spot=keep[1]}
+  SWIPE.def=def;
   const saveSS=S.screen,saveSp=S.spot;S.screen=prev.screen;S.spot=prev.spot;const under=buildScreen(def);S.screen=saveSS;S.spot=saveSp;
   stripIds(under);under.classList.add('under');under.insertAdjacentHTML('beforeend','<i class="shade"></i>');
   document.getElementById('app').insertBefore(under,cur);applyScroll(under,prev.scroll);
@@ -2423,7 +2443,7 @@ const SWIPE={active:false};
   });
   setTimeout(()=>{
    SWIPE.active=false;NAV.busy=false;cur.classList.remove('dragging');
-   if(commit){doBack('none');syncHist()}
+   if(commit){backReuse(under,SWIPE.def);syncHist()}
    else{dropScreen(under);cur.style.transform='';cur.style.transition=''}
   },290);
  }
@@ -2492,7 +2512,7 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'ctab':S.commTab=t.dataset.v;render();break;
   case 'atab':S.archTab=t.dataset.v;render();break;
   case 'subdd':{const w=t.closest('.subdd');const on=!w.classList.contains('on');document.querySelectorAll('.subdd.on').forEach(x=>{x.classList.remove('on');x.querySelector('.ddb').setAttribute('aria-expanded','false')});if(on){w.classList.add('on');t.setAttribute('aria-expanded','true')}break}
-  case 'subpick':{if(t.dataset.k==='mine')S.mineSub=t.dataset.v;else S.arSub=t.dataset.v;render();break}
+  case 'subpick':{const k=t.dataset.k;if(k==='mine')S.mineSub=t.dataset.v;else if(k==='trip')S.tripSub=t.dataset.v;else S.arSub=t.dataset.v;render();break}
   case 'bk':{S.saved=S.saved||{};S.saved[t.dataset.v]=!S.saved[t.dataset.v];if(S.saved[t.dataset.v]){const d=new Date();S.savedAt=S.savedAt||{};S.savedAt[t.dataset.v]=d.getFullYear()+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+String(d.getDate()).padStart(2,'0')}const on=S.saved[t.dataset.v];document.querySelectorAll(`[data-act="bk"][data-v="${t.dataset.v}"]`).forEach(b=>b.classList.toggle('on',on));toast(on?'저장한 명소에 추가했어요':'저장을 취소했어요');break}
   case 'like':S.liked[t.dataset.i]=!S.liked[t.dataset.i];render();break;
   case 'postspot':{const ta=document.querySelector('#posttxt');S.postDraft=ta?ta.value:'';S.postSpot=t.dataset.v;render();break}
