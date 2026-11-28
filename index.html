@@ -740,6 +740,8 @@ input,textarea{font-size:17px}
 .pp.top b{font-size:19px;font-weight:800}.pp.top .small{font-size:12px;text-align:center;padding:0 10px;word-break:keep-all}.pt-i{color:var(--b);display:flex}
 .pstack:active .pp.top{transform:rotate(-2deg) scale(.97)}
 .pmenu{position:absolute;right:0;top:40px;z-index:20;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,30,80,.18);overflow:hidden;min-width:120px;animation:jjkIn .15s ease}
+.tl-more{position:absolute;top:6px;right:6px;z-index:2;width:36px;height:36px;display:grid;place-items:center;color:var(--sub,#667085)}.tl-more svg{width:20px;height:20px}
+.tl-one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pmenu button{display:block;width:100%;padding:12px 16px;text-align:left;font-size:15px;font-weight:600;color:#e5484d}
 .st3c{will-change:transform}
 .trip-del{width:34px;height:34px;flex:none;border-radius:50%;background:var(--b-weak);color:var(--b);font-size:22px;font-weight:700;line-height:1;display:grid;place-items:center}
@@ -1277,10 +1279,10 @@ const S={
  saved:{kamakura_sd:true,shelter:true,sunshine:true},savedAt:{kamakura_sd:'2026.11.12',shelter:'2026.11.05',sunshine:'2026.10.28'},
  stamps:{karumai:'2026.07.26',haboro:'2026.08.15',meguro:'2026.09.13',shelter:'2026.10.03',suga:'2026.11.02'},
  myReviews:{
-  suga:[{id:'my-suga',u:'나',d:'2026.11.02',r:5,txt:'계단 위에서 내려다보니 영화 마지막 장면 그대로라 울컥했어요',tag:'#장면그대로',like:21,mine:true}],
-  shelter:[{id:'my-shelter',u:'나',d:'2026.10.03',r:5,txt:'계단 내려가는 구도 완벽 재현. 낮에 가면 조용해서 촬영하기 좋아요',tag:'#낮방문추천',like:14,mine:true}],
-  haboro:[{id:'my-haboro',u:'나',d:'2026.08.15',r:4,txt:'여름이라 눈은 없었지만 신사 분위기는 원작 그대로',tag:'#겨울에또',like:9,mine:true}],
-  karumai:[{id:'my-karumai',u:'나',d:'2026.07.26',r:5,txt:'노을 질 때 체육관 계단 색감이 진짜 애니 같아요',tag:'#노을타임',like:17,mine:true}],
+  suga:[{id:'my-suga',u:'나',d:'2026.11.02',r:5,txt:'계단 위에서 본 마지막 장면 그대로라 울컥했어요',tag:'#장면그대로',like:21,mine:true}],
+  shelter:[{id:'my-shelter',u:'나',d:'2026.10.03',r:5,txt:'계단 구도 완벽 재현! 낮엔 조용해서 찍기 좋아요',tag:'#낮방문추천',like:14,mine:true}],
+  haboro:[{id:'my-haboro',u:'나',d:'2026.08.15',r:4,txt:'눈은 없었지만 신사 분위기는 원작 그대로예요',tag:'#겨울에또',like:9,mine:true}],
+  karumai:[{id:'my-karumai',u:'나',d:'2026.07.26',r:5,txt:'노을 질 때 체육관 색감이 진짜 애니 같아요',tag:'#노을타임',like:17,mine:true}],
  },};
 const spot=id=>SPOTS.find(s=>s.id===(id||S.spot));
 const work=sp=>WORKS[sp.work];
@@ -1296,7 +1298,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611254';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611255';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2223,7 +2225,7 @@ SCREENS.archive=()=>{
  const tabs=[['mine','내 명소'],['stamp','내 뱃지'],['trip','내 여정'],['ar','내 AR']];
  const thumb=sp=>art(sp,96,{cap:false,bk:false,img:HERO_SCENE.has(sp.id)?'hero':true,cls:'sm',st:'width:70px;flex:none;border-radius:10px;'});
  /* 타임라인과 같은 구도: 날짜 → 카드(이미지 + 명소 + 작품·회차 + 태그 + 한 줄) */
- const tl=(items)=>items.length?`<div class="tl">${items.map(o=>{const sp=spot(o.id);return`<div class="st done"><div class="small muted">${o.date}</div><div class="card" style="padding:12px;margin-top:6px;cursor:pointer" data-go="spot" data-id="${sp.id}"><div class="row" style="align-items:flex-start">${thumb(sp)}<div style="flex:1;min-width:0"><b class="small">${sp.name}</b><div class="small muted">${work(sp).title} · ${sp.ep}</div><div class="row" style="gap:4px;margin-top:6px;flex-wrap:wrap">${o.tags.map(e=>`<span class="tag ac">${e}</span>`).join('')}</div></div></div>${o.memo?`<div class="small" style="margin-top:8px">${o.memo}</div>`:''}</div></div>`}).join('')}</div>`
+ const tl=(items)=>items.length?`<div class="tl">${items.map(o=>{const sp=spot(o.id);return`<div class="st done"><div class="small muted">${o.date}</div><div class="card" style="padding:12px;margin-top:6px;cursor:pointer;position:relative" data-go="spot" data-id="${sp.id}">${o.rid?`<button class="ib tl-more" data-act="rvmenu" data-i="${o.rid}" data-s="${sp.id}" aria-label="더보기">${I.more}</button>`:''}<div class="row" style="align-items:flex-start">${thumb(sp)}<div style="flex:1;min-width:0"><b class="small">${sp.name}</b><div class="small muted">${work(sp).title} · ${sp.ep}</div><div class="row" style="gap:4px;margin-top:6px;flex-wrap:wrap">${o.tags.map(e=>`<span class="tag ac">${e}</span>`).join('')}</div></div></div>${o.memo?`<div class="small${o.rid?' tl-one':''}" style="margin-top:8px">${o.memo}</div>`:''}</div></div>`}).join('')}</div>`
   :`<div class="small muted" style="text-align:center;padding:40px 0">아직 기록이 없어요</div>`;
  let body='';
 const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date,tags:sp.tags.slice(0,3).map(t=>'#'+t),memo:sp.scene||''}}));
@@ -2241,7 +2243,7 @@ const recentB=tl(S.recent.map(r=>{const sp=spot(r.id);return{id:r.id,date:r.date
   <div class="st3" id="st3">${SPOTS.filter(s=>REG.includes(s.id)&&(!last||s.id!==last[0])).map(s=>`<button class="st3c ${got.has(s.id)?'got':''}" data-go="spot" data-id="${s.id}">${stampSVG(s.id,{size:96,locked:!got.has(s.id)})}</button>`).join('')}</div>`}
  else{const k=S.tripSub==='log'?'log':'plan';
   const tripsB=S.trips.map(t=>{const sp=spot(t.spot);return`<div class="card row" style="padding:12px;margin-bottom:10px;cursor:pointer" data-go="plan" data-id="${sp.id}">${art(sp,56,{cap:false,bk:false,cls:'sm',img:HERO_SCENE.has(sp.id)?'hero':true,st:'width:56px;flex:none;border-radius:10px;'})}<div style="flex:1"><span class="tag ${t.status==='예정'?'ac':''}">${t.status}</span><div style="font-weight:700;margin-top:4px">${sp.name}</div><div class="small muted">${t.date}</div></div><button class="trip-del" data-act="tripdel" data-i="${S.trips.indexOf(t)}" aria-label="여정 삭제">−</button></div>`}).join('')||'<div class="small muted" style="text-align:center;padding:40px 0">등록된 여정이 없어요</div>';
-  const logB=reviews.length?tl(reviews.map(r=>({id:r.spot,date:r.d,tags:['★ '+Number(r.r).toFixed(1),r.tag].filter(Boolean),memo:r.txt}))):'<div class="small muted" style="text-align:center;padding:40px 0">작성한 방문 후기가 없어요<br>명소의 방문록에서 후기를 남겨 보세요</div>';
+  const logB=reviews.length?tl(reviews.map(r=>({id:r.spot,rid:r.id,date:r.d,tags:['★ '+Number(r.r).toFixed(1),r.tag].filter(Boolean),memo:r.txt}))):'<div class="small muted" style="text-align:center;padding:40px 0">작성한 방문 후기가 없어요<br>명소의 방문록에서 후기를 남겨 보세요</div>';
   body=subdd('trip',k,[['plan','예정된 여행'],['log','덕질 기록']])+(k==='log'?logB:tripsB)}
  return{tab:'archive',after(){if(T!=='stamp')return;const g=document.getElementById('st3');if(!g)return;const cells=[...g.children],gr=g.getBoundingClientRect(),r0={left:gr.left+gr.width/2,top:gr.top+Math.min(gr.height,320)/2};
    cells.forEach((c,i)=>{const r=c.getBoundingClientRect();c.style.transition='none';c.style.transform=`translate(${r0.left-(r.left+r.width/2)}px,${r0.top-(r.top+r.height/2)}px) rotate(${(i%5-2)*8}deg) scale(.9)`;c.style.zIndex=cells.length-i});
@@ -2320,7 +2322,7 @@ window.addEventListener('popstate',()=>{
  if(NAV.ignorePop>0){NAV.ignorePop--;try{history.replaceState(history.state,'','#'+S.screen)}catch(e){}return}
  NAV.sentinel=false;
  if(document.getElementById('sheet').classList.contains('on')){closeSheet();syncHist();return}
- if(S.stack.length){doBack(SWIPE.active?'none':'pop')}
+ if(S.stack.length){doBack(SWIPE.active||document.documentElement.classList.contains('native')?'none':'pop')}   /* 폰 기본 제스처로 돌아온 경우 애니메이션을 두 번 하지 않음 */
  syncHist();
 });
 /* 화면을 버릴 때 그 안의 영상(360° 영상·카메라 미리보기)을 완전히 멈추고 메모리에서 내려요 */
@@ -2394,6 +2396,7 @@ const SWIPE={active:false};
  const fit=()=>parseFloat(getComputedStyle(phone).getPropertyValue('--fit'))||1;
  const typing=()=>{const a=document.activeElement;return a&&(/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)||a.isContentEditable)};
  const blocked=()=>!S.stack.length||NAV.busy||document.getElementById('sheet').classList.contains('on');
+ edge.addEventListener('touchstart',e=>{if(S.stack.length)e.preventDefault()},{passive:false});   /* iOS 기본 뒤로가기 제스처 막기 */
  edge.addEventListener('pointerdown',e=>{
   if(e.button>0)return;
   g={x0:e.clientX,y0:e.clientY,lx:e.clientX,ly:e.clientY,id:e.pointerId,mode:null,v:[]};
@@ -2496,6 +2499,10 @@ document.getElementById('app').addEventListener('click',e=>{
   case 'postmenu':{document.querySelector('.pmenu')?.remove();const p=POSTS.find(x=>x.id===t.dataset.i);if(!p)break;
    const m=document.createElement('div');m.className='pmenu';m.innerHTML=p.mine?`<button data-act="postdel" data-i="${p.id}">삭제하기</button>`:`<button data-act="postmenu-x" data-toast="신고가 접수됐어요">신고하기</button>`;
    t.parentNode.style.position='relative';t.parentNode.appendChild(m);setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)){m.remove();document.removeEventListener('click',h,true)}},true),0);break}
+  case 'rvmenu':{document.querySelector('.pmenu')?.remove();const m=document.createElement('div');m.className='pmenu';m.style.top='44px';m.style.right='8px';
+   m.innerHTML=`<button data-act="rvdel" data-i="${t.dataset.i}" data-s="${t.dataset.s}">삭제하기</button>`;t.parentNode.appendChild(m);
+   setTimeout(()=>document.addEventListener('click',function h(e){if(!m.contains(e.target)){m.remove();document.removeEventListener('click',h,true)}},true),0);break}
+  case 'rvdel':{const l=(S.myReviews||{})[t.dataset.s];if(l){const i=l.findIndex(r=>r.id===t.dataset.i);if(i>=0)l.splice(i,1);if(!l.length)delete S.myReviews[t.dataset.s]}document.querySelector('.pmenu')?.remove();render();toast('후기를 삭제했어요');break}
   case 'postdel':{const i=POSTS.findIndex(x=>x.id===t.dataset.i);if(i>=0)POSTS.splice(i,1);document.querySelector('.pmenu')?.remove();render();toast('게시물을 삭제했어요');break}
   case 'ework':S.exploreWork=t.dataset.v;render();break;
   case 'ecat':{S.exploreCat=t.dataset.v;const sc=curScreen(),body=sc&&sc.querySelector('.body');if(!body){render();break}
