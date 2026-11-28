@@ -1409,7 +1409,7 @@ function saveArchive(){try{let list=S.archive.slice(0,24);for(let n=list.length;
 window.addEventListener('load',()=>{const go_=()=>{try{(typeof BADGE!=='undefined'?[...BADGE]:[]).forEach(id=>{const i=new Image();i.decoding='async';i.src=`assets/badges/${id}.png?v=${ASSET_V}`;i.decode&&i.decode().catch(()=>{})})}catch(e){}};(window.requestIdleCallback?requestIdleCallback(go_,{timeout:2500}):setTimeout(go_,1500))});
 /* ================= HELPERS ================= */
 /* 포스터 이미지: assets/posters/<장소id>.jpg 를 넣으면 자동으로 표시, 없으면 만화 패널 그래픽 */
-const ASSET_V='2611284';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
+const ASSET_V='2611286';   // 이미지 교체 시 올려 주면 브라우저에 남은 예전 이미지를 쓰지 않아요
 
 /* 자동 업데이트: 앱을 열거나 다시 화면으로 돌아올 때 새 버전이 있으면 바로 새로 불러와요 (설치한 앱의 캐시 대비) */
 (function(){let busy=false;async function chk(){if(busy)return;busy=true;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(r.ok){const j=await r.json();if(j&&j.v&&j.v!==ASSET_V){const k='dkupd_'+j.v;let done=false;try{done=sessionStorage.getItem(k)}catch(e){}if(!done){try{sessionStorage.setItem(k,'1')}catch(e){}location.replace(location.pathname+'?v='+j.v+location.hash);return}}}}catch(e){}busy=false}
@@ -2024,8 +2024,10 @@ function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);
 /* 원작 비교 장면 이미지 (가운데 기준 세로 클로즈업) */
 /* 2단계 오버레이 원작 장면: 가로 촬영 기준 — 너의이름은은 제외 */
 const SCENE_IMG=Object.fromEntries(['shibuya','haboro','tamako','kamakura_sd','seihantai','meguro','kifune_cn','sunshine','karumai','shelter','yanineko','gotoubun','onnazaka','nagatoro','keion','suga'].map(id=>[id,'assets/hero/'+id+'.jpg']));const _sceneCache={};
+/* 세로 카메라에서 원작 장면이 잘릴 때 인물이 보이도록 가로 중심(0~1) */
+const SCENE_FOCUS={shibuya:.48,haboro:.55,tamako:.35,kamakura_sd:.62,meguro:.55,kifune_cn:.62,sunshine:.58,karumai:.75,gotoubun:.8,onnazaka:.55,nagatoro:.55,keion:.48};
 function sceneImg(id){const u=SCENE_IMG[id];if(!u)return null;let im=_sceneCache[id];if(!im){im=new Image();im.src=u+'?v='+ASSET_V;_sceneCache[id]=im}return im.complete&&im.naturalWidth?im:null}
-function drawScene(c,w,h,t,alpha){const im=sceneImg(spot().id);if(im){c.save();c.globalAlpha=alpha;const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);c.restore();return}const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
+function drawScene(c,w,h,t,alpha){const im=sceneImg(spot().id);if(im){c.save();c.globalAlpha=alpha;const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;const fx=SCENE_FOCUS[spot().id]??.5,x=Math.min(0,Math.max(w-dw,w/2-dw*fx));c.drawImage(im,x,(h-dh)/2,dw,dh);c.restore();return}const sp=spot();const f=SCENE_FEAT[sp.id]||'cross';c.save();c.globalAlpha=alpha;
  const snow=f==='snow';const g=c.createLinearGradient(0,0,0,h*.62);
  if(snow){g.addColorStop(0,'#2b3a67');g.addColorStop(1,'#a9b7d8')}else{g.addColorStop(0,'#ff9a5a');g.addColorStop(.5,'#ff6f61');g.addColorStop(1,'#6a4c93')}
  c.fillStyle=g;c.fillRect(0,0,w,h*.62);
@@ -2194,6 +2196,10 @@ function moveGuide(sp){const r=planRoute(sp),n=r.nodes,m=MODES.find(x=>x.id===S.
  <div class="mg-meta"><span class="mg-mode">${I[m.icon]}${m.name}</span><span class="mg-left">소요시간 <b>약 ${fmtMin(r.total)}</b></span></div>`}
 /* 카메라 방향: 너의이름은(스가 신사)만 세로 촬영, 나머지는 가로 촬영 */
 const PORTRAIT_CAM=new Set(['suga']);
+/* 폰에서는 들고 있는 방향 그대로: 세로로 들면 세로 카메라(너의이름은과 같은 화면), 가로로 돌리면 가로 카메라 */
+const camLand=def=>{if(!def.ar||PORTRAIT_CAM.has(spot().id))return false;if(document.documentElement.classList.contains('native'))return innerWidth>innerHeight;return true};
+(function(){let t=0;const re=()=>{clearTimeout(t);t=setTimeout(()=>{if(!window._curAr)return;const ph=document.getElementById('phone'),was=ph.classList.contains('land'),L=camLand({ar:true});if(was!==L){ph.classList.toggle('land',L);if(window.fitPhone)fitPhone();dispatchEvent(new Event('resize'))}},120)};
+ addEventListener('resize',e=>{if(e.isTrusted)re()});addEventListener('orientationchange',()=>setTimeout(re,250))})();
 SCREENS.move=()=>{const sp=spot();const r=ROUTES(sp)[Math.min(S.route,ROUTES(sp).length-1)];const st=r.steps[Math.min(S.moveProg,r.steps.length-1)];const pct=Math.round((S.moveProg+1)/(r.steps.length+1)*100);
  const ch=work(sp).chars;
  return{dark:true,ar:true,html:`
@@ -2488,7 +2494,7 @@ function render(mode='none',restore){closeMission(true);
  const old=curScreen();
  const keep=(mode==='none'&&!restore&&old&&old.dataset.screen===S.screen&&old.dataset.spot===S.spot)?snapScroll(old):null;
  const def=SCREENS[S.screen]();
- document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');const L=!!def.ar&&!PORTRAIT_CAM.has(spot().id);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
+ document.getElementById('phone').classList.toggle('dk',!!def.dark);{const ph=document.getElementById('phone'),was=ph.classList.contains('land');window._curAr=!!def.ar;const L=camLand(def);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
  const el=buildScreen(def);
  if(old)stripIds(old);
  if((mode==='push'||mode==='pop')&&old){
@@ -2522,7 +2528,7 @@ function backReuse(under,def){
  const app=document.getElementById('app');app.querySelectorAll('.screen').forEach(o=>{if(o!==under)dropScreen(o)});
  under.classList.remove('under');under.querySelector(':scope > .shade')?.remove();under.style.transform='';under.style.transition='';
  restoreIds(under);
- const ph=document.getElementById('phone');ph.classList.toggle('dk',!!def.dark);{const was=ph.classList.contains('land');const L=!!def.ar&&!PORTRAIT_CAM.has(spot().id);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
+ const ph=document.getElementById('phone');ph.classList.toggle('dk',!!def.dark);{const was=ph.classList.contains('land');window._curAr=!!def.ar;const L=camLand(def);ph.classList.toggle('land',L);if(was!==L&&window.fitPhone)fitPhone()}
  wireScreen(under,def);
 }
 const SWIPE={active:false};
